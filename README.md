@@ -1,4 +1,4 @@
-# openhouseVR
+# thesis2016
 
 ---
 * First, you need to import package assetrequest.unitypackage which is in root directory of this project.  
