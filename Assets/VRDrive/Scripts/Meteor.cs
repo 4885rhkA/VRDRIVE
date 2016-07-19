@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpeedUp : Gimmick {
+public class Meteor : Gimmick {
+
 }
