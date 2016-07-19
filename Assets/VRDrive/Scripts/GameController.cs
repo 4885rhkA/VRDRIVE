@@ -32,15 +32,17 @@ public class GameController : MonoBehaviour {
 
 	private AudioSource source;
 	[SerializeField] private AudioClip countClip;
+	[SerializeField] private AudioClip goClip;
+	[SerializeField] private AudioClip backGroundClip;
 
 	/// <summary>When start, first initialize the status, finally start sound and timer.</summary>
 	void Start() {
+		startTime = DateTime.Now;
 		carObjects = GameObject.FindGameObjectsWithTag("Car");
 		foreach(GameObject carObject in carObjects) {
 			cars.Add(carObject.name, new CarStatus(carObject));
 		}
 		carObjects = null;
-		startTime = DateTime.Now;
 		source = gameObject.GetComponent<AudioSource>();
 		source.clip = countClip;
 		source.Play();
@@ -49,6 +51,10 @@ public class GameController : MonoBehaviour {
 
 	private IEnumerator StartGame(float clipLength) {
 		yield return new WaitForSeconds(clipLength);
+		source.clip = backGroundClip;
+		source.PlayOneShot(goClip);
+		source.Play();
+		startTime = DateTime.Now;
 		ChangeStatus(0, null);
 	}
 
@@ -65,7 +71,6 @@ public class GameController : MonoBehaviour {
 				}
 				break;
 			case 0:
-				startTime = DateTime.Now;
 				foreach(KeyValuePair<string, CarStatus> car in cars) {
 				car.Value.obj.GetComponent<UserController>().ReleaseFreezing();
 					car.Value.status = 0;
