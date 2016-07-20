@@ -5,23 +5,26 @@ public class UserController : MonoBehaviour {
 
 	public Vector3 localGravity;
 
-	/// <summary>remove the status</summary>
-	/// <param name="rigid">target</param>
+	/// <summary>Remove the setting of default gravity.</summary>
+	/// <param name="rigid">The target's Rigidbody Component</param>
 	public void RemoveDefaultGravity(Rigidbody rigid) {
 		rigid.useGravity = false;
 	}
 
-	/// <summary>add force</summary>
+	/// <summary>Add force.</summary>
+	/// <param name="rigid">The target's Rigidbody Component</param>
 	public void AddLocalGravity(Rigidbody rigid){
 		rigid.AddForce(localGravity, ForceMode.Acceleration);
 	}
 
-	/// <summary>release freezing</summary>
+	/// <summary>Release freezing.</summary>
+	/// <param name="rigid">The target's Rigidbody Component</param>
 	public void ReleaseFreezing(Rigidbody rigid) {
 		rigid.constraints = RigidbodyConstraints.None;
 	}
 
-	/// <summary>need to freeze when start</summary>
+	/// <summary>Freeze for the time before starting.</summary>
+	/// <param name="rigid">The target's Rigidbody Component</param>
 	public void SetFreezing(Rigidbody rigid) {
 		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
 	}
