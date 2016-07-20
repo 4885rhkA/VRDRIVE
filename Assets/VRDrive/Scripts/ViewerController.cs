@@ -18,6 +18,13 @@ public class ViewerController : MonoBehaviour {
 		text.enabled = state;
 	}
 
+	/// <summary>Decide whether showing the image or not in view.</summary>
+	/// <param name="text">The target RawImage Component</param>
+	/// <param name="state">The trigger for showing image or not</param>
+	public void ChangeRawImageState(RawImage image, bool state) {
+		image.enabled = state;
+	}
+
 	/// <summary>Change the text content and color in view.</summary>
 	/// <param name="text">The target Text Component</param>
 	/// <param name="content">New text of Text Component</param>
