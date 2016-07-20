@@ -3,18 +3,27 @@ using System.Collections;
 
 public class UserController : MonoBehaviour {
 
-	private Rigidbody rigidBody;
+	public Vector3 localGravity;
 
-	void Start() {
-		rigidBody = gameObject.GetComponent<Rigidbody>();
-		SetFreezing();
+	/// <summary>remove the status</summary>
+	/// <param name="rigid">target</param>
+	public void RemoveDefaultGravity(Rigidbody rigid) {
+		rigid.useGravity = false;
 	}
 
-	public void ReleaseFreezing() {
-		rigidBody.constraints = RigidbodyConstraints.None;
+	/// <summary>add force</summary>
+	public void AddLocalGravity(Rigidbody rigid){
+		rigid.AddForce(localGravity, ForceMode.Acceleration);
 	}
 
-	public void SetFreezing() {
-		rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+	/// <summary>release freezing</summary>
+	public void ReleaseFreezing(Rigidbody rigid) {
+		rigid.constraints = RigidbodyConstraints.None;
 	}
+
+	/// <summary>need to freeze when start</summary>
+	public void SetFreezing(Rigidbody rigid) {
+		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+	}
+
 }
