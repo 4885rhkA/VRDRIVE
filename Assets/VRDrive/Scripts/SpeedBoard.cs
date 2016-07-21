@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Meteor : Gimmick {
+public class SpeedBoard : Gimmick {
 
 	/// <summary>When collider occurs, do Object's action.</summary>
 	protected override void ColliderAction() {
@@ -11,4 +11,5 @@ public class Meteor : Gimmick {
 	/// <param name="collision">Attacked Object's collision</param>
 	protected override void CollisionAction(Collision collision) {
 	}
+
 }

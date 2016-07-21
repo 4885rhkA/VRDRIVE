@@ -3,7 +3,19 @@ using System.Collections;
 
 public class UserController : MonoBehaviour {
 
+	public static UserController instance;
+
 	public Vector3 localGravity;
+
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		else {
+			Destroy(gameObject);
+		}
+	}
 
 	/// <summary>Remove the setting of default gravity.</summary>
 	/// <param name="rigid">The target's Rigidbody Component</param>

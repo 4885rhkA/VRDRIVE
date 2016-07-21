@@ -4,6 +4,18 @@ using UnityEngine.UI;
 
 public class ViewerController : MonoBehaviour {
 
+	public static ViewerController instance;
+
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		else {
+			Destroy(gameObject);
+		}
+	}
+
 	/// <summary>Set the timer text in view.</summary>
 	/// <param name="timerText">The target Text Component</param>
 	/// <param name="pastTime">The time between start time and now</param>

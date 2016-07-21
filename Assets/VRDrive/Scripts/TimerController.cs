@@ -5,8 +5,20 @@ using System.Collections.Generic;
 
 public class TimerController : MonoBehaviour {
 
+	public static TimerController instance;
+
 	private DateTime startTime = DateTime.Now;
 	public TimeSpan pastTime = new TimeSpan(0, 0, 0);
+
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		else {
+			Destroy(gameObject);
+		}
+	}
 
 	public TimeSpan getPastTime() {
 		return pastTime;

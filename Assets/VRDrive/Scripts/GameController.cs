@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
 	
 	/// <summary>This class contains the values for oprating parameters.</summary>
 	/// <param name="status">The status of each user(-1:standby, 0:nowplaying, 1:goal, 2:retire)</param>
+	/// <param name="consition">The condition of each user(-1:courseout, 0:normal, 1:dash, 2:damage)</param>
 	/// <param name="rank">The ranking for multiple battle(no implementation)</param>
 	/// <param name="record">The time for goal</param>
 	/// <param name="obj">Gameobject of the car</param>
@@ -18,6 +19,7 @@ public class GameController : MonoBehaviour {
 	public class UserState {
 		public int status;
 		public int rank;
+		public int condition;
 		public TimeSpan record;
 		public GameObject obj;
 		public Rigidbody rigid;
@@ -26,6 +28,7 @@ public class GameController : MonoBehaviour {
 		public UserState(GameObject carObject) {
 			status = -1;
 			rank = 0;
+			condition = 0;
 			record = new TimeSpan(0, 0, 0);
 			obj = carObject;
 			rigid = null;
@@ -34,6 +37,8 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	public static GameController instance;
+
 	private GameObject[] carObjects;
 	private Dictionary<string, UserState> cars = new Dictionary<string, UserState>();
 
@@ -41,15 +46,27 @@ public class GameController : MonoBehaviour {
 	private ViewerController viewerController;
 	private UserController userController;
 	private SoundController soundController;
+	private GimmickController gimmickController;
 
 	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
 	private Color fontColor = new Color();
 
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		else {
+			Destroy(gameObject);
+		}
+	}
+
 	void Start() {
-		timerController = gameObject.GetComponent<TimerController>();
-		viewerController = gameObject.GetComponent<ViewerController>();
-		userController = gameObject.GetComponent<UserController>();
-		soundController = gameObject.GetComponent<SoundController>();
+		timerController = TimerController.instance;
+		viewerController = ViewerController.instance;
+		userController = UserController.instance;
+		soundController = SoundController.instance;
+		gimmickController = GimmickController.instance;
 		carObjects = GameObject.FindGameObjectsWithTag("Car");
 		if(carObjects != null) {
 			foreach(GameObject carObject in carObjects) {
@@ -69,7 +86,7 @@ public class GameController : MonoBehaviour {
 			}
 			ChangeAllStatus(-1);
 		}
-		StartCoroutine("StartGame", soundController.getClipLength("count"));
+		StartCoroutine("StartGame", soundController.GetClipLength("count"));
 	}
 
 	/// <summary>Start the game after finishing the count sound.</summary>
@@ -84,7 +101,7 @@ public class GameController : MonoBehaviour {
 			if(ColorUtility.TryParseHtmlString("#FFFFFFFF", out fontColor)) {
 				viewerController.ChangeTextContent(car.Value.message.FindDeep("MessageText").GetComponent<Text>(), "GO!!", fontColor);
 			}
-			StartCoroutine(ChangeTextStateWithDelay(soundController.getClipLength("go"), car.Value.message.FindDeep("MessageText").GetComponent<Text>(), false));
+			StartCoroutine(ChangeTextStateWithDelay(soundController.GetClipLength("go"), car.Value.message.FindDeep("MessageText").GetComponent<Text>(), false));
 		}
 		soundController.StartStageSound();
 	}
@@ -153,4 +170,5 @@ public class GameController : MonoBehaviour {
 				break;
 		}
 	}
+
 }

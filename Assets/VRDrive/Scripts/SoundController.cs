@@ -3,11 +3,23 @@ using System.Collections;
 
 public class SoundController : MonoBehaviour {
 
+	public static SoundController instance;
+
 	private AudioSource source;
 	[SerializeField] private AudioClip countClip;
 	[SerializeField] private AudioClip goClip;
 	[SerializeField] private AudioClip stageClip;
 	[SerializeField] private AudioClip goalClip;
+
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		else {
+			Destroy(gameObject);
+		}
+	}
 
 	void Start() {
 		source = gameObject.GetComponent<AudioSource>();
@@ -17,7 +29,7 @@ public class SoundController : MonoBehaviour {
 
 	/// <summary>Return the length of Clip for standby.</summary>
 	/// <param name="targetClip">The Clip which you want to get the length</param>
-	public float getClipLength(string targetClip) {
+	public float GetClipLength(string targetClip) {
 		switch(targetClip) {
 			case "count":
 				return countClip.length;
