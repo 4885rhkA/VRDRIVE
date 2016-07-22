@@ -20,10 +20,6 @@ public class TimerController : MonoBehaviour {
 		}
 	}
 
-	public TimeSpan getPastTime() {
-		return pastTime;
-	}
-
 	void Update() {
 		TimerCount();
 	}

@@ -5,7 +5,7 @@ public class UserController : MonoBehaviour {
 
 	public static UserController instance;
 
-	public Vector3 localGravity;
+	[SerializeField] private Vector3 localGravity;
 
 	void Awake() {
 		if(instance == null) {

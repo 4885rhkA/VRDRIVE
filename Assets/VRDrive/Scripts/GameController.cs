@@ -71,16 +71,21 @@ public class GameController : MonoBehaviour {
 				cars.Add(carObject.name, new UserState(carObject));
 			}
 			carObjects = null;
+
+			UserState carValue;
+			GameObject carValueObj;
 			foreach(KeyValuePair<string, UserState> car in cars){
-				car.Value.rigid = car.Value.obj.GetComponent<Rigidbody>();
-				car.Value.timerText = car.Value.obj.FindDeep("TimerText").GetComponent<Text>();
-				car.Value.message = car.Value.obj.FindDeep("Message");
-				viewerController.ChangeTextState(car.Value.timerText, false);
-				viewerController.ChangeRawImageState(car.Value.message.GetComponent<RawImage>(), true);
+				carValue = car.Value;
+				carValueObj = carValue.obj;
+				carValue.rigid = carValueObj.GetComponent<Rigidbody>();
+				carValue.timerText = carValueObj.FindDeep("TimerText").GetComponent<Text>();
+				carValue.message = carValueObj.FindDeep("Message");
+				viewerController.ChangeTextState(carValue.timerText, false);
+				viewerController.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
 				if(ColorUtility.TryParseHtmlString("#272629FF", out fontColor)) {
-					viewerController.ChangeTextContent(car.Value.message.FindDeep("MessageText").GetComponent<Text>(), "READY...", fontColor);
+					viewerController.ChangeTextContent(carValue.message.FindDeep("MessageText").GetComponent<Text>(), "READY...", fontColor);
 				}
-				userController.RemoveDefaultGravity(car.Value.rigid);
+				userController.RemoveDefaultGravity(carValue.rigid);
 			}
 			ChangeAllStatus(-1);
 		}
@@ -93,13 +98,15 @@ public class GameController : MonoBehaviour {
 		yield return new WaitForSeconds(countClipLength);
 		ChangeAllStatus(0);
 		timerController.ResetStartTime();
+		UserState carValue;
 		foreach(KeyValuePair<string, UserState> car in cars){
-			viewerController.ChangeTextState(car.Value.timerText, true);
-			viewerController.ChangeRawImageState(car.Value.message.GetComponent<RawImage>(), false);
+			carValue = car.Value;
+			viewerController.ChangeTextState(carValue.timerText, true);
+			viewerController.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), false);
 			if(ColorUtility.TryParseHtmlString("#FFFFFFFF", out fontColor)) {
-				viewerController.ChangeTextContent(car.Value.message.FindDeep("MessageText").GetComponent<Text>(), "GO!!", fontColor);
+				viewerController.ChangeTextContent(carValue.message.FindDeep("MessageText").GetComponent<Text>(), "GO!!", fontColor);
 			}
-			StartCoroutine(ChangeTextStateWithDelay(soundController.GetClipLength("go"), car.Value.message.FindDeep("MessageText").GetComponent<Text>(), false));
+			StartCoroutine(ChangeTextStateWithDelay(soundController.GetClipLength("go"), carValue.message.FindDeep("MessageText").GetComponent<Text>(), false));
 		}
 		soundController.StartStageSound();
 	}
@@ -114,10 +121,12 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Update() {
-		timeSpan = timerController.getPastTime();
+		timeSpan = timerController.pastTime;
+		UserState carValue;
 		foreach(KeyValuePair<string, UserState> car in cars){
-			viewerController.SetTimerTextToView(car.Value.timerText, timeSpan);
-			userController.AddLocalGravity(car.Value.rigid);
+			carValue = car.Value;
+			viewerController.SetTimerTextToView(carValue.timerText, timeSpan);
+			userController.AddLocalGravity(carValue.rigid);
 		}
 	}
 
@@ -130,6 +139,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>set the status</summary>
+	/// <param name="carName">The name for User</param>
 	/// <param name="status">The status of each user(-1:standby, 0:nowplaying, 1:goal, 2:retire, 3:incident)</param>
 	public void ChangeStatus(string carName, int status) {
 		if(cars.ContainsKey(carName)) {
@@ -142,12 +152,13 @@ public class GameController : MonoBehaviour {
 					userController.ReleaseFreezing(cars[carName].rigid);
 					break;
 				case 1:
-					cars[carName].record = gameObject.GetComponent<TimerController>().getPastTime();
-					viewerController.ChangeRawImageState(cars[carName].message.GetComponent<RawImage>(), true);
+					GameObject message = cars[carName].message;
+					cars[carName].record = gameObject.GetComponent<TimerController>().pastTime;
+					viewerController.ChangeRawImageState(message.GetComponent<RawImage>(), true);
 					if(ColorUtility.TryParseHtmlString("#EE4646FF", out fontColor)) {
-						viewerController.ChangeTextContent(cars[carName].message.FindDeep("MessageText").GetComponent<Text>(), "GOAL!!", fontColor);
+						viewerController.ChangeTextContent(message.FindDeep("MessageText").GetComponent<Text>(), "GOAL!!", fontColor);
 					}
-					viewerController.ChangeTextState(cars[carName].message.FindDeep("MessageText").GetComponent<Text>(), true);
+					viewerController.ChangeTextState(message.FindDeep("MessageText").GetComponent<Text>(), true);
 					soundController.GoalStageSound();
 					break;
 				case 3:
@@ -161,21 +172,25 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Tag: Car/Gimmick/Item(Not implemented)</summary>
+	/// <summary>update the status for User. 
+	/// Moreover, the target of Tag for collision are Car/Gimmick/Item(Not implemented).</summary>
+	/// <param name="incidentObj">The Object occurs incident</param>
+	/// <param name="targetObj">The Object suffered the incident</param>
 	public int UpdateGameState(GameObject incidentObj, GameObject targetObj) {
 		if(targetObj.tag == "Car") {
-			if(cars.ContainsKey(targetObj.name)) {
-				if(cars[targetObj.name].status != 1 && incidentObj.name == "Goal") {
-					ChangeStatus(targetObj.name, 1);
+			string targetObjName = targetObj.name;
+			if(cars.ContainsKey(targetObjName)) {
+				if(cars[targetObjName].status != 1 && incidentObj.name == "Goal") {
+					ChangeStatus(targetObjName, 1);
 					return 1;
 				}
-				else if(cars[targetObj.name].status == 0) {
-					ChangeStatus(targetObj.name, 3);
+				else if(cars[targetObjName].status == 0) {
+					ChangeStatus(targetObjName, 3);
 					return 1;
 				}
 			}
 			else {
-				Debug.LogWarning("The system cannot find the target:" + targetObj.name);
+				Debug.LogWarning("The system cannot find the target:" + targetObjName);
 			}
 		}
 		else if(incidentObj.tag == targetObj.tag) {
