@@ -46,7 +46,6 @@ public class GameController : MonoBehaviour {
 	private ViewerController viewerController;
 	private UserController userController;
 	private SoundController soundController;
-	private GimmickController gimmickController;
 
 	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
 	private Color fontColor = new Color();
@@ -66,7 +65,6 @@ public class GameController : MonoBehaviour {
 		viewerController = ViewerController.instance;
 		userController = UserController.instance;
 		soundController = SoundController.instance;
-		gimmickController = GimmickController.instance;
 		carObjects = GameObject.FindGameObjectsWithTag("Car");
 		if(carObjects != null) {
 			foreach(GameObject carObject in carObjects) {
@@ -132,30 +130,18 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>set the status</summary>
-	/// <param name="status">The status of each user(-1:standby, 0:nowplaying, 1:goal, 2:retire)</param>
-	public void ChangeStatus(String carName, int status) {
-		switch(status) {
-			case -1:
-				if(cars.ContainsKey(carName)) {
-					cars[carName].status = -1;
+	/// <param name="status">The status of each user(-1:standby, 0:nowplaying, 1:goal, 2:retire, 3:incident)</param>
+	public void ChangeStatus(string carName, int status) {
+		if(cars.ContainsKey(carName)) {
+			cars[carName].status = status;
+			switch(status) {
+				case -1:
 					userController.SetFreezing(cars[carName].rigid);
-				}
-				else {
-					Debug.LogWarning("The system cannot find the target:" + carName);
-				}
-				break;
-			case 0:
-				if(cars.ContainsKey(carName)) {
-					cars[carName].status = 0;
+					break;
+				case 0:
 					userController.ReleaseFreezing(cars[carName].rigid);
-				}
-				else {
-					Debug.LogWarning("The system cannot find the target:" + carName);
-				}
-				break;
-			case 1:
-				if(cars.ContainsKey(carName)) {
-					cars[carName].status = 1;
+					break;
+				case 1:
 					cars[carName].record = gameObject.GetComponent<TimerController>().getPastTime();
 					viewerController.ChangeRawImageState(cars[carName].message.GetComponent<RawImage>(), true);
 					if(ColorUtility.TryParseHtmlString("#EE4646FF", out fontColor)) {
@@ -163,12 +149,39 @@ public class GameController : MonoBehaviour {
 					}
 					viewerController.ChangeTextState(cars[carName].message.FindDeep("MessageText").GetComponent<Text>(), true);
 					soundController.GoalStageSound();
-				}
-				else {
-					Debug.LogWarning("The system cannot find the target:" + carName);
-				}
-				break;
+					break;
+				case 3:
+					break;
+				default:
+					break;
+			}
 		}
+		else {
+			Debug.LogWarning("The system cannot find the target:" + carName);
+		}
+	}
+
+	/// <summary>Tag: Car/Gimmick/Item(Not implemented)</summary>
+	public int UpdateGameState(GameObject incidentObj, GameObject targetObj) {
+		if(targetObj.tag == "Car") {
+			if(cars.ContainsKey(targetObj.name)) {
+				if(cars[targetObj.name].status != 1 && incidentObj.name == "Goal") {
+					ChangeStatus(targetObj.name, 1);
+					return 1;
+				}
+				else if(cars[targetObj.name].status == 0) {
+					ChangeStatus(targetObj.name, 3);
+					return 1;
+				}
+			}
+			else {
+				Debug.LogWarning("The system cannot find the target:" + targetObj.name);
+			}
+		}
+		else if(incidentObj.tag == targetObj.tag) {
+			return 0;
+		}
+		return -1;
 	}
 
 }

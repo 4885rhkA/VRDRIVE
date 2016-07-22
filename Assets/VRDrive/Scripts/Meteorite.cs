@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpeedBoard : Incident {
+public class Meteorite : Incident {
 
 	/// <summary>When collider occurs, do User's action.</summary>
 	/// <param name="collider">User's collider</param>
