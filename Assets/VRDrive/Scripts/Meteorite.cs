@@ -3,26 +3,21 @@ using System.Collections;
 
 public class Meteorite : Incident {
 
+	/// <summary>When collider/collision occurs, do Object's action.</summary>
+	protected override void CollidedActionForMyself() {}
+
 	/// <summary>When collider occurs, do User's action.</summary>
 	/// <param name="collider">User's collider</param>
-	protected override void ColliderActionForUser(Collider collider) {
-		Debug.Log("collider!!" + collider.gameObject.transform.root.gameObject.name);
-	}
+	protected override void ColliderActionForUser(Collider collider) {}
+
+	/// <summary>After collider occurs, do  action.</summary>
+	protected override void AfterTriggerEnterAction(Collider collider) {}
 
 	/// <summary>When collision occurs, do User's action.</summary>
 	/// <param name="collision">User's collision</param>
-	protected override void CollisionActionForUser(Collision collision) {
-		Debug.Log("collision!!" + collision.gameObject.transform.root.gameObject.name);
-	}
+	protected override void CollisionActionForUser(Collision collision) {}
 
-	/// <summary>When collider occurs, do Object's action.</summary>
-	protected override void ColliderActionForMyself() {
-		Debug.Log("collider" + gameObject.name);
-	}
-
-	/// <summary>When collision occurs, do Object's action.</summary>
-	protected override void CollisionActionForMyself() {
-		Debug.Log("collision" + gameObject.name);
-	}
+	/// <summary>After collision occurs, do action.</summary>
+	protected override void AfterCollisionEnterAction(Collision collision) {}
 
 }

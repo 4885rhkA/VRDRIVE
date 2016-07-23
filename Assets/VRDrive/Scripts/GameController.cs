@@ -10,7 +10,6 @@ public class GameController : MonoBehaviour {
 	/// <summary>This class contains the values for oprating parameters.</summary>
 	/// <param name="status">The status of each user(-1:standby, 0:nowplaying, 1:goal, 2:retire)</param>
 	/// <param name="consition">The condition of each user(-1:courseout, 0:normal, 1:dash, 2:damage)</param>
-	/// <param name="rank">The ranking for multiple battle(no implementation)</param>
 	/// <param name="record">The time for goal</param>
 	/// <param name="obj">Gameobject of the car</param>
 	/// <param name="rigid">Rigidbody of the car</param>
@@ -18,7 +17,6 @@ public class GameController : MonoBehaviour {
 	/// <param name="message">The Object in upper left view(Contains the Text in it)</param>
 	public class UserState {
 		public int status;
-		public int rank;
 		public int condition;
 		public TimeSpan record;
 		public GameObject obj;
@@ -27,7 +25,6 @@ public class GameController : MonoBehaviour {
 		public GameObject message;
 		public UserState(GameObject carObject) {
 			status = -1;
-			rank = 0;
 			condition = 0;
 			record = new TimeSpan(0, 0, 0);
 			obj = carObject;
@@ -87,7 +84,7 @@ public class GameController : MonoBehaviour {
 				}
 				userController.RemoveDefaultGravity(carValue.rigid);
 			}
-			ChangeAllStatus(-1);
+			UpdateAllUserStatus(-1);
 		}
 		StartCoroutine("StartGame", soundController.GetClipLength("count"));
 	}
@@ -96,7 +93,7 @@ public class GameController : MonoBehaviour {
 	/// <param name="countClipLength">The length of the count sound</param>
 	private IEnumerator StartGame(float countClipLength) {  
 		yield return new WaitForSeconds(countClipLength);
-		ChangeAllStatus(0);
+		UpdateAllUserStatus(0);
 		timerController.ResetStartTime();
 		UserState carValue;
 		foreach(KeyValuePair<string, UserState> car in cars){
@@ -132,16 +129,16 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>set the status for all users</summary>
 	/// <param name="status">The status of each user(-1:standby, 0:nowplaying, 1:goal, 2:retire)</param>
-	public void ChangeAllStatus(int status) {
+	public void UpdateAllUserStatus(int status) {
 		foreach(KeyValuePair<string, UserState> car in cars){
-			ChangeStatus(car.Value.obj.name, status);
+			UpdateUserStatus(car.Value.obj.name, status);
 		}
 	}
 
 	/// <summary>set the status</summary>
 	/// <param name="carName">The name for User</param>
 	/// <param name="status">The status of each user(-1:standby, 0:nowplaying, 1:goal, 2:retire, 3:incident)</param>
-	public void ChangeStatus(string carName, int status) {
+	public void UpdateUserStatus(string carName, int status) {
 		if(cars.ContainsKey(carName)) {
 			cars[carName].status = status;
 			switch(status) {
@@ -172,24 +169,31 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>update the status for User. 
-	/// Moreover, the target of Tag for collision are Car/Gimmick/Item(Not implemented).</summary>
+	/// <summary>
+	/// update the status for User. 
+	/// Moreover, the target of Tag for collision are Car/Gimmick.
+	/// </summary>
 	/// <param name="incidentObj">The Object occurs incident</param>
 	/// <param name="targetObj">The Object suffered the incident</param>
+	/// <returns>
+	///  1:Change the status of user
+	///  0:Collision both incident with the same tag
+	/// -1:Collision both incident with the different tag / No incident occurs
+	/// </returns>
 	public int UpdateGameState(GameObject incidentObj, GameObject targetObj) {
 		if(targetObj.tag == "Car") {
 			string targetObjName = targetObj.name;
 			if(cars.ContainsKey(targetObjName)) {
 				if(cars[targetObjName].status != 1 && incidentObj.name == "Goal") {
-					ChangeStatus(targetObjName, 1);
+					UpdateUserStatus(targetObjName, 1);
 					return 1;
 				}
 				else if(cars[targetObjName].status == 0) {
-					ChangeStatus(targetObjName, 3);
+					UpdateUserStatus(targetObjName, 3);
 					return 1;
 				}
 				else if(cars[targetObjName].status == 3) {
-					ChangeStatus(targetObjName, 0);
+					return 0;
 				}
 			}
 			else {
