@@ -4,6 +4,14 @@ using System.Collections;
 public abstract class Incident : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider) {
+		ColliderAction(collider);
+	}
+
+	void OnCollisionEnter(Collision collision) {
+		CollisionAction(collision);
+	}
+
+	protected void ColliderAction(Collider collider) {
 		int result = GameController.instance.UpdateGameState(gameObject.transform.root.gameObject, collider.gameObject.transform.root.gameObject);
 		if(result > 0) {
 			ColliderActionForUser(collider);
@@ -13,7 +21,7 @@ public abstract class Incident : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter(Collision collision) {
+	protected void CollisionAction(Collision collision) {
 		int result = GameController.instance.UpdateGameState(gameObject.transform.root.gameObject, collision.gameObject.transform.root.gameObject);
 		if(result > 0) {
 			CollisionActionForUser(collision);

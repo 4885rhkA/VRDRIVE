@@ -25,4 +25,13 @@ public class SpeedBoard : Incident {
 		Debug.Log("collision" + gameObject.name);
 	}
 
+	void OnTriggerStay(Collider collider) {
+		collider.gameObject.transform.root.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * 10000, ForceMode.Force);
+	}
+
+	void OnTriggerExit(Collider collider) {
+		ColliderAction(collider);
+	}
+
+
 }

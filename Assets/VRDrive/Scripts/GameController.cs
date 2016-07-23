@@ -188,6 +188,9 @@ public class GameController : MonoBehaviour {
 					ChangeStatus(targetObjName, 3);
 					return 1;
 				}
+				else if(cars[targetObjName].status == 3) {
+					ChangeStatus(targetObjName, 0);
+				}
 			}
 			else {
 				Debug.LogWarning("The system cannot find the target:" + targetObjName);
