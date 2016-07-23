@@ -177,7 +177,7 @@ public class GameController : MonoBehaviour {
 	/// <param name="targetObj">The Object suffered the incident</param>
 	/// <returns>
 	///  1:Change the status of user
-	///  0:Collision both incident with the same tag
+	///  0:Collision both incident with the same tag or User is still in incident / Each incident must do only each defined action
 	/// -1:Collision both incident with the different tag / No incident occurs
 	/// </returns>
 	public int UpdateGameState(GameObject incidentObj, GameObject targetObj) {
