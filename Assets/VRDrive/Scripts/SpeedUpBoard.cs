@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
-public class SpeedBoard : Incident {
+public class SpeedUpBoard : Incident {
 
 	private float keepSec = 1;
 	private float multipleSpeed = 2;
@@ -16,6 +16,7 @@ public class SpeedBoard : Incident {
 	protected override void ColliderActionForUser(Collider collider) {
 		GameObject userObj = collider.gameObject;
 		ViewerController.instance.ChangeMotionBlur(userObj.transform.FindChild("MainCamera").gameObject, blurAmount);
+		SoundController.instance.ShotSpeedUpSound();
 		userObj.GetComponent<CarController>().MaxSpeed *= multipleSpeed;
 		userObj.GetComponent<Rigidbody>().AddForce(Vector3.forward * 200, ForceMode.VelocityChange);
 		StartCoroutine(AfterTriggerEnter(keepSec, userObj.name, 0, collider));

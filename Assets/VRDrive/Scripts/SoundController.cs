@@ -10,6 +10,7 @@ public class SoundController : MonoBehaviour {
 	[SerializeField] private AudioClip goClip;
 	[SerializeField] private AudioClip stageClip;
 	[SerializeField] private AudioClip goalClip;
+	[SerializeField] private AudioClip speedUpClip;
 
 	void Awake() {
 		if(instance == null) {
@@ -43,6 +44,10 @@ public class SoundController : MonoBehaviour {
 				Debug.LogWarning(targetClip + "Clip cannnot be found. So return 0.");
 				return 0;
 		}
+	}
+
+	public void ShotSpeedUpSound() {
+		source.PlayOneShot(speedUpClip);
 	}
 
 	/// <summary>Start the stageClip with goClip.</summary>
