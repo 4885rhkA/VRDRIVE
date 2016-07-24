@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using UnityEngine.UI;
+using UnityStandardAssets.ImageEffects;
 
 public class ViewerController : MonoBehaviour {
 
@@ -44,6 +45,13 @@ public class ViewerController : MonoBehaviour {
 	public void ChangeTextContent(Text text, string content, Color color) {
 		text.text = content;
 		text.color = color;
+	}
+
+	/// <summary>Change the motion blour in view.</summary>
+	/// <param name="camera">Camera GameObject</param>
+	/// <param name="blurAmount">Blur Amount(from 0 to 1)</param>
+	public void ChangeMotionBlur(GameObject camera, float blurAmount) {
+		camera.GetComponent<MotionBlur>().blurAmount = Mathf.Clamp(blurAmount, 0, 1);
 	}
 
 }

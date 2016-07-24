@@ -39,11 +39,6 @@ public class GameController : MonoBehaviour {
 	private GameObject[] carObjects;
 	private Dictionary<string, UserState> cars = new Dictionary<string, UserState>();
 
-	private TimerController timerController;
-	private ViewerController viewerController;
-	private UserController userController;
-	private SoundController soundController;
-
 	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
 	private Color fontColor = new Color();
 
@@ -58,10 +53,6 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Start() {
-		timerController = TimerController.instance;
-		viewerController = ViewerController.instance;
-		userController = UserController.instance;
-		soundController = SoundController.instance;
 		carObjects = GameObject.FindGameObjectsWithTag("Car");
 		if(carObjects != null) {
 			foreach(GameObject carObject in carObjects) {
@@ -77,16 +68,16 @@ public class GameController : MonoBehaviour {
 				carValue.rigid = carValueObj.GetComponent<Rigidbody>();
 				carValue.timerText = carValueObj.FindDeep("TimerText").GetComponent<Text>();
 				carValue.message = carValueObj.FindDeep("Message");
-				viewerController.ChangeTextState(carValue.timerText, false);
-				viewerController.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
+				ViewerController.instance.ChangeTextState(carValue.timerText, false);
+				ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
 				if(ColorUtility.TryParseHtmlString("#272629FF", out fontColor)) {
-					viewerController.ChangeTextContent(carValue.message.FindDeep("MessageText").GetComponent<Text>(), "READY...", fontColor);
+					ViewerController.instance.ChangeTextContent(carValue.message.FindDeep("MessageText").GetComponent<Text>(), "READY...", fontColor);
 				}
-				userController.RemoveDefaultGravity(carValue.rigid);
+				UserController.instance.RemoveDefaultGravity(carValue.rigid);
 			}
 			UpdateAllUserStatus(-1);
 		}
-		StartCoroutine("StartGame", soundController.GetClipLength("count"));
+		StartCoroutine("StartGame", SoundController.instance.GetClipLength("count"));
 	}
 
 	/// <summary>Start the game after finishing the count sound.</summary>
@@ -94,18 +85,18 @@ public class GameController : MonoBehaviour {
 	private IEnumerator StartGame(float countClipLength) {  
 		yield return new WaitForSeconds(countClipLength);
 		UpdateAllUserStatus(0);
-		timerController.ResetStartTime();
+		TimerController.instance.ResetStartTime();
 		UserState carValue;
 		foreach(KeyValuePair<string, UserState> car in cars){
 			carValue = car.Value;
-			viewerController.ChangeTextState(carValue.timerText, true);
-			viewerController.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), false);
+			ViewerController.instance.ChangeTextState(carValue.timerText, true);
+			ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), false);
 			if(ColorUtility.TryParseHtmlString("#FFFFFFFF", out fontColor)) {
-				viewerController.ChangeTextContent(carValue.message.FindDeep("MessageText").GetComponent<Text>(), "GO!!", fontColor);
+				ViewerController.instance.ChangeTextContent(carValue.message.FindDeep("MessageText").GetComponent<Text>(), "GO!!", fontColor);
 			}
-			StartCoroutine(ChangeTextStateWithDelay(soundController.GetClipLength("go"), carValue.message.FindDeep("MessageText").GetComponent<Text>(), false));
+			StartCoroutine(ChangeTextStateWithDelay(SoundController.instance.GetClipLength("go"), carValue.message.FindDeep("MessageText").GetComponent<Text>(), false));
 		}
-		soundController.StartStageSound();
+		SoundController.instance.StartStageSound();
 	}
 
 	/// <summary>Execute viewerController.ChangeTextState with delay</summary>
@@ -114,16 +105,16 @@ public class GameController : MonoBehaviour {
 	/// <param name="state">The trigger for showing text or not</param>
 	private IEnumerator ChangeTextStateWithDelay(float delayLength, Text text, bool state) {  
 		yield return new WaitForSeconds(delayLength);
-		viewerController.ChangeTextState(text, state);
+		ViewerController.instance.ChangeTextState(text, state);
 	}
 
 	void Update() {
-		timeSpan = timerController.pastTime;
+		timeSpan = TimerController.instance.pastTime;
 		UserState carValue;
 		foreach(KeyValuePair<string, UserState> car in cars){
 			carValue = car.Value;
-			viewerController.SetTimerTextToView(carValue.timerText, timeSpan);
-			userController.AddLocalGravity(carValue.rigid);
+			ViewerController.instance.SetTimerTextToView(carValue.timerText, timeSpan);
+			UserController.instance.AddLocalGravity(carValue.rigid);
 		}
 	}
 
@@ -143,20 +134,20 @@ public class GameController : MonoBehaviour {
 			cars[carName].status = status;
 			switch(status) {
 				case -1:
-					userController.SetFreezing(cars[carName].rigid);
+					UserController.instance.SetFreezing(cars[carName].rigid);
 					break;
 				case 0:
-					userController.ReleaseFreezing(cars[carName].rigid);
+					UserController.instance.ReleaseFreezing(cars[carName].rigid);
 					break;
 				case 1:
 					GameObject message = cars[carName].message;
 					cars[carName].record = gameObject.GetComponent<TimerController>().pastTime;
-					viewerController.ChangeRawImageState(message.GetComponent<RawImage>(), true);
+					ViewerController.instance.ChangeRawImageState(message.GetComponent<RawImage>(), true);
 					if(ColorUtility.TryParseHtmlString("#EE4646FF", out fontColor)) {
-						viewerController.ChangeTextContent(message.FindDeep("MessageText").GetComponent<Text>(), "GOAL!!", fontColor);
+						ViewerController.instance.ChangeTextContent(message.FindDeep("MessageText").GetComponent<Text>(), "GOAL!!", fontColor);
 					}
-					viewerController.ChangeTextState(message.FindDeep("MessageText").GetComponent<Text>(), true);
-					soundController.GoalStageSound();
+					ViewerController.instance.ChangeTextState(message.FindDeep("MessageText").GetComponent<Text>(), true);
+					SoundController.instance.GoalStageSound();
 					break;
 				case 3:
 					break;
