@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityStandardAssets.ImageEffects;
 
 public class ViewerController : MonoBehaviour {
 
 	public static ViewerController instance;
+
+	private bool isVignetting = false;
+	private float vignettingTime = 2;
+	private float baseVignetteIntensity = 0.4f;
 
 	void Awake() {
 		if(instance == null) {
@@ -52,6 +58,24 @@ public class ViewerController : MonoBehaviour {
 	/// <param name="blurAmount">Blur Amount(from 0 to 1)</param>
 	public void ChangeMotionBlur(GameObject camera, float blurAmount) {
 		camera.GetComponent<MotionBlur>().blurAmount = Mathf.Clamp(blurAmount, 0, 1);
+	}
+
+	/// <summary>Change the Vignette in view.</summary>
+	/// <param name="camera">Camera GameObject</param>
+	public IEnumerator ChangeDamageView(GameObject camera) {
+		VignetteAndChromaticAberration vignette = camera.GetComponent<VignetteAndChromaticAberration>();
+		if(isVignetting) {
+			yield break;
+		}
+		isVignetting = true;
+		float startTime = Time.time;
+		while (vignettingTime - (Time.time - startTime) > 0) {
+			float rate = vignettingTime / (vignettingTime + Time.time - startTime);
+			vignette.intensity = baseVignetteIntensity * Mathf.Clamp(rate, 0, 1);
+			yield return new WaitForEndOfFrame();
+		}
+		vignette.intensity = 0;
+		isVignetting = false;
 	}
 
 }

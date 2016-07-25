@@ -167,6 +167,13 @@ public class GameController : MonoBehaviour {
 	public void UpdateUserCondition(string carName, int carCondition) {
 		if(cars.ContainsKey(carName)) {
 			cars[carName].status = carCondition;
+			switch(carCondition) {
+				case 1:
+					StartCoroutine(ViewerController.instance.ChangeDamageView(cars[carName].camera));
+					break;
+				default:
+					break;
+			}
 		}
 		else {
 			Debug.LogWarning("The system cannot find the target:" + carName);
