@@ -5,6 +5,10 @@ public class Meteorite : Incident {
 
 	private int attackPower = 200000;
 
+	void Awake() {
+		iTween.RotateTo (gameObject.transform.FindChild("ShapeMeteorite").gameObject, iTween.Hash("x", 90, "y", 90, "z", 90, "time", 5, "islocal", true, "loopType", "loop"));
+	}
+
 	/// <summary>When collider/collision occurs, do Object's action.</summary>
 	protected override void CollidedActionForMyself() {
 		Detonator detonator = gameObject.GetComponent<Detonator>();
