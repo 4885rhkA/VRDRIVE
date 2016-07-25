@@ -52,5 +52,4 @@ public abstract class Incident : MonoBehaviour {
 	/// <summary>After collision occurs, do action.</summary>
 	protected abstract void AfterCollisionEnterAction(Collision collision);
 
-
 }
