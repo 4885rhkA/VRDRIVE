@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SoundController : MonoBehaviour {
 
 	public static SoundController instance;
 
+	[SerializeField, TooltipAttribute("You do not have to consider order.")] private AudioClip[] clips;
+
 	private AudioSource source;
-	[SerializeField] private AudioClip countClip;
-	[SerializeField] private AudioClip goClip;
-	[SerializeField] private AudioClip stageClip;
-	[SerializeField] private AudioClip goalClip;
-	[SerializeField] private AudioClip speedUpClip;
+	private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
 	void Awake() {
 		if(instance == null) {
@@ -20,47 +19,46 @@ public class SoundController : MonoBehaviour {
 		else {
 			Destroy(gameObject);
 		}
+		foreach(AudioClip audioClip in clips) {
+			audioClips.Add(audioClip.name, audioClip);
+		}
 	}
 
 	void Start() {
 		source = gameObject.GetComponent<AudioSource>();
-		source.clip = countClip;
+		source.clip = audioClips["count"];
 		source.Play();
 	}
 
 	/// <summary>Return the length of Clip for standby.</summary>
-	/// <param name="targetClip">The Clip which you want to get the length</param>
-	public float GetClipLength(string targetClip) {
-		switch(targetClip) {
-			case "count":
-				return countClip.length;
-			case "go":
-				return goClip.length;
-			case "stage":
-				return stageClip.length;
-			case "goal":
-				return goalClip.length;
-			default:
-				Debug.LogWarning(targetClip + "Clip cannnot be found. So return 0.");
-				return 0;
+	/// <param name="clipName">The Clip which you want to get the length</param>
+	public float GetClipLength(string clipName) {
+		if(audioClips.ContainsKey(clipName)) {
+			return audioClips[clipName].length;
+		}
+		else {
+			Debug.LogWarning(clipName + " Clip cannnot be found. So return 0.");
+			return 0;
 		}
 	}
 
-	public void ShotSpeedUpSound() {
-		source.PlayOneShot(speedUpClip);
+	/// <summary>Shot the sound only one time.</summary>
+	/// <param name="clipName">The Clip which you want to shot</param>
+	public void ShotClipSound(string clipName) {
+		if(audioClips.ContainsKey(clipName)) {
+			source.PlayOneShot(audioClips[clipName]);
+		}
+		else {
+			Debug.LogWarning(clipName + " Clip cannnot be found. ");
+		}
 	}
 
 	/// <summary>Start the stageClip with goClip.</summary>
 	public void StartStageSound() {
-		source.clip = stageClip;
-		source.PlayOneShot(goClip);
+		source.clip = audioClips["stage"];
+		ShotClipSound("go");
 		source.loop = true;
 		source.Play();
-	}
-
-	/// <summary>Call goalClip.</summary>
-	public void GoalStageSound() {
-		source.PlayOneShot(goalClip);
 	}
 
 }

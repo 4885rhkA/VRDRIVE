@@ -21,7 +21,7 @@ public class Goal : Incident {
 			ViewerController.instance.ChangeTextContent(carMessageText, "GOAL!!", fontColor);
 		}
 		ViewerController.instance.ChangeTextState(carMessageText, true);
-		SoundController.instance.GoalStageSound();
+		SoundController.instance.ShotClipSound("goal");
 	}
 
 	/// <summary>After collider occurs, do  action.</summary>

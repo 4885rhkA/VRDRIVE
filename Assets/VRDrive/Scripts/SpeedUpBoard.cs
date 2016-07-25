@@ -19,7 +19,7 @@ public class SpeedUpBoard : Incident {
 		ViewerController.instance.ChangeMotionBlur(userState.camera, blurAmount);
 		userObject.GetComponent<CarController>().MaxSpeed *= multipleSpeed;
 		userObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * 200, ForceMode.VelocityChange);
-		SoundController.instance.ShotSpeedUpSound();
+		SoundController.instance.ShotClipSound("speedup");
 		StartCoroutine(AfterTriggerEnter(keepSec, userObject.name, 0, collider));
 	}
 
@@ -37,6 +37,5 @@ public class SpeedUpBoard : Incident {
 
 	/// <summary>After collision occurs, do action.</summary>
 	protected override void AfterCollisionEnterAction(Collision collision) {}
-
 
 }
