@@ -23,6 +23,7 @@ public class Goal : Incident {
 		}
 		ViewerController.instance.ChangeTextState(carMessageText, true);
 		SoundController.instance.ShotClipSound("goal");
+		StartCoroutine(AfterTriggerEnter(0, userState.obj.name, 1, collider));
 	}
 
 	/// <summary>After collider occurs, do  action.</summary>

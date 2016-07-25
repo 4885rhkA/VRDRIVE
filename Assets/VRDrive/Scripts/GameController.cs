@@ -139,7 +139,6 @@ public class GameController : MonoBehaviour {
 			if(cars.ContainsKey(targetObjectName)) {
 				if(cars[targetObjectName].status == 0) {
 					if(incidentObject.name == "Goal") {
-						UpdateUserStatus(targetObjectName, 1);
 						return 1;
 					}
 					else {

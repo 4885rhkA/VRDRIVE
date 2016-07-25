@@ -23,16 +23,16 @@ public abstract class Incident : MonoBehaviour {
 		}
 	}
 
-	protected IEnumerator AfterTriggerEnter(float delayLength, string carName, int status, Collider collider) {  
+	protected IEnumerator AfterTriggerEnter(float delayLength, string carName, int carStatus, Collider collider) {  
 		yield return new WaitForSeconds(delayLength);
 		AfterTriggerEnterAction(collider);
-		GameController.instance.UpdateUserStatus(carName, status);
+		GameController.instance.UpdateUserStatus(carName, carStatus);
 	}
 
-	protected IEnumerator AfterCollisionEnter(float delayLength, string carName, int status, Collision collision) {  
+	protected IEnumerator AfterCollisionEnter(float delayLength, string carName, int carStatus, Collision collision) {  
 		yield return new WaitForSeconds(delayLength);
 		AfterCollisionEnterAction(collision);
-		GameController.instance.UpdateUserStatus(carName, status);
+		GameController.instance.UpdateUserStatus(carName, carStatus);
 	}
 
 	/// <summary>When collider/collision occurs, do Object's action.</summary>
