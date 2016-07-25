@@ -10,7 +10,6 @@ public class SoundController : MonoBehaviour {
 
 	private AudioSource source;
 
-
 	/// <summary>
 	/// You need to add in this, the system sounds, the system clips and the incident clips.
 	/// The incident sounds, for example, fireloop sound of Meteorite, must set in the incident's inspector.

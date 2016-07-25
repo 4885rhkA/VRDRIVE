@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Meteorite : Incident {
 
+	private int attackPower = 200000;
+
 	/// <summary>When collider/collision occurs, do Object's action.</summary>
 	protected override void CollidedActionForMyself() {
 		Detonator detonator = gameObject.GetComponent<Detonator>();
@@ -27,9 +29,16 @@ public class Meteorite : Incident {
 	/// <summary>When collision occurs, do User's action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected override void CollisionActionForUser(Collision collision) {
+		UserState userState = GameController.cars[collision.gameObject.name];
+		Vector3 direction = userState.rigid.velocity.normalized;
+		userState.rigid.AddForce(new Vector3(direction.x, 0, direction.z) * attackPower * (-1), ForceMode.Impulse);
+		int carStatus = 0;
+		if(GameController.instance.oneKillMode) {
+			carStatus = 2;
+		}
 		StartCoroutine(AfterCollisionEnter(
 			SoundController.instance.GetClipLength("meteoriteexplosion"), 
-			GameController.cars[collision.gameObject.name].obj.name, 0, collision));
+			userState.obj.name, carStatus, collision));
 	}
 
 	/// <summary>After collision occurs, do action.</summary>

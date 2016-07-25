@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour {
 
 	public static GameController instance;
 
+	[SerializeField] public bool oneKillMode = true;
+
 	private GameObject[] carObjects;
 	public static Dictionary<string, UserState> cars = new Dictionary<string, UserState>();
 
