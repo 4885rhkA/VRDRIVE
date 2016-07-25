@@ -111,19 +111,6 @@ public class GameController : MonoBehaviour {
 				case 0:
 					UserController.instance.ReleaseFreezing(cars[carName].rigid);
 					break;
-				case 1:
-					GameObject carMessage = cars[carName].message;
-					Text carMessageText = carMessage.transform.FindChild("MessageText").GetComponent<Text>();
-					cars[carName].record = gameObject.GetComponent<TimerController>().pastTime;
-					ViewerController.instance.ChangeRawImageState(carMessage.GetComponent<RawImage>(), true);
-					if(ColorUtility.TryParseHtmlString("#EE4646FF", out fontColor)) {
-						ViewerController.instance.ChangeTextContent(carMessageText, "GOAL!!", fontColor);
-					}
-					ViewerController.instance.ChangeTextState(carMessageText, true);
-					SoundController.instance.GoalStageSound();
-					break;
-				case 2:
-					break;
 				default:
 					break;
 			}
@@ -151,6 +138,7 @@ public class GameController : MonoBehaviour {
 				if(cars[targetObjectName].status == 0) {
 					if(incidentObject.name == "Goal") {
 						UpdateUserStatus(targetObjectName, 1);
+						return 1;
 					}
 					else {
 						if(cars[targetObjectName].condition == 0) {

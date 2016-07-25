@@ -17,9 +17,9 @@ public class SpeedUpBoard : Incident {
 		UserState userState = GameController.cars[collider.gameObject.name];
 		GameObject userObject = userState.obj;
 		ViewerController.instance.ChangeMotionBlur(userState.camera, blurAmount);
-		SoundController.instance.ShotSpeedUpSound();
 		userObject.GetComponent<CarController>().MaxSpeed *= multipleSpeed;
 		userObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * 200, ForceMode.VelocityChange);
+		SoundController.instance.ShotSpeedUpSound();
 		StartCoroutine(AfterTriggerEnter(keepSec, userObject.name, 0, collider));
 	}
 
