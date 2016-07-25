@@ -8,6 +8,7 @@ public class Goal : Incident {
 	protected override void CollidedActionForMyself() {}
 
 	private Color fontColor = new Color();
+	private string colorGoal = "#BC151CFF";
 
 	/// <summary>When collider occurs, do User's action.</summary>
 	/// <param name="collider">User's collider</param>
@@ -17,7 +18,7 @@ public class Goal : Incident {
 		Text carMessageText = carMessage.transform.FindChild("MessageText").GetComponent<Text>();
 		userState.record = TimerController.instance.pastTime;
 		ViewerController.instance.ChangeRawImageState(carMessage.GetComponent<RawImage>(), true);
-		if(ColorUtility.TryParseHtmlString("#EE4646FF", out fontColor)) {
+		if(ColorUtility.TryParseHtmlString(colorGoal, out fontColor)) {
 			ViewerController.instance.ChangeTextContent(carMessageText, "GOAL!!", fontColor);
 		}
 		ViewerController.instance.ChangeTextState(carMessageText, true);

@@ -4,8 +4,8 @@ using UnityStandardAssets.Vehicles.Car;
 
 public class SpeedUpBoard : Incident {
 
-	private float keepSec = 1;
-	private float multipleSpeed = 2;
+	private float pushPower = 100;
+	private float multipleSpeed = 3;
 	private float blurAmount = 0.3f;
 
 	/// <summary>When collider/collision occurs, do Object's action.</summary>
@@ -18,9 +18,9 @@ public class SpeedUpBoard : Incident {
 		GameObject userObject = userState.obj;
 		ViewerController.instance.ChangeMotionBlur(userState.camera, blurAmount);
 		userObject.GetComponent<CarController>().MaxSpeed *= multipleSpeed;
-		userObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * 200, ForceMode.VelocityChange);
+		userObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * pushPower, ForceMode.VelocityChange);
 		SoundController.instance.ShotClipSound("speedup");
-		StartCoroutine(AfterTriggerEnter(keepSec, userObject.name, 0, collider));
+		StartCoroutine(AfterTriggerEnter(SoundController.instance.GetClipLength("speedup"), userObject.name, 0, collider));
 	}
 
 	/// <summary>After collider occurs, do  action.</summary>

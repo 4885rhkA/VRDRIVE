@@ -49,7 +49,7 @@ public class SoundController : MonoBehaviour {
 			source.PlayOneShot(audioClips[clipName]);
 		}
 		else {
-			Debug.LogWarning(clipName + " Clip cannnot be found. ");
+			Debug.LogWarning(clipName + " Clip cannnot be found.");
 		}
 	}
 

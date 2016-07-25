@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour {
 
 	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
 	private Color fontColor = new Color();
+	private string colorReady = "#272629FF";
+	private string colorGo = "#FFFFFFFF";
 
 	void Awake() {
 		if(instance == null) {
@@ -38,14 +40,14 @@ public class GameController : MonoBehaviour {
 				carValue = car.Value;
 				ViewerController.instance.ChangeTextState(carValue.timerText, false);
 				ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
-				if(ColorUtility.TryParseHtmlString("#272629FF", out fontColor)) {
+				if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
 					ViewerController.instance.ChangeTextContent(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), "READY...", fontColor);
 				}
 				UserController.instance.RemoveDefaultGravity(carValue.rigid);
 			}
 			UpdateAllUserStatus(-1);
 		}
-		StartCoroutine("StartGame", SoundController.instance.GetClipLength("count"));
+		StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
 	}
 
 	/// <summary>Start the game after finishing the count sound.</summary>
@@ -63,7 +65,7 @@ public class GameController : MonoBehaviour {
 			carMessageText = carMessage.transform.FindChild("MessageText").GetComponent<Text>();
 			ViewerController.instance.ChangeTextState(carValue.timerText, true);
 			ViewerController.instance.ChangeRawImageState(carMessage.GetComponent<RawImage>(), false);
-			if(ColorUtility.TryParseHtmlString("#FFFFFFFF", out fontColor)) {
+			if(ColorUtility.TryParseHtmlString(colorGo, out fontColor)) {
 				ViewerController.instance.ChangeTextContent(carMessageText, "GO!!", fontColor);
 			}
 			StartCoroutine(ChangeTextStateWithDelay(SoundController.instance.GetClipLength("go"), carMessageText, false));
