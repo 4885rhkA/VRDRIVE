@@ -9,6 +9,13 @@ public class SoundController : MonoBehaviour {
 	[SerializeField, TooltipAttribute("You do not have to consider order.")] private AudioClip[] clips;
 
 	private AudioSource source;
+
+
+	/// <summary>
+	/// You need to add in this, the system sounds, the system clips and the incident clips.
+	/// The incident sounds, for example, fireloop sound of Meteorite, must set in the incident's inspector.
+	/// Because it must be 3D sounds.
+	/// </summary>
 	private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
 	void Awake() {

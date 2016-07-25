@@ -20,7 +20,8 @@ public class SpeedUpBoard : Incident {
 		userObject.GetComponent<CarController>().MaxSpeed *= multipleSpeed;
 		userObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * pushPower, ForceMode.VelocityChange);
 		SoundController.instance.ShotClipSound("speedup");
-		StartCoroutine(AfterTriggerEnter(SoundController.instance.GetClipLength("speedup"), userObject.name, 0, collider));
+		StartCoroutine(AfterTriggerEnter(SoundController.instance.GetClipLength("speedup"), 
+			userObject.name, 0, collider));
 	}
 
 	/// <summary>After collider occurs, do  action.</summary>

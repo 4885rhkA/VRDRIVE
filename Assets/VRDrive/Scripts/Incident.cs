@@ -5,21 +5,21 @@ public abstract class Incident : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider) {
 		int result = GameController.instance.UpdateGameState(gameObject.transform.root.gameObject, collider.gameObject.transform.root.gameObject);
-		if(result > 0) {
-			ColliderActionForUser(collider);
-		}
 		if(result > -1) {
 			CollidedActionForMyself();
+		}
+		if(result > 0) {
+			ColliderActionForUser(collider);
 		}
 	}
 
 	void OnCollisionEnter(Collision collision) {
 		int result = GameController.instance.UpdateGameState(gameObject.transform.root.gameObject, collision.gameObject.transform.root.gameObject);
-		if(result > 0) {
-			CollisionActionForUser(collision);
-		}
 		if(result > -1) {
 			CollidedActionForMyself();
+		}
+		if(result > 0) {
+			CollisionActionForUser(collision);
 		}
 	}
 
