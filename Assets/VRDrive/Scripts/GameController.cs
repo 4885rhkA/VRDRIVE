@@ -123,7 +123,6 @@ public class GameController : MonoBehaviour {
 					SoundController.instance.GoalStageSound();
 					break;
 				case 2:
-				case 3:
 					break;
 				default:
 					break;
@@ -149,17 +148,20 @@ public class GameController : MonoBehaviour {
 		if(targetObject.tag == "Car") {
 			string targetObjectName = targetObject.name;
 			if(cars.ContainsKey(targetObjectName)) {
-				if(cars[targetObjectName].status != 1 && incidentObject.name == "Goal") {
-					UpdateUserStatus(targetObjectName, 1);
-					return 1;
+				if(cars[targetObjectName].status == 0) {
+					if(incidentObject.name == "Goal") {
+						UpdateUserStatus(targetObjectName, 1);
+					}
+					else {
+						if(cars[targetObjectName].condition == 0) {
+							if(incidentObject.name != "SpeedUpBoards") {
+								UpdateUserCondition(targetObjectName, 1);
+							}
+							return 1;
+						}
+					}
 				}
-				else if(cars[targetObjectName].status == 0) {
-					UpdateUserStatus(targetObjectName, 3);
-					return 1;
-				}
-				else if(cars[targetObjectName].status == 3) {
-					return 0;
-				}
+				return 0;
 			}
 			else {
 				Debug.LogWarning("The system cannot find the target:" + targetObjectName);
@@ -169,6 +171,15 @@ public class GameController : MonoBehaviour {
 			return 0;
 		}
 		return -1;
+	}
+
+	public void UpdateUserCondition(string carName, int carCondition) {
+		if(cars.ContainsKey(carName)) {
+			cars[carName].status = carCondition;
+		}
+		else {
+			Debug.LogWarning("The system cannot find the target:" + carName);
+		}
 	}
 
 }

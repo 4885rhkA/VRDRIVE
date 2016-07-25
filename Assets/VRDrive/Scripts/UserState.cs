@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 /// <summary>This class contains the values for oprating parameters.</summary>
 /// <param name="status">The status of each user(-1:standby, 0:nowplaying, 1:goal, 2:retire)</param>
-/// <param name="consition">The condition of each user(-1:courseout, 0:normal, 1:dash, 2:damage)</param>
+/// <param name="consition">The condition of each user(-1:courseout, 0:normal, 1:damage)</param>
 /// <param name="record">The time for goal</param>
 /// <param name="obj">Gameobject of the car</param>
 /// <param name="rigid">Rigidbody of the car</param>
