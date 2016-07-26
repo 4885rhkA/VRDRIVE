@@ -29,3 +29,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Byproduct
+/Assets/VRDrive/Resources/*.fbm*
+/Assets/VRDrive/Resources/Materials*
