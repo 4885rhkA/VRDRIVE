@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-/// <summary>This script operate the game progress. </summary>
 public class GameController : MonoBehaviour {
 
 	public static GameController instance;
@@ -52,6 +51,16 @@ public class GameController : MonoBehaviour {
 		StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
 	}
 
+	void Update() {
+		timeSpan = TimerController.instance.pastTime;
+		UserState carValue;
+		foreach(KeyValuePair<string, UserState> car in cars){
+			carValue = car.Value;
+			ViewerController.instance.SetTimerTextToView(carValue.timerText, timeSpan);
+			UserController.instance.AddLocalGravity(carValue.rigid);
+		}
+	}
+
 	/// <summary>Start the game after finishing the count sound.</summary>
 	/// <param name="countClipLength">The length of the count sound</param>
 	private IEnumerator StartGame(float countClipLength) {  
@@ -75,7 +84,7 @@ public class GameController : MonoBehaviour {
 		SoundController.instance.StartStageSound();
 	}
 
-	/// <summary>Execute viewerController.ChangeTextState with delay</summary>
+	/// <summary>Execute viewerController.ChangeTextState with delay.</summary>
 	/// <param name="delayLength">The length of the delay</param>
 	/// <param name="carMessageText">The target Text Component</param>
 	/// <param name="carState">The trigger for showing text or not</param>
@@ -84,17 +93,7 @@ public class GameController : MonoBehaviour {
 		ViewerController.instance.ChangeTextState(carMessageText, carState);
 	}
 
-	void Update() {
-		timeSpan = TimerController.instance.pastTime;
-		UserState carValue;
-		foreach(KeyValuePair<string, UserState> car in cars){
-			carValue = car.Value;
-			ViewerController.instance.SetTimerTextToView(carValue.timerText, timeSpan);
-			UserController.instance.AddLocalGravity(carValue.rigid);
-		}
-	}
-
-	/// <summary>set the status for all users</summary>
+	/// <summary>Update the status for all users.</summary>
 	/// <param name="carStatus">The status of each user</param>
 	public void UpdateAllUserStatus(int carStatus) {
 		foreach(KeyValuePair<string, UserState> car in cars){
@@ -102,7 +101,7 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>set the status</summary>
+	/// <summary>Update the status.</summary>
 	/// <param name="carName">The name for User</param>
 	/// <param name="carStatus">The status of each user</param>
 	public void UpdateUserStatus(string carName, int carStatus) {
@@ -164,9 +163,12 @@ public class GameController : MonoBehaviour {
 		return -1;
 	}
 
+	/// <summary>Update the condition.</summary>
+	/// <param name="carName">The name for User</param>
+	/// <param name="carCondition">The condition of each user</param>
 	public void UpdateUserCondition(string carName, int carCondition) {
 		if(cars.ContainsKey(carName)) {
-			cars[carName].status = carCondition;
+			cars[carName].condition = carCondition;
 			switch(carCondition) {
 				case 1:
 					StartCoroutine(ViewerController.instance.ChangeDamageView(cars[carName].camera));

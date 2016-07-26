@@ -27,7 +27,7 @@ public class TimerController : MonoBehaviour {
 		startTime = DateTime.Now;
 	}
 
-	/// <summary>count the time</summary>
+	/// <summary>Count the time.</summary>
 	private void TimerCount() {
 		pastTime = DateTime.Now - startTime;
 	}
