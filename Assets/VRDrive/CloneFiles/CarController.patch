@@ -1,0 +1,118 @@
+--- OldCarController.cs	2016-07-26 06:28:56.000000000 +0900
++++ CarController.cs	2016-07-25 08:00:24.000000000 +0900
+@@ -28,15 +28,16 @@
+         [Range(0, 1)] [SerializeField] private float m_TractionControl; // 0 is no traction control, 1 is full interference
+         [SerializeField] private float m_FullTorqueOverAllWheels;
+         [SerializeField] private float m_ReverseTorque;
+-        [SerializeField] private float m_MaxHandbrakeTorque;
+         [SerializeField] private float m_Downforce = 100f;
+         [SerializeField] private SpeedType m_SpeedType;
+-        [SerializeField] private float m_Topspeed = 200;
+         [SerializeField] private static int NoOfGears = 5;
+         [SerializeField] private float m_RevRangeBoundary = 1f;
+-        [SerializeField] private float m_SlipLimit;
++        [SerializeField] private float m_Maxspeed = 60; // Its column is for m_Topspeed initialization
++		[Range(-1, 1)] [SerializeField] private float m_SlipLimit;
+         [SerializeField] private float m_BrakeTorque;
++        [Range(0, 90)] [SerializeField] private float m_MaxHandleRotation;
+ 
++        private float m_MaxHandbrakeTorque;
+         private Quaternion[] m_WheelMeshLocalRotations;
+         private Vector3 m_Prevpos, m_Pos;
+         private float m_SteerAngle;
+@@ -50,11 +51,15 @@
+         public bool Skidding { get; private set; }
+         public float BrakeInput { get; private set; }
+         public float CurrentSteerAngle{ get { return m_SteerAngle; }}
+-        public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
+-        public float MaxSpeed{get { return m_Topspeed; }}
++        public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*3.6f; }}
++        public float MaxSpeed{ get; set; }
+         public float Revs { get; private set; }
+         public float AccelInput { get; private set; }
+ 
++        private GameObject m_Handle;
++        private Transform m_HandleTransform = null;
++        private float BeforeSteering = 0;
++
+         // Use this for initialization
+         private void Start()
+         {
+@@ -65,10 +70,20 @@
+             }
+             m_WheelColliders[0].attachedRigidbody.centerOfMass = m_CentreOfMassOffset;
+ 
++            MaxSpeed = m_Maxspeed;
+             m_MaxHandbrakeTorque = float.MaxValue;
+ 
+             m_Rigidbody = GetComponent<Rigidbody>();
+             m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl*m_FullTorqueOverAllWheels);
++            m_Handle = transform.FindChild ("SkyCar/Handle").gameObject;
++            if(m_Handle != null)
++            {
++                m_HandleTransform = m_Handle.transform;
++            }
++            else
++            {
++                Debug.LogWarning("The system cannot find Handle. Please check the construction for User's Car.");
++            }
+         }
+ 
+ 
+@@ -169,6 +184,7 @@
+             AddDownForce();
+             CheckForWheelSpin();
+             TractionControl();
++            HandleMove(steering);
+         }
+ 
+ 
+@@ -180,14 +196,14 @@
+                 case SpeedType.MPH:
+ 
+                     speed *= 2.23693629f;
+-                    if (speed > m_Topspeed)
+-                        m_Rigidbody.velocity = (m_Topspeed/2.23693629f) * m_Rigidbody.velocity.normalized;
++                    if (speed > MaxSpeed)
++                        m_Rigidbody.velocity = (MaxSpeed/2.23693629f) * m_Rigidbody.velocity.normalized;
+                     break;
+ 
+                 case SpeedType.KPH:
+                     speed *= 3.6f;
+-                    if (speed > m_Topspeed)
+-                        m_Rigidbody.velocity = (m_Topspeed/3.6f) * m_Rigidbody.velocity.normalized;
++                    if (speed > MaxSpeed)
++                        m_Rigidbody.velocity = (MaxSpeed/3.6f) * m_Rigidbody.velocity.normalized;
+                     break;
+             }
+         }
+@@ -231,6 +247,12 @@
+                     m_WheelColliders[i].motorTorque = -m_ReverseTorque*footbrake;
+                 }
+             }
++
++            if(Math.Round(m_Rigidbody.velocity.x * 10) == 0 && Math.Round(m_Rigidbody.velocity.z * 10) == 0 )
++            {
++                m_WheelColliders[2].brakeTorque = 0;
++                m_WheelColliders[3].brakeTorque = 0;
++            }
+         }
+ 
+ 
+@@ -363,5 +385,16 @@
+             }
+             return false;
+         }
++
++        private void HandleMove(float steering)
++        {
++            if (m_HandleTransform != null)
++            {
++                m_HandleTransform.RotateAround (m_HandleTransform.position, m_HandleTransform.up, m_MaxHandleRotation * (steering - BeforeSteering));
++                BeforeSteering = steering;
++            }
++        }
++
++
+     }
+ }
