@@ -143,10 +143,19 @@ public class GameController : MonoBehaviour {
 						return 1;
 					}
 					else {
+						int userCondition = 1;
 						if(cars[targetObjectName].condition == 0) {
-							if(incidentObject.name != "SpeedUpBoards") {
-								UpdateUserCondition(targetObjectName, 1);
+							if(incidentObject.name == "SpeedUpBoards") {
+								userCondition = 2;
 							}
+							UpdateUserCondition(targetObjectName, userCondition);
+							return 1;
+						}
+						else if(cars[targetObjectName].condition == 2) {
+							if(incidentObject.name == "SpeedUpBoards") {
+								return -1;
+							}
+							UpdateUserCondition(targetObjectName, userCondition);
 							return 1;
 						}
 					}

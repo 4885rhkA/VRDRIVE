@@ -28,6 +28,7 @@ public class SpeedUpBoard : Incident {
 	/// <param name="collider">User's collider</param>
 	protected override void AfterTriggerEnterAction(Collider collider) {
 		UserState userState = GameController.cars[collider.gameObject.name];
+		GameController.instance.UpdateUserCondition(userState.obj.name, 0);
 		ViewerController.instance.ChangeMotionBlur(userState.camera, 0);
 		userState.obj.GetComponent<CarController>().MaxSpeed /= multipleSpeed;
 	}
