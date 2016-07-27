@@ -54,7 +54,7 @@ public class GameController : MonoBehaviour {
 	void Update() {
 		timeSpan = TimerController.instance.pastTime;
 		UserState carValue;
-		foreach(KeyValuePair<string, UserState> car in cars){
+		foreach(KeyValuePair<string, UserState> car in cars) {
 			carValue = car.Value;
 			carValue.timerText.text = ViewerController.instance.GetTimerText(timeSpan);
 			UserController.instance.AddLocalGravity(carValue.rigid);
@@ -63,8 +63,8 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>Start the game after finishing the count sound.</summary>
 	/// <param name="countClipLength">The length of the count sound</param>
-	private IEnumerator StartGame(float countClipLength) {  
-		yield return new WaitForSeconds(countClipLength);
+	private IEnumerator StartGame(float clipLength) {  
+		yield return new WaitForSeconds(clipLength);
 		UpdateAllUserStatus(0);
 		TimerController.instance.ResetStartTime();
 		UserState carValue;

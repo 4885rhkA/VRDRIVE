@@ -254,9 +254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7e86c431949475fb3abb3f5b5244c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 100
-  multipleSpeed: 3
-  blurAmount: 0.3
 --- !u!1 &26564650
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,9 +434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7e86c431949475fb3abb3f5b5244c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 100
-  multipleSpeed: 3
-  blurAmount: 0.3
 --- !u!1 &135836924
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,9 +1196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7e86c431949475fb3abb3f5b5244c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 100
-  multipleSpeed: 3
-  blurAmount: 0.3
 --- !u!1 &568667181
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,12 +1337,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813b35ee9f8cd4d4ea7987624bd862d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fontColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 0
-  colorGoal: 234243313531434646
 --- !u!65 &597770522
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1929,14 +1914,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oneKillMode: 0
-  carObjects: []
-  fontColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 0
-  colorReady: 233237323632394646
-  colorGo: 234646464646464646
 --- !u!4 &1044975309
 Transform:
   m_ObjectHideFlags: 0
@@ -1984,9 +1961,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff244a14d698403686deb82c0c7f06d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isVignetting: 0
-  vignettingTime: 2
-  baseVignetteIntensity: 0.4
 --- !u!114 &1044975313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2005,7 +1979,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f462d0cca2a144576bdbdcb61af2257f, type: 3}
   - {fileID: 8300000, guid: d90e18104eba54b2d9990938faabcba5, type: 3}
   - {fileID: 8300000, guid: d1f8feb7097d24623a43378dee11929b, type: 3}
-  source: {fileID: 0}
+  - {fileID: 8300000, guid: 69afa9cb7fa6446059d8e5cb1263ec5f, type: 3}
 --- !u!4 &1045872745
 Transform:
   m_ObjectHideFlags: 0
@@ -4599,9 +4573,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7e86c431949475fb3abb3f5b5244c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 100
-  multipleSpeed: 3
-  blurAmount: 0.3
 --- !u!1 &1421815858
 GameObject:
   m_ObjectHideFlags: 0
@@ -4655,12 +4626,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24a9e30ea6c0c40228896c7091b162c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fontColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 0
-  colorRetire: 234243313531434646
 --- !u!1 &1437189934
 GameObject:
   m_ObjectHideFlags: 0
@@ -6613,9 +6578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7e86c431949475fb3abb3f5b5244c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 100
-  multipleSpeed: 3
-  blurAmount: 0.3
 --- !u!1 &1561095807
 GameObject:
   m_ObjectHideFlags: 0
@@ -6701,13 +6663,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meteorite: {fileID: 155810, guid: 735b69cc2b8c3498cbb30de7d2a0000a, type: 2}
   createInterval: 1.5
-  createMeteoriteZPositions:
-  - -20
-  - -10
-  - 0
-  - 10
-  - 20
-  meteorites: {fileID: 0}
 --- !u!33 &1569908548
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6821,9 +6776,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7e86c431949475fb3abb3f5b5244c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 100
-  multipleSpeed: 3
-  blurAmount: 0.3
 --- !u!4 &1672759774
 Transform:
   m_ObjectHideFlags: 0
@@ -7322,9 +7274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7e86c431949475fb3abb3f5b5244c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 100
-  multipleSpeed: 3
-  blurAmount: 0.3
 --- !u!1 &1802930544
 GameObject:
   m_ObjectHideFlags: 0
@@ -7752,9 +7701,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7e86c431949475fb3abb3f5b5244c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 100
-  multipleSpeed: 3
-  blurAmount: 0.3
 --- !u!1 &2028783253
 GameObject:
   m_ObjectHideFlags: 0
@@ -8068,9 +8014,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7e86c431949475fb3abb3f5b5244c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 100
-  multipleSpeed: 3
-  blurAmount: 0.3
 --- !u!1 &2140430379
 GameObject:
   m_ObjectHideFlags: 0

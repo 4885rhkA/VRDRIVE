@@ -9,7 +9,6 @@ public class ViewerController : MonoBehaviour {
 
 	public static ViewerController instance;
 
-	private bool isVignetting = false;
 	private float vignettingTime = 2;
 	private float baseVignetteIntensity = 0.4f;
 
