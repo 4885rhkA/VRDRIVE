@@ -23,11 +23,10 @@ public class ViewerController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Set the timer text in view.</summary>
+	/// <summary>return the timer text.</summary>
 	/// <param name="timerText">The target Text Component</param>
-	/// <param name="pastTime">The time between start time and now</param>
-	public void SetTimerTextToView(Text timerText, TimeSpan pastTime) {
-		timerText.text = pastTime.Minutes.ToString().PadLeft(1, '0') + ':' + pastTime.Seconds.ToString().PadLeft(2, '0') + ':' + pastTime.Milliseconds.ToString().PadLeft(3, '0');
+	public string GetTimerText(TimeSpan pastTime) {
+		return pastTime.Minutes.ToString().PadLeft(1, '0') + ':' + pastTime.Seconds.ToString().PadLeft(2, '0') + ':' + pastTime.Milliseconds.ToString().PadLeft(3, '0');
 	}
 
 	/// <summary>Decide whether showing the text or not in view.</summary>
@@ -64,10 +63,6 @@ public class ViewerController : MonoBehaviour {
 	/// <param name="camera">Camera GameObject</param>
 	public IEnumerator ChangeDamageView(GameObject camera) {
 		VignetteAndChromaticAberration vignette = camera.GetComponent<VignetteAndChromaticAberration>();
-		if(isVignetting) {
-			yield break;
-		}
-		isVignetting = true;
 		float startTime = Time.time;
 		while (vignettingTime - (Time.time - startTime) > 0) {
 			float rate = vignettingTime / (vignettingTime + Time.time - startTime);
@@ -75,7 +70,6 @@ public class ViewerController : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 		}
 		vignette.intensity = 0;
-		isVignetting = false;
 	}
 
 }

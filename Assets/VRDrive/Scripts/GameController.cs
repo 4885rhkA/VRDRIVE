@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour {
 		UserState carValue;
 		foreach(KeyValuePair<string, UserState> car in cars){
 			carValue = car.Value;
-			ViewerController.instance.SetTimerTextToView(carValue.timerText, timeSpan);
+			carValue.timerText.text = ViewerController.instance.GetTimerText(timeSpan);
 			UserController.instance.AddLocalGravity(carValue.rigid);
 		}
 	}
@@ -139,7 +139,7 @@ public class GameController : MonoBehaviour {
 			string targetObjectName = targetObject.name;
 			if(cars.ContainsKey(targetObjectName)) {
 				if(cars[targetObjectName].status == 0) {
-					if(incidentObject.name == "Goal") {
+					if(incidentObject.name == "Goal" || incidentObject.name == "UnderGround") {
 						return 1;
 					}
 					else {

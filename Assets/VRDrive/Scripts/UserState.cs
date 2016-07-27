@@ -19,6 +19,7 @@ public class UserState {
 	public GameObject camera;
 	public Text timerText;
 	public GameObject message;
+	public GameObject result;
 	public UserState(GameObject carObject) {
 		status = -1;
 		condition = 0;
@@ -28,5 +29,6 @@ public class UserState {
 		camera = carObject.transform.FindChild("MainCamera").gameObject;
 		timerText = carObject.transform.FindChild("Canvas/Timer/TimerText").gameObject.GetComponent<Text>();
 		message = carObject.transform.FindChild("Canvas/Message").gameObject;
+		result = carObject.transform.FindChild("Canvas/Result").gameObject;
 	}
 }
