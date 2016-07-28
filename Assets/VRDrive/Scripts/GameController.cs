@@ -44,6 +44,9 @@ public class GameController : MonoBehaviour {
 				if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
 					ViewerController.instance.ChangeTextContent(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), "READY...", fontColor);
 				}
+				else {
+					Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
+				}
 				UserController.instance.RemoveDefaultGravity(carValue.rigid);
 			}
 			UpdateAllUserStatus(-1);
@@ -79,6 +82,9 @@ public class GameController : MonoBehaviour {
 			if(ColorUtility.TryParseHtmlString(colorGo, out fontColor)) {
 				ViewerController.instance.ChangeTextContent(carMessageText, "GO!!", fontColor);
 			}
+			else {
+				Debug.LogWarning("The color" + colorGo + "cannnot convert into Color class.");
+			}
 			StartCoroutine(ChangeTextStateWithDelay(SoundController.instance.GetClipLength("go"), carMessageText, false));
 		}
 		SoundController.instance.StartStageSound();
@@ -106,13 +112,18 @@ public class GameController : MonoBehaviour {
 	/// <param name="carStatus">The status of each user</param>
 	public void UpdateUserStatus(string carName, int carStatus) {
 		if(cars.ContainsKey(carName)) {
-			cars[carName].status = carStatus;
+			if(cars[carName].status!= 1) {
+				cars[carName].status = carStatus;
+			}
 			switch(carStatus) {
 				case -1:
-					UserController.instance.SetFreezing(cars[carName].rigid);
+					UserController.instance.SetFreezingPosition(cars[carName].rigid);
 					break;
 				case 0:
-					UserController.instance.ReleaseFreezing(cars[carName].rigid);
+					UserController.instance.ReleaseFreezingPosition(cars[carName].rigid);
+					break;
+				case 2:
+					UserController.instance.SetFreezingRotation(cars[carName].rigid);
 					break;
 				default:
 					break;

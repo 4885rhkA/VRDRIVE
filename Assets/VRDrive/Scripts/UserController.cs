@@ -31,13 +31,13 @@ public class UserController : MonoBehaviour {
 
 	/// <summary>Release freezing.</summary>
 	/// <param name="rigid">The target's Rigidbody Component</param>
-	public void ReleaseFreezing(Rigidbody rigid) {
+	public void ReleaseFreezingPosition(Rigidbody rigid) {
 		rigid.constraints = RigidbodyConstraints.None;
 	}
 
 	/// <summary>Freeze for the time before starting.</summary>
 	/// <param name="rigid">The target's Rigidbody Component</param>
-	public void SetFreezing(Rigidbody rigid) {
+	public void SetFreezingPosition(Rigidbody rigid) {
 		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
 	}
 

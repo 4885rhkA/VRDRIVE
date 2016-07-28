@@ -8,7 +8,7 @@ public class UnderGround : Incident {
 	protected override void CollidedActionForMyself() {}
 
 	private Color fontColor = new Color();
-	private string colorResult = "#FFFFFFFF";
+	private string colorMiss = "#FFFFFFFF";
 
 	/// <summary>When collider occurs, do User's action.</summary>
 	/// <param name="collider">User's collider</param>
@@ -23,13 +23,16 @@ public class UnderGround : Incident {
 		UserState userState = GameController.cars[collider.gameObject.name];
 		GameObject carResult = userState.result;
 		Text carResultText = carResult.transform.FindChild("ResultText").GetComponent<Text>();
-		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
-		if(ColorUtility.TryParseHtmlString(colorResult, out fontColor)) {
+		if(ColorUtility.TryParseHtmlString(colorMiss, out fontColor)) {
 			ViewerController.instance.ChangeTextContent(carResultText, "MISS......", fontColor);
-			SoundController.instance.ShotClipSound("miss");
 		}
+		else {
+			Debug.LogWarning("The color" + colorMiss + "cannnot convert into Color class.");
+		}
+		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
 		ViewerController.instance.ChangeTextState(carResultText, true);
-		UserController.instance.SetFreezingRotation(userState.rigid);
+		SoundController.instance.ShotClipSound("miss");
+
 	}
 
 	/// <summary>When collision occurs, do User's action.</summary>
