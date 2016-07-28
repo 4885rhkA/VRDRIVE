@@ -41,7 +41,6 @@ public class Goal : Incident {
 
 		}
 		ViewerController.instance.ChangeTextState(carResultText, true);
-
 	}
 
 	/// <summary>When collision occurs, do User's action.</summary>

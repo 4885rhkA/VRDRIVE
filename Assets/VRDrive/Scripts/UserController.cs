@@ -41,4 +41,8 @@ public class UserController : MonoBehaviour {
 		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
 	}
 
+	public void SetFreezingRotation(Rigidbody rigid) {
+		rigid.constraints = RigidbodyConstraints.FreezeRotation;
+	}
+
 }
