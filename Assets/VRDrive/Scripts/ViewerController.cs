@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityStandardAssets.ImageEffects;
 
+/// Control class for the each user's view
 public class ViewerController : MonoBehaviour {
 
 	public static ViewerController instance;
@@ -22,21 +22,22 @@ public class ViewerController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>return the timer text.</summary>
-	/// <param name="timerText">The target Text Component</param>
+	/// <summary>Return the timer text.</summary>
+	/// <param name="pastTime">Time of <c>TimeSpan</c> class</param>
+	/// <returns>Time with the format min:sec:msec</returns>
 	public string GetTimerText(TimeSpan pastTime) {
 		return pastTime.Minutes.ToString().PadLeft(1, '0') + ':' + pastTime.Seconds.ToString().PadLeft(2, '0') + ':' + pastTime.Milliseconds.ToString().PadLeft(3, '0');
 	}
 
-	/// <summary>Decide whether showing the text or not in view.</summary>
+	/// <summary>Decide whether showing the text or not in user's view.</summary>
 	/// <param name="text">The target Text Component</param>
 	/// <param name="state">The trigger for showing text or not</param>
 	public void ChangeTextState(Text text, bool state) {
 		text.enabled = state;
 	}
 
-	/// <summary>Decide whether showing the image or not in view.</summary>
-	/// <param name="text">The target RawImage Component</param>
+	/// <summary>Decide whether showing the image or not in user's view.</summary>
+	/// <param name="image">The target RawImage Component</param>
 	/// <param name="state">The trigger for showing image or not</param>
 	public void ChangeRawImageState(RawImage image, bool state) {
 		image.enabled = state;
@@ -59,7 +60,7 @@ public class ViewerController : MonoBehaviour {
 	}
 
 	/// <summary>Change the Vignette in view.</summary>
-	/// <param name="camera">Camera GameObject</param>
+	/// <param name="camera">User's Camera GameObject</param>
 	public IEnumerator ChangeDamageView(GameObject camera) {
 		VignetteAndChromaticAberration vignette = camera.GetComponent<VignetteAndChromaticAberration>();
 		float startTime = Time.time;

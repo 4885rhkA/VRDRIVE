@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// Control class for the each user's sound
 public class SoundController : MonoBehaviour {
 
 	public static SoundController instance;
@@ -10,11 +11,11 @@ public class SoundController : MonoBehaviour {
 
 	private AudioSource source;
 
-	/// <summary>
+	/// <value>
 	/// You need to add in this, the system sounds, the system clips and the incident clips.
 	/// The incident sounds, for example, fireloop sound of Meteorite, must set in the incident's inspector.
 	/// Because it must be 3D sounds.
-	/// </summary>
+	/// </value>
 	private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
 	void Awake() {

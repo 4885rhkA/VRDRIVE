@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
+/// Control class for the each user's timer
 public class TimerController : MonoBehaviour {
 
 	public static TimerController instance;

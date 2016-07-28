@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// Control class for the each user's rigidbody
 public class UserController : MonoBehaviour {
 
 	public static UserController instance;
@@ -29,18 +30,20 @@ public class UserController : MonoBehaviour {
 		rigid.AddForce(localGravity, ForceMode.Acceleration);
 	}
 
-	/// <summary>Release freezing.</summary>
+	/// <summary>Release freezing position.</summary>
 	/// <param name="rigid">The target's Rigidbody Component</param>
 	public void ReleaseFreezingPosition(Rigidbody rigid) {
 		rigid.constraints = RigidbodyConstraints.None;
 	}
 
-	/// <summary>Freeze for the time before starting.</summary>
+	/// <summary>Freeze position for the time before starting.</summary>
 	/// <param name="rigid">The target's Rigidbody Component</param>
 	public void SetFreezingPosition(Rigidbody rigid) {
 		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
 	}
 
+	// <summary>Freeze rotation for the time before starting.</summary>
+	/// <param name="rigid">The target's Rigidbody Component</param>
 	public void SetFreezingRotation(Rigidbody rigid) {
 		rigid.constraints = RigidbodyConstraints.FreezeRotation;
 	}
