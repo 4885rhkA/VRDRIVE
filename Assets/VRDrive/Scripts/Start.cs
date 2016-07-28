@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+/// Class for the Start line
 public class Start : Incident {
 
 	/// <summary>When collider/collision occurs, do Object's action.</summary>
@@ -9,7 +10,7 @@ public class Start : Incident {
 	/// <param name="collider">User's collider</param>
 	protected override void ColliderActionForUser(Collider collider) {}
 
-	/// <summary>After collider occurs, do  action.</summary>
+	/// <summary>After collider occurs, do action.</summary>
 	protected override void AfterTriggerEnterAction(Collider collider) {}
 
 	/// <summary>When collision occurs, do User's action.</summary>

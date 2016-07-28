@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// Class for the creating meteorite continuously
 public class Sun : MonoBehaviour {
 
 	[SerializeField] private GameObject meteorite;

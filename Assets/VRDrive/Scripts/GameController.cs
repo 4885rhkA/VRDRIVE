@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+/// Control class for the each user's status
 public class GameController : MonoBehaviour {
 
 	public static GameController instance;
@@ -39,7 +40,7 @@ public class GameController : MonoBehaviour {
 			UserState carValue;
 			foreach(KeyValuePair<string, UserState> car in cars){
 				carValue = car.Value;
-				ViewerController.instance.ChangeTextState(carValue.timerText, false);
+				ViewerController.instance.ChangeTextState(carValue.timer.transform.FindChild("TimerText").GetComponent<Text>(), false);
 				ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
 				if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
 					ViewerController.instance.ChangeTextContent(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), "READY...", fontColor);
@@ -59,13 +60,13 @@ public class GameController : MonoBehaviour {
 		UserState carValue;
 		foreach(KeyValuePair<string, UserState> car in cars) {
 			carValue = car.Value;
-			carValue.timerText.text = ViewerController.instance.GetTimerText(timeSpan);
+			carValue.timer.transform.FindChild("TimerText").GetComponent<Text>().text = ViewerController.instance.GetTimerText(timeSpan);
 			UserController.instance.AddLocalGravity(carValue.rigid);
 		}
 	}
 
 	/// <summary>Start the game after finishing the count sound.</summary>
-	/// <param name="countClipLength">The length of the count sound</param>
+	/// <param name="clipLength">The length of the count sound</param>
 	private IEnumerator StartGame(float clipLength) {  
 		yield return new WaitForSeconds(clipLength);
 		UpdateAllUserStatus(0);
@@ -77,7 +78,7 @@ public class GameController : MonoBehaviour {
 			carValue = car.Value;
 			carMessage = carValue.message;
 			carMessageText = carMessage.transform.FindChild("MessageText").GetComponent<Text>();
-			ViewerController.instance.ChangeTextState(carValue.timerText, true);
+			ViewerController.instance.ChangeTextState(carValue.timer.transform.FindChild("TimerText").GetComponent<Text>(), true);
 			ViewerController.instance.ChangeRawImageState(carMessage.GetComponent<RawImage>(), false);
 			if(ColorUtility.TryParseHtmlString(colorGo, out fontColor)) {
 				ViewerController.instance.ChangeTextContent(carMessageText, "GO!!", fontColor);
@@ -141,9 +142,9 @@ public class GameController : MonoBehaviour {
 	/// <param name="incidentObject">The Object occurs incident</param>
 	/// <param name="targetObject">The Object suffered the incident</param>
 	/// <returns>
-	///  1:Change the status of user
-	///  0:Collision both incident with the same tag or User is still in incident / Each incident must do only each defined action
-	/// -1:Collision both incident with the different tag / No incident occurs
+	///  	1:Change the status of user /
+	///  	0:Collision both incident with the same tag or User is still in incident, Each incident must do only each defined action /
+	/// 	-1:Collision both incident with the different tag, No incident occurs
 	/// </returns>
 	public int UpdateGameState(GameObject incidentObject, GameObject targetObject) {
 		if(targetObject.tag == "Car") {

@@ -2,13 +2,14 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/// Class for the dropping the stage
 public class UnderGround : Incident {
-
-	/// <summary>When collider/collision occurs, do Object's action.</summary>
-	protected override void CollidedActionForMyself() {}
 
 	private Color fontColor = new Color();
 	private string colorMiss = "#FFFFFFFF";
+
+	/// <summary>When collider/collision occurs, do Object's action.</summary>
+	protected override void CollidedActionForMyself() {}
 
 	/// <summary>When collider occurs, do User's action.</summary>
 	/// <param name="collider">User's collider</param>
@@ -19,6 +20,7 @@ public class UnderGround : Incident {
 	}
 
 	/// <summary>After collider occurs, do  action.</summary>
+	/// <param name="collider">User's collider</param>
 	protected override void AfterTriggerEnterAction(Collider collider) {
 		UserState userState = GameController.cars[collider.gameObject.name];
 		GameObject carResult = userState.result;
@@ -40,6 +42,7 @@ public class UnderGround : Incident {
 	protected override void CollisionActionForUser(Collision collision) {}
 
 	/// <summary>After collision occurs, do action.</summary>
+	/// <param name="collision">User's collision</param>
 	protected override void AfterCollisionEnterAction(Collision collision) {}
 
 }

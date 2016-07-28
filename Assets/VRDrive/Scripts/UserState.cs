@@ -1,34 +1,68 @@
 ﻿using UnityEngine;
 using System;
-using UnityEngine.UI;
 
-/// <summary>This class contains the values for oprating parameters.</summary>
-/// <param name="status">The status of each user(-1:standby, 0:nowplaying, 1:goal, 2:retire)</param>
-/// <param name="consition">The condition of each user(-1:courseout, 0:normal, 1:damage, 2:dash)</param>
-/// <param name="record">The time for goal</param>
-/// <param name="obj">Gameobject of the car</param>
-/// <param name="rigid">Rigidbody of the car</param>
-/// <param name="timerText">The text of the timer in upper left view</param>
-/// <param name="message">The Object in upper left view(Contains the Text in it)</param>
+/// Class of the values for oprating parameters.
 public class UserState {
+
+	/// <list type="bullet">
+	/// 	<item>
+	/// 		<term>status</term>
+	/// 		<description>By its value, controll the user.</description>
+	/// 		<value>-1:standby / 0:nowplaying / 1:goal / 2:retire</value>
+	/// 	</item>
+	/// 	<item>
+	/// 		<term>condition</term>
+	/// 		<description>By its value, decide whether collision occurs or not.</description>
+	/// 		<value>-1:courseout / 0:normal / 1:damage / 2:dash</value>
+	/// 	</item>
+	/// 	<item>
+	/// 		<term>obj</term>
+	/// 		<description>The <c>GameObject</c> for user's car</description>
+	/// 	</item>
+	/// 	<item>
+	/// 		<term>rigid</term>
+	/// 		<description>The <c>Rigidbody</c> for user's car</description>
+	/// 	</item>
+	/// 	<item>
+	/// 		<term>camera</term>
+	/// 		<description>The <c>GameObject</c> for user's camera</description>
+	/// 	</item>
+	/// 	<item>
+	/// 		<term>timer</term>
+	/// 		<description>The <c>GameObject</c> for user's canvas of timer</description>
+	/// 	</item>
+	/// 	<item>
+	/// 		<term>message</term>
+	/// 		<description>The <c>GameObject</c> for user's canvas of message</description>
+	/// 	</item>
+	/// 	<item>
+	/// 		<term>result</term>
+	/// 		<description>The <c>GameObject</c> for user's canvas of result</description>
+	/// 	</item>
+	/// 	<item>
+	/// 		<term>record</term>
+	/// 		<description>The goal of missed record</description>
+	/// 	</item>
+	/// </list>
 	public int status;
 	public int condition;
-	public TimeSpan record;
 	public GameObject obj;
 	public Rigidbody rigid;
 	public GameObject camera;
-	public Text timerText;
+	public GameObject timer;
 	public GameObject message;
 	public GameObject result;
+	public TimeSpan record;
 	public UserState(GameObject carObject) {
 		status = -1;
 		condition = 0;
-		record = new TimeSpan(0, 0, 0);
 		obj = carObject;
 		rigid = carObject.GetComponent<Rigidbody>();
 		camera = carObject.transform.FindChild("MainCamera").gameObject;
-		timerText = carObject.transform.FindChild("Canvas/Timer/TimerText").gameObject.GetComponent<Text>();
+		timer = carObject.transform.FindChild("Canvas/Timer").gameObject;
 		message = carObject.transform.FindChild("Canvas/Message").gameObject;
 		result = carObject.transform.FindChild("Canvas/Result").gameObject;
+		record = new TimeSpan(0, 0, 0);
 	}
+
 }

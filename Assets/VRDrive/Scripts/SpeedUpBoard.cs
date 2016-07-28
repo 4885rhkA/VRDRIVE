@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
+/// Class for defined action when collision between user's car and SpeedUpBoard
 public class SpeedUpBoard : Incident {
 
 	private float pushPower = 100;
@@ -38,6 +39,7 @@ public class SpeedUpBoard : Incident {
 	protected override void CollisionActionForUser(Collision collision) {}
 
 	/// <summary>After collision occurs, do action.</summary>
+	/// <param name="collision">User's collision</param>
 	protected override void AfterCollisionEnterAction(Collision collision) {}
 
 }

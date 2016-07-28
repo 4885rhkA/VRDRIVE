@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// Class for defined action when collision between user's car and meteorite
 public class Meteorite : Incident {
 
 	[SerializeField] private int attackPower = 200000;
@@ -43,6 +44,7 @@ public class Meteorite : Incident {
 	protected override void ColliderActionForUser(Collider collider) {}
 
 	/// <summary>After collider occurs, do  action.</summary>
+	/// <param name="collider">User's collider</param>
 	protected override void AfterTriggerEnterAction(Collider collider) {}
 
 	/// <summary>When collision occurs, do User's action.</summary>
@@ -61,6 +63,7 @@ public class Meteorite : Incident {
 	}
 
 	/// <summary>After collision occurs, do action.</summary>
+	/// <param name="collision">User's collision</param>
 	protected override void AfterCollisionEnterAction(Collision collision) {
 		GameController.instance.UpdateUserCondition(GameController.cars[collision.gameObject.name].obj.name, 0);
 	}
