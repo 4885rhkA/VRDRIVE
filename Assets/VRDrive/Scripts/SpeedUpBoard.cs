@@ -9,6 +9,13 @@ public class SpeedUpBoard : Incident {
 	private float multipleSpeed = 3;
 	private float blurAmount = 0.3f;
 
+	void Start() {
+		iTween.RotateTo (gameObject.transform.FindChild("SpeedUpBoardMessage/SpeedUpBoardTriangle").gameObject, iTween.Hash (
+			"y", 360, "time", 0.5, "islocal", true, "loopType", "loop", "easeType", "linear"
+		));
+	}
+		
+
 	/// <summary>When collider/collision occurs, do Object's action.</summary>
 	protected override void CollidedActionForMyself() {}
 
