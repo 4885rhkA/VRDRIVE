@@ -32,7 +32,7 @@ public class Meteorite : Incident {
 		}
 	}
 
-	/// <summary>When collider/collision occurs, do Object's action.</summary>
+	/// <summary>When collider/collision occurs, do object's action.</summary>
 	protected override void CollidedActionForMyself() {
 		Detonator detonator = gameObject.GetComponent<Detonator>();
 		float explosionLength = explosionSound.clip.length;
@@ -47,15 +47,15 @@ public class Meteorite : Incident {
 		gameObject.GetComponent<Detonator>().Explode();
 	}
 
-	/// <summary>When collider occurs, do User's action.</summary>
+	/// <summary>When collider occurs, do user's action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void ColliderActionForUser(Collider collider) {}
 
-	/// <summary>After collider occurs, do  action.</summary>
+	/// <summary>After collider occurs, do action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void AfterTriggerEnterAction(Collider collider) {}
 
-	/// <summary>When collision occurs, do User's action.</summary>
+	/// <summary>When collision occurs, do user's action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected override void CollisionActionForUser(Collision collision) {
 		UserState userState = GameController.cars[collision.gameObject.name];

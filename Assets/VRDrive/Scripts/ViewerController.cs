@@ -30,37 +30,37 @@ public class ViewerController : MonoBehaviour {
 	}
 
 	/// <summary>Decide whether showing the text or not in user's view.</summary>
-	/// <param name="text">The target Text Component</param>
+	/// <param name="text">The target <c>Text</c> component</param>
 	/// <param name="state">The trigger for showing text or not</param>
 	public void ChangeTextState(Text text, bool state) {
 		text.enabled = state;
 	}
 
 	/// <summary>Decide whether showing the image or not in user's view.</summary>
-	/// <param name="image">The target RawImage Component</param>
+	/// <param name="image">The target <c>RawImage</c> Component</param>
 	/// <param name="state">The trigger for showing image or not</param>
 	public void ChangeRawImageState(RawImage image, bool state) {
 		image.enabled = state;
 	}
 
 	/// <summary>Change the text content and color in view.</summary>
-	/// <param name="text">The target Text Component</param>
-	/// <param name="content">New text of Text Component</param>
-	/// <param name="color">The color for the text</param>
+	/// <param name="text">The target <c>Text</c> Component</param>
+	/// <param name="content">New text of <c>Text</c> Component</param>
+	/// <param name="color">The color for the <c>Text</c></param>
 	public void ChangeTextContent(Text text, string content, Color color) {
 		text.text = content;
 		text.color = color;
 	}
 
 	/// <summary>Change the motion blour in view.</summary>
-	/// <param name="camera">Camera GameObject</param>
-	/// <param name="blurAmount">Blur Amount(from 0 to 1)</param>
+	/// <param name="camera">Camera <c>GameObject</c></param>
+	/// <param name="blurAmount">Blur amount(from 0 to 1)</param>
 	public void ChangeMotionBlur(GameObject camera, float blurAmount) {
 		camera.GetComponent<MotionBlur>().blurAmount = Mathf.Clamp(blurAmount, 0, 1);
 	}
 
 	/// <summary>Change the Vignette in view.</summary>
-	/// <param name="camera">User's Camera GameObject</param>
+	/// <param name="camera">User's camera <c>GameObject</c></param>
 	public IEnumerator ChangeDamageView(GameObject camera) {
 		VignetteAndChromaticAberration vignette = camera.GetComponent<VignetteAndChromaticAberration>();
 		float startTime = Time.time;

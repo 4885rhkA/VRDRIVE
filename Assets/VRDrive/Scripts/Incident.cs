@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/// The Class for defined action when collision between user's car and Gimmick
+/// The Class for defined action when collision between user's car and gimmick
 public abstract class Incident : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider) {
@@ -24,7 +24,7 @@ public abstract class Incident : MonoBehaviour {
 		}
 	}
 
-	/// <summary>After collider occurs, do Object's action.</summary>
+	/// <summary>After collider occurs, do object's action.</summary>
 	/// <param name="delayLength">The delay how long this function will execute</param>
 	/// <param name="carName">User's car name</param>
 	/// <param name="carStatus">User's car status</param>
@@ -35,7 +35,7 @@ public abstract class Incident : MonoBehaviour {
 		AfterTriggerEnterAction(collider);
 	}
 
-	/// <summary>åfter collision occurs, do Object's action.</summary>
+	/// <summary>åfter collision occurs, do object's action.</summary>
 	/// <param name="delayLength">The delay how long this function will execute</param>
 	/// <param name="carName">User's car name</param>
 	/// <param name="carStatus">User's car status</param>
@@ -46,18 +46,18 @@ public abstract class Incident : MonoBehaviour {
 		AfterCollisionEnterAction(collision);
 	}
 
-	/// <summary>When collider/collision occurs, do Object's action.</summary>
+	/// <summary>When collider/collision occurs, do object's action.</summary>
 	protected abstract void CollidedActionForMyself();
 
-	/// <summary>When collider occurs, do User's action.</summary>
+	/// <summary>When collider occurs, do user's action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected abstract void ColliderActionForUser(Collider collider);
 
-	/// <summary>After collider occurs, do  action.</summary>
+	/// <summary>After collider occurs, do action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected abstract void AfterTriggerEnterAction(Collider collider);
 
-	/// <summary>When collision occurs, do User's action.</summary>
+	/// <summary>When collision occurs, do user's action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected abstract void CollisionActionForUser(Collision collision);
 

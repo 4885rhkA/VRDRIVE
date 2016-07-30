@@ -37,8 +37,8 @@ public class SoundController : MonoBehaviour {
 		source.Play();
 	}
 
-	/// <summary>Return the length of Clip for standby.</summary>
-	/// <param name="clipName">The Clip which you want to get the length</param>
+	/// <summary>Return the length of <c>AudioClip</c> for standby.</summary>
+	/// <param name="clipName">The <c>AudioClip</c> name which you want to get the length</param>
 	public float GetClipLength(string clipName) {
 		if(audioClips.ContainsKey(clipName)) {
 			return audioClips[clipName].length;
@@ -50,7 +50,7 @@ public class SoundController : MonoBehaviour {
 	}
 
 	/// <summary>Shot the sound only one time.</summary>
-	/// <param name="clipName">The Clip which you want to shot</param>
+	/// <param name="clipName">The <c>AudioClip</c> name which you want to shot</param>
 	public void ShotClipSound(string clipName) {
 		if(audioClips.ContainsKey(clipName)) {
 			source.PlayOneShot(audioClips[clipName]);
@@ -60,7 +60,7 @@ public class SoundController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Start the stageClip with goClip.</summary>
+	/// <summary>Start the sound for starting game.</summary>
 	public void StartStageSound() {
 		source.clip = audioClips["stage"];
 		ShotClipSound("go");

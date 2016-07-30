@@ -23,7 +23,7 @@ public class TimerController : MonoBehaviour {
 		TimerCount();
 	}
 
-	/// <summary>Reset the startTime. It equals to start timer when starting the game.</summary>
+	/// <summary>Reset the starttime. It equals to start timer when starting the game.</summary>
 	public void ResetStartTime() {
 		startTime = DateTime.Now;
 	}

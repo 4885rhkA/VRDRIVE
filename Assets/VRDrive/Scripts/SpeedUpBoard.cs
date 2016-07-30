@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
-/// Class for defined action when collision between user's car and SpeedUpBoard
+/// Class for defined action when collision between user's car and <c>SpeedUpBoard</c>
 public class SpeedUpBoard : Incident {
 
 	private float pushPower = 100;
@@ -14,12 +14,11 @@ public class SpeedUpBoard : Incident {
 			"y", 360, "time", 0.5, "islocal", true, "loopType", "loop", "easeType", "linear"
 		));
 	}
-		
 
-	/// <summary>When collider/collision occurs, do Object's action.</summary>
+	/// <summary>When collider/collision occurs, do object's action.</summary>
 	protected override void CollidedActionForMyself() {}
 
-	/// <summary>When collider occurs, do User's action.</summary>
+	/// <summary>When collider occurs, do user's action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void ColliderActionForUser(Collider collider) {
 		UserState userState = GameController.cars[collider.gameObject.name];
@@ -32,7 +31,7 @@ public class SpeedUpBoard : Incident {
 			userObject.name, 0, collider));
 	}
 
-	/// <summary>After collider occurs, do  action.</summary>
+	/// <summary>After collider occurs, do action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void AfterTriggerEnterAction(Collider collider) {
 		UserState userState = GameController.cars[collider.gameObject.name];
@@ -41,7 +40,7 @@ public class SpeedUpBoard : Incident {
 		userState.obj.GetComponent<CarController>().MaxSpeed /= multipleSpeed;
 	}
 
-	/// <summary>When collision occurs, do User's action.</summary>
+	/// <summary>When collision occurs, do user's action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected override void CollisionActionForUser(Collision collision) {}
 

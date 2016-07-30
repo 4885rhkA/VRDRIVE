@@ -2,17 +2,17 @@
 using System.Collections;
 using UnityEngine.UI;
 
-/// Class for defined action when collision between user's car and Goal
+/// Class for defined action when collision between user's car and goal
 public class Goal : Incident {
 
 	private Color fontColor = new Color();
 	private string colorGoal = "#BC151CFF";
 	private string colorRecord = "#FFFFFFFF";
 
-	/// <summary>When collider/collision occurs, do Object's action.</summary>
+	/// <summary>When collider/collision occurs, do object's action.</summary>
 	protected override void CollidedActionForMyself() {}
 
-	/// <summary>When collider occurs, do User's action.</summary>
+	/// <summary>When collider occurs, do user's action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void ColliderActionForUser(Collider collider) {
 		UserState userState = GameController.cars[collider.gameObject.name];
@@ -31,7 +31,7 @@ public class Goal : Incident {
 		StartCoroutine(AfterTriggerEnter(SoundController.instance.GetClipLength("goal"), userState.obj.name, 1, collider));
 	}
 
-	/// <summary>After collider occurs, do  action.</summary>
+	/// <summary>After collider occurs, do action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void AfterTriggerEnterAction(Collider collider) {
 		UserState userState = GameController.cars[collider.gameObject.name];
@@ -50,7 +50,7 @@ public class Goal : Incident {
 		StartCoroutine(AddCharacterContinuouslyForResult(carResultText, resultTimeText.ToCharArray()));
 	}
 
-	/// <summary>When collision occurs, do User's action.</summary>
+	/// <summary>When collision occurs, do user's action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected override void CollisionActionForUser(Collision collision) {}
 
@@ -58,7 +58,7 @@ public class Goal : Incident {
 	/// <param name="collision">User's collision</param>
 	protected override void AfterCollisionEnterAction(Collision collision) {}
 
-	/// <summary>Change the Vignette in view.</summary>
+	/// <summary>Change the vignette in view.</summary>
 	/// <param name="camera">User's car camera</param>
 	private IEnumerator AddCharacterContinuouslyForResult(Text carResultText, char[] resultTimeTextArray) {
 		float clipLength = SoundController.instance.GetClipLength("record");

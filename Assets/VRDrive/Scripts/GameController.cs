@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-/// Control class for the each User's status
+/// Control class for the each user's status
 public class GameController : MonoBehaviour {
 
 	public static GameController instance;
@@ -77,7 +77,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Start the game after finishing the count sound.</summary>
-	/// <param name="clipLength">The length of the count sound</param>
+	/// <param name="clipLength">The length of the count <c>AudioClip</c></param>
 	private IEnumerator StartGame(float clipLength) {  
 		yield return new WaitForSeconds(clipLength);
 		UpdateAllUserStatus(0);
@@ -104,15 +104,15 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>Execute viewerController.ChangeTextState with delay.</summary>
 	/// <param name="delayLength">The length of the delay</param>
-	/// <param name="carMessageText">The target Text Component</param>
+	/// <param name="carMessageText">The target <c>Text</c> component</param>
 	/// <param name="carState">The trigger for showing text or not</param>
 	private IEnumerator ChangeTextStateWithDelay(float delayLength, Text carMessageText, bool carState) {  
 		yield return new WaitForSeconds(delayLength);
 		ViewerController.instance.ChangeTextState(carMessageText, carState);
 	}
 
-	/// <summary>Update the status for all Users.</summary>
-	/// <param name="carStatus">The status of each User</param>
+	/// <summary>Update the status for all users.</summary>
+	/// <param name="carStatus">The status of each user</param>
 	public void UpdateAllUserStatus(int carStatus) {
 		foreach(KeyValuePair<string, UserState> car in cars){
 			UpdateUserStatus(car.Value.obj.name, carStatus);
@@ -120,8 +120,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Update the status.</summary>
-	/// <param name="carName">The name for User</param>
-	/// <param name="carStatus">The status of each User</param>
+	/// <param name="carName">The name for user</param>
+	/// <param name="carStatus">The status of each user</param>
 	public void UpdateUserStatus(string carName, int carStatus) {
 		if(cars.ContainsKey(carName)) {
 			if(cars[carName].status!= 1) {
@@ -144,14 +144,14 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Update the status for User. 
+	/// Update the status for user. 
 	/// Moreover, the target of Tag for collision are Car/Gimmick.
 	/// </summary>
-	/// <param name="incidentObject">The Object occurs incident</param>
-	/// <param name="targetObject">The Object suffered the incident</param>
+	/// <param name="incidentObject">The <c>GameObject</c> occurs incident</param>
+	/// <param name="targetObject">The <c>GameObject</c> suffered the incident</param>
 	/// <returns>
-	///  	1:Change the status of User /
-	///  	0:Collision both incident with the same tag or User is still in incident, Each incident must do only each defined action /
+	///  	1:Change the status of user /
+	///  	0:Collision both incident with the same tag or user is still in incident, Each incident must do only each defined action /
 	/// 	-1:Collision both incident with the different tag, No incident occurs
 	/// </returns>
 	public int UpdateGameState(GameObject incidentObject, GameObject targetObject) {
@@ -196,8 +196,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Update the condition.</summary>
-	/// <param name="carName">The name for User</param>
-	/// <param name="carCondition">The condition of each User</param>
+	/// <param name="carName">The name for user</param>
+	/// <param name="carCondition">The condition of each user</param>
 	public void UpdateUserCondition(string carName, int carCondition) {
 		if(cars.ContainsKey(carName)) {
 			cars[carName].condition = carCondition;
@@ -214,8 +214,8 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Call the Miss Display.</summary>
-	/// <param name="carName">The name for User</param>
+	/// <summary>Call the miss display.</summary>
+	/// <param name="carName">The name for user</param>
 	public void MissGame(string carName) {
 		GameObject carResult = cars[carName].result;
 		Text carResultText = carResult.transform.FindChild("ResultText").GetComponent<Text>();
@@ -230,8 +230,8 @@ public class GameController : MonoBehaviour {
 		SoundController.instance.ShotClipSound("miss");
 	}
 
-	/// <summary>Call the Miss Display quickly.</summary>
-	/// <param name="carName">The name for User</param>
+	/// <summary>Call the miss display quickly.</summary>
+	/// <param name="carName">The name for user</param>
 	private void MissGameQuickly(string carName) {
 		UserState carValue = cars[carName];
 		carValue.record = TimerController.instance.pastTime;
@@ -240,8 +240,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Judge whether missing situation or not.</summary>
-	/// <param name="carObject">The gameObject for User</param>
-	/// <param name="carRigid">The Rigidbody for User</param>
+	/// <param name="carObject">The <c>GameObject</c> for user</param>
+	/// <param name="carRigid">The <c>Rigidbody</c> for user</param>
 	private bool IsMissGameSituation(GameObject carObject, Rigidbody carRigid) {
 		if(carObject.transform.up.y < -0.75 && carRigid.velocity.magnitude < 0.1) {
 			return true;

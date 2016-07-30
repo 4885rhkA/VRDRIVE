@@ -5,10 +5,10 @@ using UnityEngine.UI;
 /// Class for the dropping the stage
 public class UnderGround : Incident {
 
-	/// <summary>When collider/collision occurs, do Object's action.</summary>
+	/// <summary>When collider/collision occurs, do object's action.</summary>
 	protected override void CollidedActionForMyself() {}
 
-	/// <summary>When collider occurs, do User's action.</summary>
+	/// <summary>When collider occurs, do user's action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void ColliderActionForUser(Collider collider) {
 		UserState userState = GameController.cars[collider.gameObject.name];
@@ -16,13 +16,13 @@ public class UnderGround : Incident {
 		StartCoroutine(AfterTriggerEnter(0, userState.obj.name, 2, collider));
 	}
 
-	/// <summary>After collider occurs, do  action.</summary>
+	/// <summary>After collider occurs, do action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void AfterTriggerEnterAction(Collider collider) {
 		GameController.instance.MissGame(collider.gameObject.name);
 	}
 
-	/// <summary>When collision occurs, do User's action.</summary>
+	/// <summary>When collision occurs, do user's action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected override void CollisionActionForUser(Collision collision) {}
 
