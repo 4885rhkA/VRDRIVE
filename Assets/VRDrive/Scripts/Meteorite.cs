@@ -56,6 +56,7 @@ public class Meteorite : Incident {
 		int carStatus = 0;
 		if(GameController.instance.oneKillMode) {
 			carStatus = 2;
+			userState.record = TimerController.instance.pastTime;
 		}
 		StartCoroutine(AfterCollisionEnter(
 			SoundController.instance.GetClipLength("meteoriteexplosion"), 
@@ -65,7 +66,11 @@ public class Meteorite : Incident {
 	/// <summary>After collision occurs, do action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected override void AfterCollisionEnterAction(Collision collision) {
-		GameController.instance.UpdateUserCondition(GameController.cars[collision.gameObject.name].obj.name, 0);
+		UserState carState = GameController.cars[collision.gameObject.name];
+		GameController.instance.UpdateUserCondition(carState.obj.name, 0);
+		if(carState.status == 2 && GameController.instance.oneKillMode) {
+			GameController.instance.MissGame(carState.obj.name);
+		}
 	}
 
 }

@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour {
 	private Color fontColor = new Color();
 	private string colorReady = "#272629FF";
 	private string colorGo = "#FFFFFFFF";
+	private string colorMiss = "#FFFFFFFF";
 
 	void Awake() {
 		if(instance == null) {
@@ -203,6 +204,21 @@ public class GameController : MonoBehaviour {
 		else {
 			Debug.LogWarning("The system cannot find the target:" + carName);
 		}
+	}
+
+	public void MissGame(string carName) {
+		GameObject carResult = cars[carName].result;
+		Text carResultText = carResult.transform.FindChild("ResultText").GetComponent<Text>();
+		if(ColorUtility.TryParseHtmlString(colorMiss, out fontColor)) {
+			ViewerController.instance.ChangeTextContent(carResultText, "MISS......", fontColor);
+		}
+		else {
+			Debug.LogWarning("The color" + colorMiss + "cannnot convert into Color class.");
+		}
+		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
+		ViewerController.instance.ChangeTextState(carResultText, true);
+		SoundController.instance.ShotClipSound("miss");
+		
 	}
 
 }

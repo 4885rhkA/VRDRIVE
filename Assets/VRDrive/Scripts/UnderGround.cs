@@ -5,9 +5,6 @@ using UnityEngine.UI;
 /// Class for the dropping the stage
 public class UnderGround : Incident {
 
-	private Color fontColor = new Color();
-	private string colorMiss = "#FFFFFFFF";
-
 	/// <summary>When collider/collision occurs, do Object's action.</summary>
 	protected override void CollidedActionForMyself() {}
 
@@ -22,19 +19,7 @@ public class UnderGround : Incident {
 	/// <summary>After collider occurs, do  action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void AfterTriggerEnterAction(Collider collider) {
-		UserState userState = GameController.cars[collider.gameObject.name];
-		GameObject carResult = userState.result;
-		Text carResultText = carResult.transform.FindChild("ResultText").GetComponent<Text>();
-		if(ColorUtility.TryParseHtmlString(colorMiss, out fontColor)) {
-			ViewerController.instance.ChangeTextContent(carResultText, "MISS......", fontColor);
-		}
-		else {
-			Debug.LogWarning("The color" + colorMiss + "cannnot convert into Color class.");
-		}
-		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
-		ViewerController.instance.ChangeTextState(carResultText, true);
-		SoundController.instance.ShotClipSound("miss");
-
+		GameController.instance.MissGame(collider.gameObject.name);
 	}
 
 	/// <summary>When collision occurs, do User's action.</summary>
