@@ -62,6 +62,7 @@ public class GameController : MonoBehaviour {
 		UserState carValue;
 		if(Input.GetKey(KeyCode.E)) {
 			foreach(KeyValuePair<string, UserState> car in cars) {
+				if(car.Value.status == 0)
 				MissGameQuickly(car.Value.obj.name);
 			}
 		} 
