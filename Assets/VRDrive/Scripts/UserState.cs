@@ -58,7 +58,7 @@ public class UserState {
 		condition = 0;
 		obj = carObject;
 		rigid = carObject.GetComponent<Rigidbody>();
-		camera = carObject.transform.FindChild("MainCamera").gameObject;
+		camera = GameObject.Find("MainCamera" + carObject.name[carObject.name.Length-1]).gameObject;
 		timer = carObject.transform.FindChild("Canvas/Timer").gameObject;
 		message = carObject.transform.FindChild("Canvas/Message").gameObject;
 		result = carObject.transform.FindChild("Canvas/Result").gameObject;

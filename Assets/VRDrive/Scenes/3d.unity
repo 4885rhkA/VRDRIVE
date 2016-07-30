@@ -2270,6 +2270,7 @@ GameObject:
   - 114: {fileID: 1044975312}
   - 114: {fileID: 1044975311}
   - 114: {fileID: 1044975313}
+  - 114: {fileID: 1044975314}
   - 82: {fileID: 1044975307}
   m_Layer: 0
   m_Name: GameController
@@ -2431,6 +2432,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d1f8feb7097d24623a43378dee11929b, type: 3}
   - {fileID: 8300000, guid: 69afa9cb7fa6446059d8e5cb1263ec5f, type: 3}
   - {fileID: 8300000, guid: 0db3576949c674d4abcc0c61a3308e29, type: 3}
+--- !u!114 &1044975314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1044975306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd6b32f019fc04678afd76417154206f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraDistanceY: 3.5
+  cameraDistanceZ: -6
+  cameraRotationUpDown: 3
 --- !u!1 &1085054016
 GameObject:
   m_ObjectHideFlags: 0
@@ -4492,10 +4507,9 @@ Transform:
   - {fileID: 1384730917}
   - {fileID: 1174884936}
   - {fileID: 1811933029}
-  - {fileID: 1409772607}
   - {fileID: 1823045468}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!65 &1222802065
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4965,7 +4979,7 @@ GameObject:
   - 114: {fileID: 1409772609}
   - 114: {fileID: 1409772610}
   m_Layer: 0
-  m_Name: MainCamera
+  m_Name: MainCamera0
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5032,13 +5046,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1409772602}
-  m_LocalRotation: {x: 0.06104855, y: 0, z: 0, w: 0.99813485}
-  m_LocalPosition: {x: 0, y: 3.5, z: -5.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 7, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 1222802064}
-  m_RootOrder: 5
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
 --- !u!114 &1409772608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5155,7 +5169,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
 --- !u!114 &1421815861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7915,7 +7929,7 @@ RectTransform:
   - {fileID: 668005460}
   - {fileID: 1178618123}
   m_Father: {fileID: 1222802064}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}

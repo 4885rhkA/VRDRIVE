@@ -49,6 +49,7 @@ public class GameController : MonoBehaviour {
 					Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
 				}
 				UserController.instance.RemoveDefaultGravity(carValue.rigid);
+				CameraController.instance.ChaseCar(carValue.camera.transform, carValue.obj.transform);
 			}
 			UpdateAllUserStatus(-1);
 		}
@@ -62,6 +63,7 @@ public class GameController : MonoBehaviour {
 			carValue = car.Value;
 			carValue.timer.transform.FindChild("TimerText").GetComponent<Text>().text = ViewerController.instance.GetTimerText(timeSpan);
 			UserController.instance.AddLocalGravity(carValue.rigid);
+			CameraController.instance.ChaseCar(carValue.camera.transform, carValue.obj.transform);
 		}
 	}
 
