@@ -1,4 +1,4 @@
---- OldCarUserControl.cs	2016-07-26 06:28:58.000000000 +0900
+--- OldCarUserControl.cs	2016-07-30 06:02:12.000000000 +0900
 +++ CarUserControl.cs	2016-07-24 08:28:47.000000000 +0900
 @@ -23,8 +23,24 @@
              float h = CrossPlatformInputManager.GetAxis("Horizontal");

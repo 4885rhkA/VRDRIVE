@@ -7,7 +7,7 @@ public class Sun : MonoBehaviour {
 	[SerializeField] private GameObject meteorite;
 	[SerializeField] private float createInterval = 4;
 
-	private float[] createMeteoriteZPositions = new float[5]{-20, -10, 0, 10, 20};
+	private float[] createMeteoriteZPositions = new float[5]{-18f, -9f, 0f, 9f, 18f};
 	private GameObject meteorites;
 
 	void Start () {

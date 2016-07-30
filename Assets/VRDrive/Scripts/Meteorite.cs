@@ -8,7 +8,14 @@ public class Meteorite : Incident {
 	[SerializeField] private int[] moveTime = new int[2]{10, 11};
 	private float[] moveToPosition;
 
+	private AudioSource[] audioSources;
+	private AudioSource loopSound;
+	private AudioSource explosionSound;
+
 	void Start() {
+		audioSources = gameObject.GetComponents<AudioSource>();
+		loopSound = audioSources[0];
+		explosionSound = audioSources[1];
 		if(moveTime[0] < moveTime[1]) {
 			moveToPosition = new float[3]{ gameObject.transform.position.x, gameObject.transform.position.y, -20 };
 			iTween.RotateAdd(gameObject.transform.FindChild("ShapeMeteorite").gameObject, iTween.Hash(
@@ -28,14 +35,15 @@ public class Meteorite : Incident {
 	/// <summary>When collider/collision occurs, do Object's action.</summary>
 	protected override void CollidedActionForMyself() {
 		Detonator detonator = gameObject.GetComponent<Detonator>();
-		float clipLength = SoundController.instance.GetClipLength("meteoriteexplosion");
-		Destroy(gameObject.transform.FindChild("ShapeMeteorite").gameObject);
+		float explosionLength = explosionSound.clip.length;
 		gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
 		gameObject.GetComponent<SphereCollider>().enabled = false;
-		detonator.duration = clipLength;
-		detonator.destroyTime = clipLength + 1;
-		gameObject.GetComponent<AudioSource>().enabled = false;
-		SoundController.instance.ShotClipSound("meteoriteexplosion");
+		detonator.duration = explosionLength;
+		detonator.destroyTime = explosionLength + 1;
+		loopSound.enabled = false;
+		explosionSound.enabled = true;
+		explosionSound.PlayOneShot(explosionSound.clip);
+		Destroy(gameObject.transform.FindChild("ShapeMeteorite").gameObject);
 		gameObject.GetComponent<Detonator>().Explode();
 	}
 
@@ -59,7 +67,7 @@ public class Meteorite : Incident {
 			userState.record = TimerController.instance.pastTime;
 		}
 		StartCoroutine(AfterCollisionEnter(
-			SoundController.instance.GetClipLength("meteoriteexplosion"), 
+			explosionSound.clip.length, 
 			userState.obj.name, carStatus, collision));
 	}
 

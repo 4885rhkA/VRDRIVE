@@ -1,5 +1,5 @@
---- OldCarController.cs	2016-07-26 06:28:56.000000000 +0900
-+++ CarController.cs	2016-07-25 08:00:24.000000000 +0900
+--- OldCarController.cs	2016-07-30 06:02:10.000000000 +0900
++++ CarController.cs	2016-07-30 07:25:18.000000000 +0900
 @@ -28,15 +28,16 @@
          [Range(0, 1)] [SerializeField] private float m_TractionControl; // 0 is no traction control, 1 is full interference
          [SerializeField] private float m_FullTorqueOverAllWheels;
@@ -98,6 +98,15 @@
 +            }
          }
  
+ 
+@@ -258,7 +280,7 @@
+         // this is used to add more grip in relation to speed
+         private void AddDownForce()
+         {
+-            m_WheelColliders[0].attachedRigidbody.AddForce(-transform.up*m_Downforce*
++			m_WheelColliders[0].attachedRigidbody.AddForce(-1*Vector3.up*m_Downforce*
+                                                          m_WheelColliders[0].attachedRigidbody.velocity.magnitude);
+         }
  
 @@ -363,5 +385,16 @@
              }

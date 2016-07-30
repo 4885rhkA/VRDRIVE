@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-/// Control class for the each user's status
+/// Control class for the each User's status
 public class GameController : MonoBehaviour {
 
 	public static GameController instance;
@@ -50,7 +50,7 @@ public class GameController : MonoBehaviour {
 					Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
 				}
 				UserController.instance.RemoveDefaultGravity(carValue.rigid);
-				CameraController.instance.ChaseCar(carValue.camera.transform, carValue.obj.transform);
+				CameraController.instance.SetCameraPositionAndRotation(carValue.camera.transform, carValue.obj.transform);
 			}
 			UpdateAllUserStatus(-1);
 		}
@@ -60,11 +60,19 @@ public class GameController : MonoBehaviour {
 	void Update() {
 		timeSpan = TimerController.instance.pastTime;
 		UserState carValue;
+		if(Input.GetKey(KeyCode.E)) {
+			foreach(KeyValuePair<string, UserState> car in cars) {
+				MissGameQuickly(car.Value.obj.name);
+			}
+		} 
 		foreach(KeyValuePair<string, UserState> car in cars) {
 			carValue = car.Value;
 			carValue.timer.transform.FindChild("TimerText").GetComponent<Text>().text = ViewerController.instance.GetTimerText(timeSpan);
 			UserController.instance.AddLocalGravity(carValue.rigid);
-			CameraController.instance.ChaseCar(carValue.camera.transform, carValue.obj.transform);
+			CameraController.instance.SetCameraPositionAndRotation(carValue.camera.transform, carValue.obj.transform);
+			if(carValue.status == 0 && IsMissGameSituation(carValue.obj, carValue.rigid)) {
+				MissGameQuickly(car.Value.obj.name);
+			}
 		}
 	}
 
@@ -103,8 +111,8 @@ public class GameController : MonoBehaviour {
 		ViewerController.instance.ChangeTextState(carMessageText, carState);
 	}
 
-	/// <summary>Update the status for all users.</summary>
-	/// <param name="carStatus">The status of each user</param>
+	/// <summary>Update the status for all Users.</summary>
+	/// <param name="carStatus">The status of each User</param>
 	public void UpdateAllUserStatus(int carStatus) {
 		foreach(KeyValuePair<string, UserState> car in cars){
 			UpdateUserStatus(car.Value.obj.name, carStatus);
@@ -113,7 +121,7 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>Update the status.</summary>
 	/// <param name="carName">The name for User</param>
-	/// <param name="carStatus">The status of each user</param>
+	/// <param name="carStatus">The status of each User</param>
 	public void UpdateUserStatus(string carName, int carStatus) {
 		if(cars.ContainsKey(carName)) {
 			if(cars[carName].status!= 1) {
@@ -142,7 +150,7 @@ public class GameController : MonoBehaviour {
 	/// <param name="incidentObject">The Object occurs incident</param>
 	/// <param name="targetObject">The Object suffered the incident</param>
 	/// <returns>
-	///  	1:Change the status of user /
+	///  	1:Change the status of User /
 	///  	0:Collision both incident with the same tag or User is still in incident, Each incident must do only each defined action /
 	/// 	-1:Collision both incident with the different tag, No incident occurs
 	/// </returns>
@@ -189,7 +197,7 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>Update the condition.</summary>
 	/// <param name="carName">The name for User</param>
-	/// <param name="carCondition">The condition of each user</param>
+	/// <param name="carCondition">The condition of each User</param>
 	public void UpdateUserCondition(string carName, int carCondition) {
 		if(cars.ContainsKey(carName)) {
 			cars[carName].condition = carCondition;
@@ -206,6 +214,8 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>Call the Miss Display.</summary>
+	/// <param name="carName">The name for User</param>
 	public void MissGame(string carName) {
 		GameObject carResult = cars[carName].result;
 		Text carResultText = carResult.transform.FindChild("ResultText").GetComponent<Text>();
@@ -218,7 +228,25 @@ public class GameController : MonoBehaviour {
 		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
 		ViewerController.instance.ChangeTextState(carResultText, true);
 		SoundController.instance.ShotClipSound("miss");
-		
+	}
+
+	/// <summary>Call the Miss Display quickly.</summary>
+	/// <param name="carName">The name for User</param>
+	private void MissGameQuickly(string carName) {
+		UserState carValue = cars[carName];
+		carValue.record = TimerController.instance.pastTime;
+		UpdateUserStatus(carValue.obj.name, 2);
+		MissGame(carValue.obj.name);
+	}
+
+	/// <summary>Judge whether missing situation or not.</summary>
+	/// <param name="carObject">The gameObject for User</param>
+	/// <param name="carRigid">The Rigidbody for User</param>
+	private bool IsMissGameSituation(GameObject carObject, Rigidbody carRigid) {
+		if(carObject.transform.up.y < -0.75 && carRigid.velocity.magnitude < 0.1) {
+			return true;
+		}
+		return false;
 	}
 
 }
