@@ -42,10 +42,4 @@ public class UserController : MonoBehaviour {
 		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
 	}
 
-	// <summary>Freeze rotation for the time before starting.</summary>
-	/// <param name="rigid">The target's Rigidbody Component</param>
-	public void SetFreezingRotation(Rigidbody rigid) {
-		rigid.constraints = RigidbodyConstraints.FreezeRotation;
-	}
-
 }

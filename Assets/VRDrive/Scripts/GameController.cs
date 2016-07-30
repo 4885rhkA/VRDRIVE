@@ -123,9 +123,6 @@ public class GameController : MonoBehaviour {
 				case 0:
 					UserController.instance.ReleaseFreezingPosition(cars[carName].rigid);
 					break;
-				case 2:
-					UserController.instance.SetFreezingRotation(cars[carName].rigid);
-					break;
 				default:
 					break;
 			}
@@ -153,6 +150,9 @@ public class GameController : MonoBehaviour {
 				if(cars[targetObjectName].status == 0) {
 					if(incidentObject.name == "Goal" || incidentObject.name == "UnderGround") {
 						return 1;
+					}
+					else if(incidentObject.name == "Start") {
+						return -1;
 					}
 					else {
 						int userCondition = 1;
