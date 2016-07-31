@@ -6533,7 +6533,7 @@ MonoBehaviour:
   m_SpeedType: 1
   m_RevRangeBoundary: 1
   m_Maxspeed: 70
-  m_SlipLimit: 0.3
+  m_SlipLimit: 1
   m_BrakeTorque: 20000
   m_MaxHandleRotation: 90
 --- !u!54 &1222802063
@@ -9987,7 +9987,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meteorite: {fileID: 155810, guid: 735b69cc2b8c3498cbb30de7d2a0000a, type: 2}
-  createInterval: 1.5
+  createInterval: 4
 --- !u!33 &1569908548
 MeshFilter:
   m_ObjectHideFlags: 0
