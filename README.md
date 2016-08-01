@@ -11,7 +11,7 @@
   * `patch -u "${ProjectDirectpry}/Assets/Standard\sAssets/Vehicles/Car/Scripts/CarUserControl.cs" < ${ProjectDirectpry}/Assets/VRDrive/CloneFiles/CarUserControl.patch`
 * Moreover, if you want to play with handle, you need to install logicool profiler.
   * http://support.logicool.co.jp/ja_jp/product/g27-racing-wheel
-  * If installed, you need to import file `Assets/VRDrive/CloneFoles/unity-vrdrive.xml`
+* If installed, you need to import file `Assets/VRDrive/CloneFoles/unity-vrdrive.xml`
 ---
 ## How to drive
 * By keyboard(By GT-27 steering)
