@@ -6,9 +6,9 @@ public class CameraController : MonoBehaviour {
 
 	public static CameraController instance;
 
-	[SerializeField] private float cameraDistanceY;
-	[SerializeField] private float cameraDistanceZ;
-	[SerializeField] private float cameraRotationUpDown;
+	[SerializeField] public float cameraDistanceY;
+	[SerializeField] public float cameraDistanceZ;
+	[SerializeField] public float cameraRotationUpDown;
 
 	void Awake() {
 		if(instance == null) {
