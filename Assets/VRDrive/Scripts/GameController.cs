@@ -10,8 +10,9 @@ public class GameController : MonoBehaviour {
 	public static GameController instance;
 
 	[SerializeField] public bool oneKillMode = true;
+    [SerializeField, Range(0, 2), TooltipAttribute("0:2D / 1:3D / 2:VR")] public int viewMode = 1;
 
-	private GameObject[] carObjects;
+    private GameObject[] carObjects;
 	public static Dictionary<string, UserState> cars = new Dictionary<string, UserState>();
 
 	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
@@ -50,8 +51,11 @@ public class GameController : MonoBehaviour {
 					Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
 				}
 				UserController.instance.RemoveDefaultGravity(carValue.rigid);
-				if(!(CameraController.instance.cameraDistanceY == 0 && CameraController.instance.cameraDistanceZ == 0 && CameraController.instance.cameraRotationUpDown == 0)) {
-					CameraController.instance.SetCameraPositionAndRotation(carValue.camera.transform, carValue.obj.transform);
+                if (viewMode == 0) {
+                    CameraController.instance.SetCameraPositionAndRotation2D(carValue.camera.transform, carValue.obj.transform);
+                }
+				else if(viewMode == 1) {
+					CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
 				}
 			}
 			UpdateAllUserStatus(-1);
@@ -72,10 +76,13 @@ public class GameController : MonoBehaviour {
 			carValue = car.Value;
 			carValue.timer.transform.FindChild("TimerText").GetComponent<Text>().text = ViewerController.instance.GetTimerText(timeSpan);
 			UserController.instance.AddLocalGravity(carValue.rigid);
-			if(!(CameraController.instance.cameraDistanceY == 0 && CameraController.instance.cameraDistanceZ == 0 && CameraController.instance.cameraRotationUpDown == 0)) {
-				CameraController.instance.SetCameraPositionAndRotation(carValue.camera.transform, carValue.obj.transform);
-			}
-			if(carValue.status == 0 && IsMissGameSituation(carValue.obj, carValue.rigid)) {
+            if (viewMode == 0) {
+                CameraController.instance.SetCameraPositionAndRotation2D(carValue.camera.transform, carValue.obj.transform);
+            }
+            else if (viewMode == 1) {
+                CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
+            }
+            if (carValue.status == 0 && IsMissGameSituation(carValue.obj, carValue.rigid)) {
 				MissGameQuickly(car.Value.obj.name);
 			}
 		}
