@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
 	public static GameController instance;
 
 	[SerializeField] public bool oneKillMode = true;
+	[SerializeField] public bool trackCarWithoutChildObjectMode = false;
 
 	private GameObject[] carObjects;
 	public static Dictionary<string, UserState> cars = new Dictionary<string, UserState>();
@@ -50,6 +51,9 @@ public class GameController : MonoBehaviour {
 					Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
 				}
 				UserController.instance.RemoveDefaultGravity(carValue.rigid);
+				if(trackCarWithoutChildObjectMode) {
+					CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
+				}
 			}
 			UpdateAllUserStatus(-1);
 		}
@@ -71,6 +75,9 @@ public class GameController : MonoBehaviour {
 			UserController.instance.AddLocalGravity(carValue.rigid);
 			if(carValue.status == 0 && IsMissGameSituation(carValue.obj, carValue.rigid)) {
 				MissGameQuickly(car.Value.obj.name);
+			}
+			if(trackCarWithoutChildObjectMode) {
+				CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
 			}
 		}
 	}

@@ -20,15 +20,6 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
-    /// <summary>Set each user's camera parameter for 2D.</summary>
-    /// <param name="carCameraTransform">The <c>Transform</c> of the user's camera/param>
-    /// <param name="carTransform">The <c>Transform</c> of the user's car</param>
-    public void SetCameraPositionAndRotation2D(Transform carCameraTransform, Transform carTransform) {
-        Vector3 targetPosition = new Vector3(carTransform.position.x, cameraRotationUpDown, carTransform.position.z);
-        carCameraTransform.position = targetPosition + Vector3.up * cameraDistanceY + carTransform.forward * cameraDistanceZ;
-        carCameraTransform.LookAt(targetPosition);
-    }
-
     /// <summary>Set each user's camera parameter for 3D.</summary>
     /// <param name="carCameraTransform">The <c>Transform</c> of the user's camera/param>
     /// <param name="carTransform">The <c>Transform</c> of the user's car</param>

@@ -3980,6 +3980,7 @@ GameObject:
   - 114: {fileID: 1044975312}
   - 114: {fileID: 1044975311}
   - 114: {fileID: 1044975313}
+  - 114: {fileID: 1044975314}
   - 82: {fileID: 1044975307}
   m_Layer: 0
   m_Name: GameController
@@ -4074,6 +4075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oneKillMode: 0
+  trackCarWithoutChildObjectMode: 0
 --- !u!4 &1044975309
 Transform:
   m_ObjectHideFlags: 0
@@ -4140,6 +4142,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 92335b2eb0aae437fbed1f1c61db6169, type: 3}
   - {fileID: 8300000, guid: bb00e914b946441ad9810ad39c4256c6, type: 3}
   - {fileID: 8300000, guid: bb7af9f53904b475bb7d8e44eaa586d2, type: 3}
+--- !u!114 &1044975314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1044975306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd6b32f019fc04678afd76417154206f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraDistanceY: 0
+  cameraDistanceZ: 0
+  cameraRotationUpDown: 0
 --- !u!1 &1063931004
 GameObject:
   m_ObjectHideFlags: 0
@@ -7526,7 +7542,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 90
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -7548,10 +7564,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1409772602}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.75, z: -0.2}
+  m_LocalRotation: {x: 0.38268346, y: 0, z: 0, w: 0.9238795}
+  m_LocalPosition: {x: 0, y: 30, z: -12}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1222802064}
   m_RootOrder: 6
