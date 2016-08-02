@@ -9989,7 +9989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meteorite: {fileID: 155810, guid: 735b69cc2b8c3498cbb30de7d2a0000a, type: 2}
-  createInterval: 4
+  createInterval: 2
 --- !u!33 &1569908548
 MeshFilter:
   m_ObjectHideFlags: 0
