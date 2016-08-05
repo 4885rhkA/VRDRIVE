@@ -33,8 +33,6 @@ public class SoundController : MonoBehaviour {
 
 	void Start() {
 		source = gameObject.GetComponent<AudioSource>();
-		source.clip = audioClips["count"];
-		source.Play();
 	}
 
 	/// <summary>Return the length of <c>AudioClip</c> for standby.</summary>

@@ -50,22 +50,6 @@ public class GameController : MonoBehaviour {
 			}
 		}
 	}
-		
-	private void ReleaseStartGame() {
-		UserState carValue;
-		foreach(KeyValuePair<string, UserState> car in cars) {
-			carValue = car.Value;
-			ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), true);
-			if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
-				ViewerController.instance.ChangeTextContent(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), "READY...", fontColor);
-			}
-			else {
-				Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
-			}
-		}
-		StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
-	}
 
 	void Update() {
 		timeSpan = TimerController.instance.pastTime;
@@ -93,6 +77,24 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>Start preparing playing game after press KeyCode E.</summary>
+	private void ReleaseStartGame() {
+		UserState carValue;
+		foreach(KeyValuePair<string, UserState> car in cars) {
+			carValue = car.Value;
+			ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
+			ViewerController.instance.ChangeTextState(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), true);
+			if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
+				ViewerController.instance.ChangeTextContent(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), "READY...", fontColor);
+			}
+			else {
+				Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
+			}
+		}
+		SoundController.instance.ShotClipSound("count");
+		StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
+	}
+
 	/// <summary>Start the game after finishing the count sound.</summary>
 	/// <param name="clipLength">The length of the count <c>AudioClip</c></param>
 	private IEnumerator StartGame(float clipLength) {  
@@ -118,6 +120,7 @@ public class GameController : MonoBehaviour {
 		}
 		TimerController.instance.ResetStartTime();
 		SoundController.instance.StartStageSound();
+		GameObject.Find("Sun").GetComponent<Sun>().StartRockFalling();
 	}
 
 	/// <summary>Execute viewerController.ChangeTextState with delay.</summary>

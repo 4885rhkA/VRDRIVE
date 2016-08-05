@@ -10,7 +10,7 @@ public class Sun : MonoBehaviour {
 	private float[] createMeteoriteZPositions = new float[5]{-18f, -9f, 0f, 9f, 18f};
 	private GameObject meteorites;
 
-	void Start () {
+	public void StartRockFalling() {
 		meteorites = GameObject.Find("Meteorites");
 		if(meteorite != null) {
 			StartCoroutine(CreateMeteorite());
