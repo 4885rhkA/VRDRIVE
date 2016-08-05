@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour {
 	private string colorGo = "#FFFFFFFF";
 	private string colorMiss = "#FFFFFFFF";
 
+    private bool endTutorial = false;
+
 	void Awake() {
 		if(instance == null) {
 			instance = this;
@@ -42,6 +44,7 @@ public class GameController : MonoBehaviour {
 			UserState carValue;
 			foreach(KeyValuePair<string, UserState> car in cars) {
 				carValue = car.Value;
+                ViewerController.instance.ChangeRawImageState(carValue.obj.transform.FindChild("Canvas/HowTo").gameObject.GetComponent<RawImage>(), true);
 				UserController.instance.RemoveDefaultGravity(carValue.rigid);
 				if(trackCarWithoutChildObjectMode) {
 					CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
@@ -55,10 +58,11 @@ public class GameController : MonoBehaviour {
 		timeSpan = TimerController.instance.pastTime;
 		UserState carValue;
 		if(Input.GetKey(KeyCode.E)) {
+            if(!endTutorial) {
+                ReleaseStartGame();
+                endTutorial = true;
+            }
 			foreach(KeyValuePair<string, UserState> car in cars) {
-				if(car.Value.status == -1) {
-					ReleaseStartGame();
-				}
 				if(car.Value.status == 0) {
 					MissGameQuickly(car.Value.obj.name);
 				}
@@ -82,7 +86,8 @@ public class GameController : MonoBehaviour {
 		UserState carValue;
 		foreach(KeyValuePair<string, UserState> car in cars) {
 			carValue = car.Value;
-			ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
+            ViewerController.instance.ChangeRawImageState(carValue.obj.transform.FindChild("Canvas/HowTo").gameObject.GetComponent<RawImage>(), false);
+            ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
 			ViewerController.instance.ChangeTextState(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), true);
 			if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
 				ViewerController.instance.ChangeTextContent(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), "READY...", fontColor);
@@ -91,8 +96,8 @@ public class GameController : MonoBehaviour {
 				Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
 			}
 		}
-		SoundController.instance.ShotClipSound("count");
-		StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
+        SoundController.instance.ShotClipSound("count");
+        StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
 	}
 
 	/// <summary>Start the game after finishing the count sound.</summary>
