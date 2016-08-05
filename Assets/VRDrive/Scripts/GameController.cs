@@ -40,22 +40,29 @@ public class GameController : MonoBehaviour {
 			carObjects = null;
 
 			UserState carValue;
-			foreach(KeyValuePair<string, UserState> car in cars){
+			foreach(KeyValuePair<string, UserState> car in cars) {
 				carValue = car.Value;
-				ViewerController.instance.ChangeTextState(carValue.timer.transform.FindChild("TimerText").GetComponent<Text>(), false);
-				ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
-				if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
-					ViewerController.instance.ChangeTextContent(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), "READY...", fontColor);
-				}
-				else {
-					Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
-				}
 				UserController.instance.RemoveDefaultGravity(carValue.rigid);
 				if(trackCarWithoutChildObjectMode) {
 					CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
 				}
+				UpdateUserStatus(carValue.obj.name, -1);
 			}
-			UpdateAllUserStatus(-1);
+		}
+	}
+		
+	private void ReleaseStartGame() {
+		UserState carValue;
+		foreach(KeyValuePair<string, UserState> car in cars) {
+			carValue = car.Value;
+			ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
+			ViewerController.instance.ChangeTextState(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), true);
+			if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
+				ViewerController.instance.ChangeTextContent(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), "READY...", fontColor);
+			}
+			else {
+				Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
+			}
 		}
 		StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
 	}
@@ -65,8 +72,12 @@ public class GameController : MonoBehaviour {
 		UserState carValue;
 		if(Input.GetKey(KeyCode.E)) {
 			foreach(KeyValuePair<string, UserState> car in cars) {
-				if(car.Value.status == 0)
-				MissGameQuickly(car.Value.obj.name);
+				if(car.Value.status == -1) {
+					ReleaseStartGame();
+				}
+				if(car.Value.status == 0) {
+					MissGameQuickly(car.Value.obj.name);
+				}
 			}
 		} 
 		foreach(KeyValuePair<string, UserState> car in cars) {
@@ -74,7 +85,7 @@ public class GameController : MonoBehaviour {
 			carValue.timer.transform.FindChild("TimerText").GetComponent<Text>().text = ViewerController.instance.GetTimerText(timeSpan);
 			UserController.instance.AddLocalGravity(carValue.rigid);
 			if(carValue.status == 0 && IsMissGameSituation(carValue.obj, carValue.rigid)) {
-				MissGameQuickly(car.Value.obj.name);
+				MissGameQuickly(carValue.obj.name);
 			}
 			if(trackCarWithoutChildObjectMode) {
 				CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
@@ -86,8 +97,6 @@ public class GameController : MonoBehaviour {
 	/// <param name="clipLength">The length of the count <c>AudioClip</c></param>
 	private IEnumerator StartGame(float clipLength) {  
 		yield return new WaitForSeconds(clipLength);
-		UpdateAllUserStatus(0);
-		TimerController.instance.ResetStartTime();
 		UserState carValue;
 		GameObject carMessage;
 		Text carMessageText;
@@ -95,6 +104,8 @@ public class GameController : MonoBehaviour {
 			carValue = car.Value;
 			carMessage = carValue.message;
 			carMessageText = carMessage.transform.FindChild("MessageText").GetComponent<Text>();
+			UpdateUserStatus(carValue.obj.name, 0);
+			ViewerController.instance.ChangeRawImageState(carValue.timer.GetComponent<RawImage>(), true);
 			ViewerController.instance.ChangeTextState(carValue.timer.transform.FindChild("TimerText").GetComponent<Text>(), true);
 			ViewerController.instance.ChangeRawImageState(carMessage.GetComponent<RawImage>(), false);
 			if(ColorUtility.TryParseHtmlString(colorGo, out fontColor)) {
@@ -105,6 +116,7 @@ public class GameController : MonoBehaviour {
 			}
 			StartCoroutine(ChangeTextStateWithDelay(SoundController.instance.GetClipLength("go"), carMessageText, false));
 		}
+		TimerController.instance.ResetStartTime();
 		SoundController.instance.StartStageSound();
 	}
 
@@ -115,14 +127,6 @@ public class GameController : MonoBehaviour {
 	private IEnumerator ChangeTextStateWithDelay(float delayLength, Text carMessageText, bool carState) {  
 		yield return new WaitForSeconds(delayLength);
 		ViewerController.instance.ChangeTextState(carMessageText, carState);
-	}
-
-	/// <summary>Update the status for all users.</summary>
-	/// <param name="carStatus">The status of each user</param>
-	public void UpdateAllUserStatus(int carStatus) {
-		foreach(KeyValuePair<string, UserState> car in cars){
-			UpdateUserStatus(car.Value.obj.name, carStatus);
-		}
 	}
 
 	/// <summary>Update the status.</summary>
