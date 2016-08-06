@@ -17,7 +17,7 @@ public class MenuController : MonoBehaviour {
 	private string colorSelected = "#FFFFFFFF";
 	private string colorNoSelected = "#646464FF";
 
-	private bool isChangingSelection = false;
+	private bool changingSelectionFlag = false;
 	private float timeForChangingSelection = 0.25f;
 
 	void Awake() {
@@ -43,18 +43,18 @@ public class MenuController : MonoBehaviour {
 		if (h == 0) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
-		float v = CrossPlatformInputManager.GetAxis("Vertical");
-		StartCoroutine(ChangeStage(h, v, isChangingSelection));
+		bool b = Input.GetKey(KeyCode.E);
+		StartCoroutine(ChangeStage(h, b, changingSelectionFlag));
 	}
 
-	private IEnumerator ChangeStage(float horizontal, float vertical, bool selectionState) {
-		if(!selectionState) {
-			if(vertical == 1) {
-				isChangingSelection = true;
+	private IEnumerator ChangeStage(float horizontal, bool button, bool isSelectionChanging) {
+		if(!isSelectionChanging) {
+			if(button) {
+				changingSelectionFlag = true;
 				SceneManager.LoadScene(stageObjects[selectStageNo].name.Substring(2));
 			}
 			else if(Mathf.Abs(horizontal) > 0.5) {
-				isChangingSelection = true;
+				changingSelectionFlag = true;
 
 				stageObjects[selectStageNo].GetComponent<RawImage>().enabled = false;
 				if(ColorUtility.TryParseHtmlString(colorNoSelected, out fontColor)) {
@@ -83,7 +83,7 @@ public class MenuController : MonoBehaviour {
 				}
 
 				yield return new WaitForSeconds(timeForChangingSelection);
-				isChangingSelection = false;
+				changingSelectionFlag = false;
 			}
 		}
 	}

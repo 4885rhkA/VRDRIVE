@@ -22,7 +22,10 @@ public class GameController : MonoBehaviour {
 	private string colorGo = "#FFFFFFFF";
 	private string colorMiss = "#FFFFFFFF";
 
-    private bool startGameAtTheSameTimeFlag = false;
+   	private bool startGameAtTheSameTimeFlag = false;
+	private int remainingInGame = 0;
+
+	private float returnMenuLength = 3f;
 
 	void Awake() {
 		instance = this;
@@ -35,6 +38,7 @@ public class GameController : MonoBehaviour {
 			foreach(GameObject carObject in carObjects) {
 				cars.Add(carObject.name, new UserState(carObject));
 			}
+			remainingInGame = carObjects.Length;
 			carObjects = null;
 
 			UserState carValue;
@@ -56,14 +60,14 @@ public class GameController : MonoBehaviour {
 		if(Input.GetKey(KeyCode.E)) {
 			if(!startGameAtTheSameTimeFlag) {
 				startGameAtTheSameTimeFlag = true;
-                ReleaseStartGame();
-            }
+				ReleaseStartGame();
+			}
 			foreach(KeyValuePair<string, UserState> car in cars) {
 				if(car.Value.status == 0) {
 					MissGameQuickly(car.Value.obj.name);
 				}
 			}
-		} 
+		}
 		foreach(KeyValuePair<string, UserState> car in cars) {
 			carValue = car.Value;
 			carValue.timer.transform.FindChild("TimerText").GetComponent<Text>().text = ViewerController.instance.GetTimerText(timeSpan);
@@ -138,8 +142,11 @@ public class GameController : MonoBehaviour {
 	/// <param name="carStatus">The status of each user</param>
 	public void UpdateUserStatus(string carName, int carStatus) {
 		if(cars.ContainsKey(carName)) {
-			if(cars[carName].status!= 1) {
+			if(cars[carName].status < 1) {
 				cars[carName].status = carStatus;
+				if(cars[carName].status > 0) {
+					remainingInGame--;
+				}
 			}
 			switch(carStatus) {
 				case -1:
@@ -242,7 +249,9 @@ public class GameController : MonoBehaviour {
 		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
 		ViewerController.instance.ChangeTextState(carResultText, true);
 		SoundController.instance.ShotClipSound("miss");
-		SceneManager.LoadScene("menu");
+		if(remainingInGame == 0) {
+			StartCoroutine(returnMenu());
+		}
 	}
 
 	/// <summary>Call the miss display quickly.</summary>
@@ -274,6 +283,14 @@ public class GameController : MonoBehaviour {
 			ViewerController.instance.ChangeTextContent(carResultText, newResultTimeText, fontColor);
 			SoundController.instance.ShotClipSound("record");
 		}
+		if(remainingInGame == 0) {
+			StartCoroutine(returnMenu());
+		}
+	}
+
+	/// <summary>Go to the menu scene.</summary>
+	public IEnumerator returnMenu() {
+		yield return new WaitForSeconds(returnMenuLength);
 		SceneManager.LoadScene("menu");
 	}
 
