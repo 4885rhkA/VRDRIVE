@@ -9,6 +9,7 @@ TagManager:
   - Gimmick
   - Item
   - Fire
+  - StageName
   layers:
   - Default
   - TransparentFX

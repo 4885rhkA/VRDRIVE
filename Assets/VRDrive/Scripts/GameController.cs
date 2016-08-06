@@ -36,8 +36,10 @@ public class GameController : MonoBehaviour {
 	void Start() {
 		carObjects = GameObject.FindGameObjectsWithTag("Car");
 		if(carObjects != null) {
-			foreach(GameObject carObject in carObjects) {
-				cars.Add(carObject.name, new UserState(carObject));
+			if(cars.Count == 0) {
+				foreach(GameObject carObject in carObjects) {
+					cars.Add(carObject.name, new UserState(carObject));
+				}
 			}
 			carObjects = null;
 
@@ -116,7 +118,7 @@ public class GameController : MonoBehaviour {
 			ViewerController.instance.ChangeTextState(carValue.timer.transform.FindChild("TimerText").GetComponent<Text>(), true);
 			ViewerController.instance.ChangeRawImageState(carMessage.GetComponent<RawImage>(), false);
 			if(ColorUtility.TryParseHtmlString(colorGo, out fontColor)) {
-				ViewerController.instance.ChangeTextContent(carMessageText, "GO!!", fontColor);
+				ViewerController.instance.ChangeTextContent(carMessageText, "GO!", fontColor);
 			}
 			else {
 				Debug.LogWarning("The color" + colorGo + "cannnot convert into Color class.");

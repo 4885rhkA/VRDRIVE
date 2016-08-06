@@ -20,7 +20,7 @@ public class Goal : Incident {
 		Text carMessageText = carMessage.transform.FindChild("MessageText").GetComponent<Text>();
 		userState.record = TimerController.instance.pastTime;
 		if(ColorUtility.TryParseHtmlString(colorGoal, out fontColor)) {
-			ViewerController.instance.ChangeTextContent(carMessageText, "GOAL!!", fontColor);
+			ViewerController.instance.ChangeTextContent(carMessageText, "GOAL!", fontColor);
 		}
 		else {
 			Debug.LogWarning("The color" + colorGoal + "cannnot convert into Color class.");
