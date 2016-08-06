@@ -20,15 +20,9 @@ public class MenuController : MonoBehaviour {
 	private bool isChangingSelection = false;
 	private float timeForChangingSelection = 0.25f;
 
-//	void Awake() {
-//		if(instance == null) {
-//			instance = this;
-//			DontDestroyOnLoad(gameObject);
-//		}
-//		else {
-//			Destroy(gameObject);
-//		}
-//	}
+	void Awake() {
+		instance = this;
+	}
 
 	void Start() {
 		stageObjects = GameObject.FindGameObjectsWithTag("StageName");
@@ -92,7 +86,6 @@ public class MenuController : MonoBehaviour {
 				isChangingSelection = false;
 			}
 		}
-
 	}
 
 }

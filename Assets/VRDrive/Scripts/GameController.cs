@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement; 
 using UnityEngine.UI;
 
 /// Control class for the each user's status
@@ -21,25 +22,18 @@ public class GameController : MonoBehaviour {
 	private string colorGo = "#FFFFFFFF";
 	private string colorMiss = "#FFFFFFFF";
 
-    private bool endTutorial = false;
+    private bool startGameAtTheSameTimeFlag = false;
 
 	void Awake() {
-		if(instance == null) {
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else {
-			Destroy(gameObject);
-		}
+		instance = this;
+		cars.Clear();
 	}
 
 	void Start() {
 		carObjects = GameObject.FindGameObjectsWithTag("Car");
 		if(carObjects != null) {
-			if(cars.Count == 0) {
-				foreach(GameObject carObject in carObjects) {
-					cars.Add(carObject.name, new UserState(carObject));
-				}
+			foreach(GameObject carObject in carObjects) {
+				cars.Add(carObject.name, new UserState(carObject));
 			}
 			carObjects = null;
 
@@ -60,9 +54,9 @@ public class GameController : MonoBehaviour {
 		timeSpan = TimerController.instance.pastTime;
 		UserState carValue;
 		if(Input.GetKey(KeyCode.E)) {
-            if(!endTutorial) {
+			if(!startGameAtTheSameTimeFlag) {
+				startGameAtTheSameTimeFlag = true;
                 ReleaseStartGame();
-                endTutorial = true;
             }
 			foreach(KeyValuePair<string, UserState> car in cars) {
 				if(car.Value.status == 0) {
@@ -248,6 +242,7 @@ public class GameController : MonoBehaviour {
 		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
 		ViewerController.instance.ChangeTextState(carResultText, true);
 		SoundController.instance.ShotClipSound("miss");
+		SceneManager.LoadScene("menu");
 	}
 
 	/// <summary>Call the miss display quickly.</summary>
@@ -267,6 +262,19 @@ public class GameController : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+
+	/// <summary>Change the vignette in view.</summary>
+	/// <param name="camera">User's car camera</param>
+	public IEnumerator AddCharacterContinuouslyForResult(Text carResultText, char[] resultTimeTextArray) {
+		float clipLength = SoundController.instance.GetClipLength("record");
+		foreach(char resultTimeText in resultTimeTextArray) {
+			yield return new WaitForSeconds(clipLength);
+			string newResultTimeText = carResultText.text + resultTimeText;
+			ViewerController.instance.ChangeTextContent(carResultText, newResultTimeText, fontColor);
+			SoundController.instance.ShotClipSound("record");
+		}
+		SceneManager.LoadScene("menu");
 	}
 
 }

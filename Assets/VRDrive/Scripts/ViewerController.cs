@@ -13,13 +13,7 @@ public class ViewerController : MonoBehaviour {
 	private float baseVignetteIntensity = 0.4f;
 
 	void Awake() {
-		if(instance == null) {
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else {
-			Destroy(gameObject);
-		}
+		instance = this;
 	}
 
 	/// <summary>Return the timer text.</summary>

@@ -47,7 +47,7 @@ public class Goal : Incident {
 		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
 		ViewerController.instance.ChangeTextState(carResultText, true);
 		SoundController.instance.ShotClipSound("record");
-		StartCoroutine(AddCharacterContinuouslyForResult(carResultText, resultTimeText.ToCharArray()));
+		StartCoroutine(GameController.instance.AddCharacterContinuouslyForResult(carResultText, resultTimeText.ToCharArray()));
 	}
 
 	/// <summary>When collision occurs, do user's action.</summary>
@@ -57,17 +57,5 @@ public class Goal : Incident {
 	/// <summary>After collision occurs, do action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected override void AfterCollisionEnterAction(Collision collision) {}
-
-	/// <summary>Change the vignette in view.</summary>
-	/// <param name="camera">User's car camera</param>
-	private IEnumerator AddCharacterContinuouslyForResult(Text carResultText, char[] resultTimeTextArray) {
-		float clipLength = SoundController.instance.GetClipLength("record");
-		foreach(char resultTimeText in resultTimeTextArray) {
-			yield return new WaitForSeconds(clipLength);
-			string newResultTimeText = carResultText.text + resultTimeText;
-			ViewerController.instance.ChangeTextContent(carResultText, newResultTimeText, fontColor);
-			SoundController.instance.ShotClipSound("record");
-		}
-	}
 
 }

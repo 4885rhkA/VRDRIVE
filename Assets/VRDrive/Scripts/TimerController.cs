@@ -10,13 +10,7 @@ public class TimerController : MonoBehaviour {
 	public TimeSpan pastTime = new TimeSpan(0, 0, 0);
 
 	void Awake() {
-		if(instance == null) {
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else {
-			Destroy(gameObject);
-		}
+		instance = this;
 	}
 
 	void Update() {

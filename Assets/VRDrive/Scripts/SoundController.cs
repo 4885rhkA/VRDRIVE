@@ -19,13 +19,7 @@ public class SoundController : MonoBehaviour {
 	private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
 	void Awake() {
-		if(instance == null) {
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else {
-			Destroy(gameObject);
-		}
+		instance = this;
 		foreach(AudioClip audioClip in clips) {
 			audioClips.Add(audioClip.name, audioClip);
 		}

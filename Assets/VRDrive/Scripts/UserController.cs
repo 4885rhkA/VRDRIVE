@@ -9,13 +9,7 @@ public class UserController : MonoBehaviour {
 	[SerializeField] private Vector3 localGravity;
 
 	void Awake() {
-		if(instance == null) {
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else {
-			Destroy(gameObject);
-		}
+		instance = this;
 	}
 
 	/// <summary>Remove the setting of default gravity.</summary>
