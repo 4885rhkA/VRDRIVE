@@ -42,7 +42,9 @@ public class ViewerController : MonoBehaviour {
 	/// <param name="content">New text of <c>Text</c> Component</param>
 	/// <param name="color">The color for the <c>Text</c></param>
 	public void ChangeTextContent(Text text, string content, Color color) {
-		text.text = content;
+		if(content != null) {
+			text.text = content;
+		}
 		text.color = color;
 	}
 

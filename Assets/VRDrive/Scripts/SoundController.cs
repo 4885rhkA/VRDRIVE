@@ -20,13 +20,12 @@ public class SoundController : MonoBehaviour {
 
 	void Awake() {
 		instance = this;
+		source = gameObject.GetComponent<AudioSource>();
+		audioClips.Clear();
 		foreach(AudioClip audioClip in clips) {
 			audioClips.Add(audioClip.name, audioClip);
 		}
-	}
-
-	void Start() {
-		source = gameObject.GetComponent<AudioSource>();
+		clips = null;
 	}
 
 	/// <summary>Return the length of <c>AudioClip</c> for standby.</summary>
@@ -56,6 +55,13 @@ public class SoundController : MonoBehaviour {
 	public void StartStageSound() {
 		source.clip = audioClips["stage"];
 		ShotClipSound("go");
+		source.loop = true;
+		source.Play();
+	}
+
+	/// <summary>Start the sound for starting game.</summary>
+	public void StartMenuSound() {
+		source.clip = audioClips["stage"];
 		source.loop = true;
 		source.Play();
 	}

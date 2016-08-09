@@ -2,7 +2,8 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
+using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.UI;
 
 /// Control class for the each user's status
@@ -24,8 +25,6 @@ public class GameController : MonoBehaviour {
 
    	private bool startGameAtTheSameTimeFlag = false;
 	private int remainingInGame = 0;
-
-	private float returnMenuLength = 3f;
 
 	void Awake() {
 		instance = this;
@@ -57,10 +56,13 @@ public class GameController : MonoBehaviour {
 	void Update() {
 		timeSpan = TimerController.instance.pastTime;
 		UserState carValue;
-		if(Input.GetKey(KeyCode.E)) {
+		if(CrossPlatformInputManager.GetButtonUp("Decide")) {
 			if(!startGameAtTheSameTimeFlag) {
 				startGameAtTheSameTimeFlag = true;
 				ReleaseStartGame();
+			}
+			if(remainingInGame == 0) {
+				SceneManager.LoadScene("menu");
 			}
 			foreach(KeyValuePair<string, UserState> car in cars) {
 				if(car.Value.status == 0) {
@@ -249,9 +251,6 @@ public class GameController : MonoBehaviour {
 		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
 		ViewerController.instance.ChangeTextState(carResultText, true);
 		SoundController.instance.ShotClipSound("miss");
-		if(remainingInGame == 0) {
-			StartCoroutine(returnMenu());
-		}
 	}
 
 	/// <summary>Call the miss display quickly.</summary>
@@ -283,15 +282,6 @@ public class GameController : MonoBehaviour {
 			ViewerController.instance.ChangeTextContent(carResultText, newResultTimeText, fontColor);
 			SoundController.instance.ShotClipSound("record");
 		}
-		if(remainingInGame == 0) {
-			StartCoroutine(returnMenu());
-		}
-	}
-
-	/// <summary>Go to the menu scene.</summary>
-	public IEnumerator returnMenu() {
-		yield return new WaitForSeconds(returnMenuLength);
-		SceneManager.LoadScene("menu");
 	}
 
 }

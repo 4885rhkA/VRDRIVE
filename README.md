@@ -4,7 +4,7 @@
 ## How to install
 1. First, you need to import package assetrequest.unitypackage which is in root directory of this project.  
   1. http://tsubakit1.hateblo.jp/entry/2015/07/29/073000
-* Next, using this package, add the packages.
+* Next, using assetrequest.unitypackage, add the packages.
   * Asset Request files are `Assets/VRDrive/CloneFoles/*.imp`
 * Finally, patch the files.
   * `patch -u "${ProjectDirectpry}/Assets/Standard Assets/Vehicles/Car/Scripts/CarController.cs" < ${ProjectDirectpry}/Assets/VRDrive/CloneFiles/CarController.patch`
@@ -21,5 +21,11 @@
     * Brake
   * PageDown & Space(Paddle & Button 7, 20, 22)
     * Go Back
+  * PageLeft or PageRight(Handle)
+    * Go Left or Go Right
+  * Key E
+    * Decide the stage(when in menu)
+    * Game Start(when shown with How to use)
+    * Go Menu(After shown result)
 
 ---
