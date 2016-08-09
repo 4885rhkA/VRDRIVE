@@ -51,7 +51,7 @@ public class MenuController : MonoBehaviour {
 		StartCoroutine(ChangeSelectedStage(h, b, changingSelectionFlag));
 	}
 
-	/// <summary>Change selected stage..</summary>
+	/// <summary>Change selected stage.</summary>
 	/// <param name="horizontal">The length of the delay</param>
 	/// <param name="decideStage">Go to the selected stage or not</param>
 	/// <param name="isSelectionChanging">Whether already selected the stage or not</param>
