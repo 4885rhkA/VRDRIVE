@@ -1,4 +1,16 @@
-# thesis2016
+# VR DRIVE
+* This is the project for the research about Excitement.
+* It is the opencampus 2016 version.
+
+---
+# Environment
+*OS
+  * Windows 7
+  * Mac(El Capitan)
+* Unity
+  * 5.3.5f1
+* Logicool G27 Racing Wheel
+* Oculus Rift DK2
 
 ---
 ## How to install
