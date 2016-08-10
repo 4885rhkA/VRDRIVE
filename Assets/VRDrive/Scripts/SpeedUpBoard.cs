@@ -24,7 +24,7 @@ public class SpeedUpBoard : Incident {
 		UserState userState = GameController.cars[collider.gameObject.name];
 		GameObject userObject = userState.obj;
 		ViewerController.instance.ChangeMotionBlur(userState.camera, blurAmount);
-		userObject.GetComponent<CarController>().MaxSpeed *= multipleSpeed;
+		userObject.GetComponent<MyCarController>().MaxSpeed *= multipleSpeed;
 		userObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * pushPower, ForceMode.VelocityChange);
 		SoundController.instance.ShotClipSound("speedup");
 		StartCoroutine(AfterTriggerEnter(SoundController.instance.GetClipLength("speedup"), 
@@ -37,7 +37,7 @@ public class SpeedUpBoard : Incident {
 		UserState userState = GameController.cars[collider.gameObject.name];
 		GameController.instance.UpdateUserCondition(userState.obj.name, 0);
 		ViewerController.instance.ChangeMotionBlur(userState.camera, 0);
-		userState.obj.GetComponent<CarController>().MaxSpeed /= multipleSpeed;
+		userState.obj.GetComponent<MyCarController>().MaxSpeed /= multipleSpeed;
 	}
 
 	/// <summary>When collision occurs, do user's action.</summary>
