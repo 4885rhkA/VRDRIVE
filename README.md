@@ -18,9 +18,6 @@
   1. http://tsubakit1.hateblo.jp/entry/2015/07/29/073000
 * Next, using assetrequest.unitypackage, add the packages.
   * Asset Request files are `Assets/VRDrive/CloneFoles/*.imp`
-* Finally, patch the files.
-  * `patch -u "${ProjectDirectpry}/Assets/Standard Assets/Vehicles/Car/Scripts/CarController.cs" < ${ProjectDirectpry}/Assets/VRDrive/CloneFiles/CarController.patch`
-  * `patch -u "${ProjectDirectpry}/Assets/Standard\sAssets/Vehicles/Car/Scripts/CarUserControl.cs" < ${ProjectDirectpry}/Assets/VRDrive/CloneFiles/CarUserControl.patch`
 * Moreover, if you want to play with handle, you need to install logicool profiler and import file `Assets/VRDrive/CloneFoles/unity-vrdrive.xml`
   * http://support.logicool.co.jp/ja_jp/product/g27-racing-wheel
 
