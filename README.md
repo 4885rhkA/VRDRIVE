@@ -4,7 +4,7 @@
 
 ---
 ## Environment
-*OS
+* OS
   * Windows 7
   * Mac(El Capitan)
 * Unity
