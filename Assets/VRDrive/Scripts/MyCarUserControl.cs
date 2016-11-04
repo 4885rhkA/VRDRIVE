@@ -21,33 +21,31 @@ namespace UnityStandardAssets.Vehicles.Car
 			if (h == 0) {
 				h = CrossPlatformInputManager.GetAxis("Horizontal");
 			}
+
 			float v = Input.GetAxis("Accel") * (-1f);
 			if (v < 0) {
 				v = CrossPlatformInputManager.GetAxis ("Vertical");
 			} else {
 				v = (v  + 1f) * 0.5f;
 			}
-			float b = Input.GetAxis("Brake") * (-1f);
-			if (b < 0) {
-				b = CrossPlatformInputManager.GetAxis("Space");
+
+			float s = Input.GetAxis("Brake") * (-1f);
+			if (s < 0) {
+				s = CrossPlatformInputManager.GetAxis("Space");
 			} else {
-				b = (b  + 1f) * 0.5f;
+				s = (s  + 1f) * 0.5f;
 			}
-			if(b == 0) {
-				if(v > 0) {
-					m_Car.Move(h, v, v, 0);
+
+			float b = Input.GetAxis("BackTrigger");
+
+			if (v > 0 && s == 0) {
+				if (b == 0) {
+					m_Car.Move (h, v, v, 0);
+				} else {
+					m_Car.Move (h, (-1) * v, (-1) * v, 0);
 				}
-				else {
-					m_Car.Move(h, 0, 0, 0);
-				}
-			}
-			else {
-				if(v < 0) {
-					m_Car.Move(h, v, v, 0);
-				}
-				else {
-					m_Car.Move(h, 0, 0, b);
-				}
+			} else {
+				m_Car.Move(h, 0, 0, s);
 			}
 		}
 	}
