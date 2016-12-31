@@ -629,7 +629,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "VR MODE (3D\u2192VR)"
+  m_Text: DEMO STAGE
 --- !u!222 &925805806
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -703,7 +703,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "2D MODE (2D\u21923D)"
+  m_Text: STAGE 01
 --- !u!222 &965112379
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1018,7 +1018,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "3D MODE (2D\u21923D)"
+  m_Text: STAGE 02
 --- !u!222 &1584589997
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1246,7 +1246,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "3D MODE (3D\u2192VR)"
+  m_Text: BATTLE STAGE 01
 --- !u!222 &1842883113
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1388,7 +1388,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: DEFAULT MODE
+  m_Text: HOW TO PLAY
 --- !u!222 &2064504858
 CanvasRenderer:
   m_ObjectHideFlags: 0
