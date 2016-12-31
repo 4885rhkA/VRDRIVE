@@ -127,7 +127,6 @@ public class GameController : MonoBehaviour {
 		}
 		TimerController.instance.ResetStartTime();
 		SoundController.instance.StartStageSound();
-		GameObject.Find("Sun").GetComponent<Sun>().StartRockFalling();
 	}
 
 	/// <summary>Execute viewerController.ChangeTextState with delay.</summary>
