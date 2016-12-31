@@ -49,14 +49,18 @@ namespace UnityStandardAssets.Vehicles.Car
 			// back = backtrigger + straight
 			float b = Input.GetAxis("BackTrigger");
 
-			if (v > 0 && s == 0) {
-				if (b == 0) {
-					m_Car.Move (h, v, v, 0);
-				} else {
-					m_Car.Move (h, (-1) * v, (-1) * v, 0);
-				}
+			if(s > 0) {
+				m_Car.Move(h, 0, 0, s); // stop
 			} else {
-				m_Car.Move(h, 0, 0, s);
+				if (v == 0) {
+					m_Car.Move (h, 0, 0, 0); // do nothing
+				} else {
+					if (b == 0) {
+						m_Car.Move (h, v, 0, 0); // go
+					} else {
+						m_Car.Move (h, 0, (-1) * v, 0); // back
+					}
+				}
 			}
 		}
 	}
