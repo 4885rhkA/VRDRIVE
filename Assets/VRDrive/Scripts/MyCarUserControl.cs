@@ -7,6 +7,9 @@ namespace UnityStandardAssets.Vehicles.Car
 	[RequireComponent(typeof (MyCarController))]
 	public class MyCarUserControl : MonoBehaviour
 	{
+
+		[SerializeField] private bool isKeyboardMode = false;
+
 		private MyCarController m_Car; // the car controller we want to use
 
 		private void Awake()
@@ -17,25 +20,33 @@ namespace UnityStandardAssets.Vehicles.Car
 
 		private void FixedUpdate()
 		{
-			float h = Input.GetAxis("Handle");
-			if (h == 0) {
-				h = CrossPlatformInputManager.GetAxis("Horizontal");
+			// lr
+			float h;
+			if (isKeyboardMode) {
+				h = CrossPlatformInputManager.GetAxis ("Horizontal");
+			} else {
+				h = Input.GetAxis("Handle");
 			}
 
-			float v = Input.GetAxis("Accel") * (-1f);
-			if (v < 0) {
+			// straight
+			float v;
+			if (isKeyboardMode) {
 				v = CrossPlatformInputManager.GetAxis ("Vertical");
 			} else {
+				v = Input.GetAxis("Accel") * (-1f);
 				v = (v  + 1f) * 0.5f;
 			}
 
-			float s = Input.GetAxis("Brake") * (-1f);
-			if (s < 0) {
+			// brake
+			float s;
+			if (isKeyboardMode) {
 				s = CrossPlatformInputManager.GetAxis("Space");
 			} else {
+				s = Input.GetAxis("Brake") * (-1f);
 				s = (s  + 1f) * 0.5f;
 			}
 
+			// back = backtrigger + straight
 			float b = Input.GetAxis("BackTrigger");
 
 			if (v > 0 && s == 0) {
