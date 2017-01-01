@@ -398,7 +398,7 @@ GameObject:
   - 114: {fileID: 11446184}
   - 114: {fileID: 11413696}
   m_Layer: 0
-  m_Name: User
+  m_Name: Kart
   m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1509,6 +1509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b528849966d4bc3ae9d98a49cf7e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKeyboardMode: 0
 --- !u!114 &11451054
 MonoBehaviour:
   m_ObjectHideFlags: 1
