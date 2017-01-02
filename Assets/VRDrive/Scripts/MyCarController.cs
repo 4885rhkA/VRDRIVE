@@ -75,7 +75,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
             m_Rigidbody = GetComponent<Rigidbody>();
             m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl*m_FullTorqueOverAllWheels);
-            m_Handle = transform.FindChild ("SkyCar/Handle").gameObject;
+            m_Handle = transform.FindChild ("Handle").gameObject;
             if(m_Handle != null)
             {
                 m_HandleTransform = m_Handle.transform;
