@@ -85,9 +85,9 @@ public class GameController : MonoBehaviour {
 			if(trackCarWithoutChildObjectMode) {
 				CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
 			}
-			if(carValue.speedMetor != null) {
+			if(carValue.speedMeter != null) {
 				speed = carValue.obj.GetComponent<MyCarController>().GetCurrentSpeed();
-				carValue.speedMetor.GetComponent<TextMesh>().text = speed.ToString("f1");
+				carValue.speedMeter.GetComponent<TextMesh>().text = speed.ToString("f1");
 			}
 		}
 	}

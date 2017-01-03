@@ -57,7 +57,7 @@ public class UserState {
 	public GameObject message;
 	public GameObject result;
 	public TimeSpan record;
-	public GameObject speedMetor;
+	public GameObject speedMeter;
 	public UserState(GameObject carObject) {
 		status = -1;
 		condition = 0;
@@ -73,6 +73,6 @@ public class UserState {
 		message = carObject.transform.FindChild("Canvas/Message").gameObject;
 		result = carObject.transform.FindChild("Canvas/Result").gameObject;
 		record = new TimeSpan(0, 0, 0);
-		speedMetor = carObject.transform.FindChild ("Metor/Speed").gameObject;
+		speedMeter = carObject.transform.FindChild ("Meter/Speed").gameObject;
 	}
 }
