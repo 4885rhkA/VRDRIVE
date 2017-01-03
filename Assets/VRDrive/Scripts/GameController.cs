@@ -127,6 +127,16 @@ public class GameController : MonoBehaviour {
 		}
 		TimerController.instance.ResetStartTime();
 		SoundController.instance.StartStageSound();
+		StartGimmick ();
+	}
+
+	/// <summary>Start the gimmick after finishing the count sound.</summary>
+	private void StartGimmick() {
+		GameObject sun;
+		sun = GameObject.Find ("Sun");
+		if(sun != null) {
+			sun.GetComponent<Sun>().StartRockFalling();
+		}
 	}
 
 	/// <summary>Execute viewerController.ChangeTextState with delay.</summary>
