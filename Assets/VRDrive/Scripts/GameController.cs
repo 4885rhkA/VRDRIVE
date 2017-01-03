@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.UI;
+using UnityStandardAssets.Vehicles.Car;
 
 /// Control class for the each user's status
 public class GameController : MonoBehaviour {
@@ -54,8 +55,11 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Update() {
-		timeSpan = TimerController.instance.pastTime;
 		UserState carValue;
+		Text timerText;
+		TimeSpan timeSpan;
+		float speed;
+		timeSpan = TimerController.instance.pastTime;
 		if(CrossPlatformInputManager.GetButtonUp("Decide")) {
 			if(!startGameAtTheSameTimeFlag) {
 				startGameAtTheSameTimeFlag = true;
@@ -72,13 +76,18 @@ public class GameController : MonoBehaviour {
 		}
 		foreach(KeyValuePair<string, UserState> car in cars) {
 			carValue = car.Value;
-			carValue.timer.transform.FindChild("TimerText").GetComponent<Text>().text = ViewerController.instance.GetTimerText(timeSpan);
+			timerText = carValue.timer.transform.FindChild ("TimerText").GetComponent<Text> ();
+			ViewerController.instance.ChangeTextContent(timerText, ViewerController.instance.GetTimerText (timeSpan), fontColor);
 			UserController.instance.AddLocalGravity(carValue.rigid);
 			if(carValue.status == 0 && IsMissGameSituation(carValue.obj, carValue.rigid)) {
 				MissGameQuickly(carValue.obj.name);
 			}
 			if(trackCarWithoutChildObjectMode) {
 				CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
+			}
+			if(carValue.speedMetor != null) {
+				speed = carValue.obj.GetComponent<MyCarController>().GetCurrentSpeed();
+				carValue.speedMetor.GetComponent<TextMesh>().text = speed.ToString("f1");
 			}
 		}
 	}

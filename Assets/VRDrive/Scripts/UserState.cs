@@ -43,6 +43,10 @@ public class UserState {
 	/// 		<term>record</term>
 	/// 		<description>The goal of missed record</description>
 	/// 	</item>
+	/// 	<item>
+	/// 		<term>speedMetor</term>
+	/// 		<description>The showing of the speed. Moreover, only contained in Car</description>
+	/// 	</item>
 	/// </list>
 	public int status;
 	public int condition;
@@ -53,13 +57,14 @@ public class UserState {
 	public GameObject message;
 	public GameObject result;
 	public TimeSpan record;
+	public GameObject speedMetor;
 	public UserState(GameObject carObject) {
 		status = -1;
 		condition = 0;
 		obj = carObject;
 		rigid = carObject.GetComponent<Rigidbody>();
-		if(obj.transform.FindChild("MainCamera" + carObject.name[carObject.name.Length - 1])) {
-			camera = obj.transform.FindChild("MainCamera" + carObject.name[carObject.name.Length - 1]).gameObject;
+		if(carObject.transform.FindChild("MainCamera" + carObject.name[carObject.name.Length - 1])) {
+			camera = carObject.transform.FindChild("MainCamera" + carObject.name[carObject.name.Length - 1]).gameObject;
 		}
 		else {
 			camera = GameObject.Find("MainCamera" + carObject.name[carObject.name.Length - 1]).gameObject;
@@ -68,6 +73,6 @@ public class UserState {
 		message = carObject.transform.FindChild("Canvas/Message").gameObject;
 		result = carObject.transform.FindChild("Canvas/Result").gameObject;
 		record = new TimeSpan(0, 0, 0);
+		speedMetor = carObject.transform.FindChild ("Metor/Speed").gameObject;
 	}
-
 }

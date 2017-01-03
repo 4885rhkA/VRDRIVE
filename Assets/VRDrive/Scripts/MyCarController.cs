@@ -395,6 +395,10 @@ namespace UnityStandardAssets.Vehicles.Car
             }
         }
 
+        public float GetCurrentSpeed()
+        {
+            return CurrentSpeed;
+        }
 
     }
 }

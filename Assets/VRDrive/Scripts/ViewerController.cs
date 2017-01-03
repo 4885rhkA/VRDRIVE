@@ -45,7 +45,9 @@ public class ViewerController : MonoBehaviour {
 		if(content != null) {
 			text.text = content;
 		}
-		text.color = color;
+		if(color != null) {
+			text.color = color;
+		}
 	}
 
 	/// <summary>Change the motion blour in view.</summary>
