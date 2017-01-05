@@ -73,6 +73,12 @@ public class UserState {
 		message = carObject.transform.FindChild("Canvas/Message").gameObject;
 		result = carObject.transform.FindChild("Canvas/Result").gameObject;
 		record = new TimeSpan(0, 0, 0);
-		speedMeter = carObject.transform.FindChild ("Meter/Speed").gameObject;
+
+		if (carObject.transform.FindChild ("Meter/Speed") != null) {
+			speedMeter = carObject.transform.FindChild ("Meter/Speed").gameObject;
+		}
+		else {
+			speedMeter = null;
+		}
 	}
 }

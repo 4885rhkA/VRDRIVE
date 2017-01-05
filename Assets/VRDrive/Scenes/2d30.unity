@@ -419,6 +419,10 @@ Prefab:
       propertyPath: m_Name
       value: ShapeSpeedUpBoard
       objectReference: {fileID: 0}
+    - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
+      propertyPath: m_TagString
+      value: Gimmick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568cdff24223648238a65b9839eecb15, type: 2}
   m_IsPrefabParent: 0
@@ -475,7 +479,7 @@ GameObject:
   - 114: {fileID: 135836929}
   m_Layer: 0
   m_Name: Start
-  m_TagString: Gimmick
+  m_TagString: Base
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1115,6 +1119,10 @@ Prefab:
     - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
       propertyPath: m_Name
       value: ShapeSpeedUpBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
+      propertyPath: m_TagString
+      value: Gimmick
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568cdff24223648238a65b9839eecb15, type: 2}
@@ -1953,6 +1961,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
+      propertyPath: m_TagString
+      value: Gimmick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568cdff24223648238a65b9839eecb15, type: 2}
   m_IsPrefabParent: 0
@@ -2165,7 +2177,7 @@ GameObject:
   - 114: {fileID: 597770521}
   m_Layer: 0
   m_Name: Goal
-  m_TagString: Gimmick
+  m_TagString: Base
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3188,6 +3200,10 @@ Prefab:
       propertyPath: m_Name
       value: 'ShapeSpeedUpBoard '
       objectReference: {fileID: 0}
+    - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
+      propertyPath: m_TagString
+      value: Gimmick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568cdff24223648238a65b9839eecb15, type: 2}
   m_IsPrefabParent: 0
@@ -3291,6 +3307,10 @@ Prefab:
     - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
       propertyPath: m_Name
       value: ShapeSpeedUpBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
+      propertyPath: m_TagString
+      value: Gimmick
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568cdff24223648238a65b9839eecb15, type: 2}
@@ -3554,6 +3574,10 @@ Prefab:
     - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
       propertyPath: m_Name
       value: ShapeSpeedUpBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
+      propertyPath: m_TagString
+      value: Gimmick
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568cdff24223648238a65b9839eecb15, type: 2}
@@ -4678,6 +4702,10 @@ Prefab:
       propertyPath: m_Name
       value: User0
       objectReference: {fileID: 0}
+    - target: {fileID: 11413004, guid: 120e73a1370f64454ad09a84777ba111, type: 2}
+      propertyPath: isKeyboardMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 120e73a1370f64454ad09a84777ba111, type: 2}
   m_IsPrefabParent: 0
@@ -5312,7 +5340,7 @@ GameObject:
   - 114: {fileID: 1421815861}
   m_Layer: 0
   m_Name: UnderGround
-  m_TagString: Untagged
+  m_TagString: Base
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9323,6 +9351,10 @@ Prefab:
     - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
       propertyPath: m_Name
       value: ShapeSpeedUpBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 136602, guid: 568cdff24223648238a65b9839eecb15, type: 2}
+      propertyPath: m_TagString
+      value: Gimmick
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568cdff24223648238a65b9839eecb15, type: 2}

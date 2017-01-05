@@ -191,22 +191,24 @@ public class GameController : MonoBehaviour {
 	/// <param name="incidentObject">The <c>GameObject</c> occurs incident</param>
 	/// <param name="targetObject">The <c>GameObject</c> suffered the incident</param>
 	/// <returns>
-	///  	1:Change the status of user /
+	///  	1:Change the status of user
 	///  	0:Collision both incident with the same tag or user is still in incident, Each incident must do only each defined action /
-	/// 	-1:Collision both incident with the different tag, No incident occurs
+	/// 	-1:Collision both incident with the different tag, no incident occurs
 	/// </returns>
 	public int UpdateGameState(GameObject incidentObject, GameObject targetObject) {
 		if(targetObject.tag == "Car") {
 			string targetObjectName = targetObject.name;
 			if(cars.ContainsKey(targetObjectName)) {
 				if(cars[targetObjectName].status == 0) {
-					if(incidentObject.name == "Goal" || incidentObject.name == "UnderGround") {
-						return 1;
+					if (incidentObject.tag == "Base") {
+						if(incidentObject.name == "Goal" || incidentObject.name == "UnderGround") {
+							return 1;
+						}
+						else if(incidentObject.name == "Start") {
+							return -1;
+						}
 					}
-					else if(incidentObject.name == "Start") {
-						return -1;
-					}
-					else {
+					else if(incidentObject.tag == "Gimmick") {
 						int userCondition = 1;
 						if(cars[targetObjectName].condition == 0) {
 							if(incidentObject.name == "SpeedUpBoards") {
@@ -222,6 +224,9 @@ public class GameController : MonoBehaviour {
 							UpdateUserCondition(targetObjectName, userCondition);
 							return 1;
 						}
+					}
+					else if(incidentObject.tag == "Check"){
+					
 					}
 				}
 				return 0;

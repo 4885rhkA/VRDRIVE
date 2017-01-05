@@ -35,7 +35,7 @@ public abstract class Incident : MonoBehaviour {
 		AfterTriggerEnterAction(collider);
 	}
 
-	/// <summary>åfter collision occurs, do object's action.</summary>
+	/// <summary>After collision occurs, do object's action.</summary>
 	/// <param name="delayLength">The delay how long this function will execute</param>
 	/// <param name="carName">User's car name</param>
 	/// <param name="carStatus">User's car status</param>
