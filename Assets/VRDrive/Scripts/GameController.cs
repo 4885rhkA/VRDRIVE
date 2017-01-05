@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour {
 	public static GameController instance;
 
 	[SerializeField] public bool oneKillMode = true;
-	[SerializeField] public bool trackCarWithoutChildObjectMode = false;
+	[SerializeField] private bool trackCarWithoutChildObjectMode = false;
 
 	private GameObject[] carObjects;
 	public static Dictionary<string, UserState> cars = new Dictionary<string, UserState>();
@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour {
 	private string colorGo = "#FFFFFFFF";
 	private string colorMiss = "#FFFFFFFF";
 
-   	private bool startGameAtTheSameTimeFlag = false;
+	private bool startGameAtTheSameTimeFlag = false;
 	private int remainingInGame = 0;
 
 	void Awake() {
@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour {
 			UserState carValue;
 			foreach(KeyValuePair<string, UserState> car in cars) {
 				carValue = car.Value;
-                ViewerController.instance.ChangeRawImageState(carValue.obj.transform.FindChild("Canvas/HowTo").gameObject.GetComponent<RawImage>(), true);
+				ViewerController.instance.ChangeRawImageState(carValue.obj.transform.FindChild("Canvas/HowTo").gameObject.GetComponent<RawImage>(), true);
 				UserController.instance.RemoveDefaultGravity(carValue.rigid);
 				if(trackCarWithoutChildObjectMode) {
 					CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
