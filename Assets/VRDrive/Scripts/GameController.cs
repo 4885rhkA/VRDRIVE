@@ -52,6 +52,7 @@ public class GameController : MonoBehaviour {
 				UpdateUserStatus(carValue.obj.name, -1);
 			}
 		}
+		StageController.instance.SetCondition ();
 	}
 
 	void Update() {
@@ -135,22 +136,10 @@ public class GameController : MonoBehaviour {
 		}
 		TimerController.instance.ResetStartTime();
 		SoundController.instance.StartStageSound();
-		StartGimmick ();
+		StageController.instance.StartGimmick ();
 	}
 
-	/// <summary>Start the gimmick after finishing the count sound.</summary>
-	private void StartGimmick() {
-		StartSunGimmick ();
-	}
 
-	/// <summary>Start the falling rocks after finishing the count sound.</summary>
-	private void StartSunGimmick() {
-		GameObject sun;
-		sun = GameObject.Find ("Sun");
-		if(sun != null) {
-			sun.GetComponent<Sun>().StartRockFalling();
-		}
-	}
 
 	/// <summary>Execute viewerController.ChangeTextState with delay.</summary>
 	/// <param name="delayLength">The length of the delay</param>

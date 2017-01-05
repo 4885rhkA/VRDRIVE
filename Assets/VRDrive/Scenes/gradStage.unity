@@ -3212,6 +3212,7 @@ GameObject:
   - 114: {fileID: 1044975311}
   - 114: {fileID: 1044975313}
   - 114: {fileID: 1044975314}
+  - 114: {fileID: 1044975315}
   - 82: {fileID: 1044975307}
   m_Layer: 0
   m_Name: GameController
@@ -3387,6 +3388,21 @@ MonoBehaviour:
   cameraDistanceY: 0
   cameraDistanceZ: 0
   cameraRotationUpDown: 0
+--- !u!114 &1044975315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1044975306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72486396221cf42a3bd88bfa83f0bf67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sun: 1
+  sppedUpBoards: 1
+  checks: 1
+  tunnnels: 1
 --- !u!1 &1091178854
 GameObject:
   m_ObjectHideFlags: 0
