@@ -141,6 +141,11 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>Start the gimmick after finishing the count sound.</summary>
 	private void StartGimmick() {
+		StartSunGimmick ();
+	}
+
+	/// <summary>Start the falling rocks after finishing the count sound.</summary>
+	private void StartSunGimmick() {
 		GameObject sun;
 		sun = GameObject.Find ("Sun");
 		if(sun != null) {
