@@ -57,7 +57,6 @@ public class GameController : MonoBehaviour {
 	void Update() {
 		UserState carValue;
 		Text timerText;
-		TimeSpan timeSpan;
 		float speed;
 		timeSpan = TimerController.instance.pastTime;
 		if(CrossPlatformInputManager.GetButtonUp("Decide")) {
@@ -191,7 +190,6 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>
 	/// Update the status for user. 
-	/// Moreover, the target of Tag for collision are Car/Gimmick.
 	/// </summary>
 	/// <param name="incidentObject">The <c>GameObject</c> occurs incident</param>
 	/// <param name="targetObject">The <c>GameObject</c> suffered the incident</param>
