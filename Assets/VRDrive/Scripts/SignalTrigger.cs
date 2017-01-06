@@ -19,9 +19,12 @@ public class SignalTrigger : Incident {
 	/// <summary>When collider occurs, do user's action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void ColliderActionForUser(Collider collider) {
-		UserState userState = GameController.cars[collider.gameObject.name];
-		if(signal.GetStatus() == 2 && userState.checks[parentName] == true) {
-			GameController.instance.SetUserCheck (collider.gameObject.name, parentName, false);
+		UserSet userSet = GameController.instance.GetUserSet (collider.gameObject.name);
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		if(signal.GetStatus() == 2 && userState.CheckList[parentName] == true) {
+			GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
 		}
 	}
 

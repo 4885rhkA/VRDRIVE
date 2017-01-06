@@ -17,9 +17,12 @@ public class StopTrigger : Incident {
 	/// <summary>When collider occurs, do user's action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void ColliderActionForUser(Collider collider) {
-		UserState userState = GameController.cars[collider.gameObject.name];
-		if (userState.obj.GetComponent<MyCarController> ().GetCurrentSpeed () < 5 && userState.checks[parentName] == false) {
-			GameController.instance.SetUserCheck (collider.gameObject.name, parentName, true);
+		UserSet userSet = GameController.instance.GetUserSet (collider.gameObject.name);
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		if (userObject.Obj.GetComponent<MyCarController> ().GetCurrentSpeed () < 5 && userState.CheckList[parentName] == false) {
+			GameController.instance.UpdateCheckList (collider.gameObject.name, parentName, true);
 		}
 	}
 

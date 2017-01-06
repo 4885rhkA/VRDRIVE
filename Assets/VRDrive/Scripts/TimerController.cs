@@ -9,10 +9,16 @@ public class TimerController : MonoBehaviour {
 	private DateTime startTime = DateTime.Now;
 	public TimeSpan pastTime = new TimeSpan(0, 0, 0);
 
+	public TimeSpan PastTime {
+		get {
+			return pastTime;
+		}
+	}
+		
 	void Awake() {
 		instance = this;
 	}
-
+		
 	void Update() {
 		TimerCount();
 	}

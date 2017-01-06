@@ -11,9 +11,11 @@ public class UnderGround : Incident {
 	/// <summary>When collider occurs, do user's action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void ColliderActionForUser(Collider collider) {
-		UserState userState = GameController.cars[collider.gameObject.name];
-		userState.record = TimerController.instance.pastTime;
-		StartCoroutine(AfterTriggerEnter(0, userState.obj.name, 2, collider));
+		UserSet userSet = GameController.instance.GetUserSet (collider.gameObject.name);
+		UserObject userObject = userSet.UserObject;
+
+		GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+		StartCoroutine(AfterTriggerEnter(0, userObject.Obj.name, 2, collider));
 	}
 
 	/// <summary>After collider occurs, do action.</summary>

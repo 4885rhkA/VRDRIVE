@@ -15,39 +15,44 @@ public class Goal : Incident {
 	/// <summary>When collider occurs, do user's action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void ColliderActionForUser(Collider collider) {
-		UserState userState = GameController.cars[collider.gameObject.name];
-		GameObject carMessage = userState.message;
-		Text carMessageText = carMessage.transform.FindChild("MessageText").GetComponent<Text>();
-		userState.record = TimerController.instance.pastTime;
+		UserSet userSet = GameController.instance.GetUserSet (collider.gameObject.name);
+		UserObject userObject = userSet.UserObject;
+
+		GameObject message = userObject.Message;
+		Text messageText = message.transform.FindChild("MessageText").GetComponent<Text>();
+		GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
 		if(ColorUtility.TryParseHtmlString(colorGoal, out fontColor)) {
-			ViewerController.instance.ChangeTextContent(carMessageText, "GOAL!", fontColor);
+			ViewerController.instance.ChangeTextContent(messageText, "GOAL!", fontColor);
 		}
 		else {
 			Debug.LogWarning("The color" + colorGoal + "cannnot convert into Color class.");
 		}
-		ViewerController.instance.ChangeRawImageState(carMessage.GetComponent<RawImage>(), true);
-		ViewerController.instance.ChangeTextState(carMessageText, true);
+		ViewerController.instance.ChangeRawImageState(message.GetComponent<RawImage>(), true);
+		ViewerController.instance.ChangeTextState(messageText, true);
 		SoundController.instance.ShotClipSound("goal");
-		StartCoroutine(AfterTriggerEnter(SoundController.instance.GetClipLength("goal"), userState.obj.name, 1, collider));
+		StartCoroutine(AfterTriggerEnter(SoundController.instance.GetClipLength("goal"), userObject.Obj.name, 1, collider));
 	}
 
 	/// <summary>After collider occurs, do action.</summary>
 	/// <param name="collider">User's collider</param>
 	protected override void AfterTriggerEnterAction(Collider collider) {
-		UserState userState = GameController.cars[collider.gameObject.name];
-		GameObject carResult = userState.result;
-		Text carResultText = carResult.transform.FindChild("ResultText").GetComponent<Text>();
-		string resultTimeText = ViewerController.instance.GetTimerText(userState.record);
+		UserSet userSet = GameController.instance.GetUserSet (collider.gameObject.name);
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		GameObject result = userObject.Result;
+		Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
+		string resultTimeText = ViewerController.instance.GetTimerText(userState.Record);
 		if(ColorUtility.TryParseHtmlString(colorRecord, out fontColor)) {
-			ViewerController.instance.ChangeTextContent(carResultText, "TIME ", fontColor);
+			ViewerController.instance.ChangeTextContent(resultText, "TIME ", fontColor);
 		}
 		else {
 			Debug.LogWarning("The color" + colorRecord + "cannnot convert into Color class.");
 		}
-		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
-		ViewerController.instance.ChangeTextState(carResultText, true);
+		ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
+		ViewerController.instance.ChangeTextState(resultText, true);
 		SoundController.instance.ShotClipSound("record");
-		StartCoroutine(GameController.instance.AddCharacterContinuouslyForResult(carResultText, resultTimeText.ToCharArray()));
+		StartCoroutine(GameController.instance.AddCharacterContinuouslyForResult(resultText, resultTimeText.ToCharArray()));
 	}
 
 	/// <summary>When collision occurs, do user's action.</summary>

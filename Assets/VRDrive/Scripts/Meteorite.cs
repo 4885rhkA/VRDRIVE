@@ -58,26 +58,31 @@ public class Meteorite : Incident {
 	/// <summary>When collision occurs, do user's action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected override void CollisionActionForUser(Collision collision) {
-		UserState userState = GameController.cars[collision.gameObject.name];
-		Vector3 direction = userState.rigid.velocity.normalized;
-		userState.rigid.AddForce(new Vector3(direction.x, 0, Mathf.Abs(direction.z)) * attackPower * (-1), ForceMode.Impulse);
+		UserSet userSet = GameController.instance.GetUserSet (collision.gameObject.name);
+		UserObject userObject = userSet.UserObject;
+
+		Vector3 direction = userObject.Obj.GetComponent<Rigidbody>().velocity.normalized;
+		userObject.Obj.GetComponent<Rigidbody>().AddForce(new Vector3(direction.x, 0, Mathf.Abs(direction.z)) * attackPower * (-1), ForceMode.Impulse);
 		int carStatus = 0;
 		if(GameController.instance.oneKillMode) {
 			carStatus = 2;
-			userState.record = TimerController.instance.pastTime;
+			GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
 		}
 		StartCoroutine(AfterCollisionEnter(
 			explosionSound.clip.length, 
-			userState.obj.name, carStatus, collision));
+			userObject.Obj.name, carStatus, collision));
 	}
 
 	/// <summary>After collision occurs, do action.</summary>
 	/// <param name="collision">User's collision</param>
 	protected override void AfterCollisionEnterAction(Collision collision) {
-		UserState carState = GameController.cars[collision.gameObject.name];
-		GameController.instance.UpdateUserCondition(carState.obj.name, 0);
-		if(carState.status == 2 && GameController.instance.oneKillMode) {
-			GameController.instance.MissGame(carState.obj.name);
+		UserSet userSet = GameController.instance.GetUserSet (collision.gameObject.name);
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		GameController.instance.UpdateUserCondition(userObject.Obj.name, 0);
+		if(userState.Status == 2 && GameController.instance.oneKillMode) {
+			GameController.instance.MissGame(userObject.Obj.name);
 		}
 	}
 

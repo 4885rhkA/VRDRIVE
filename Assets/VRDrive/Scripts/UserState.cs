@@ -17,70 +17,62 @@ public class UserState {
 	/// 		<value>-1:courseout / 0:normal / 1:damage / 2:dash</value>
 	/// 	</item>
 	/// 	<item>
-	/// 		<term>obj</term>
-	/// 		<description>The <c>GameObject</c> for user's car</description>
-	/// 	</item>
-	/// 	<item>
-	/// 		<term>rigid</term>
-	/// 		<description>The <c>Rigidbody</c> for user's car</description>
-	/// 	</item>
-	/// 	<item>
-	/// 		<term>camera</term>
-	/// 		<description>The <c>GameObject</c> for user's camera</description>
-	/// 	</item>
-	/// 	<item>
-	/// 		<term>timer</term>
-	/// 		<description>The <c>GameObject</c> for user's canvas of timer</description>
-	/// 	</item>
-	/// 	<item>
-	/// 		<term>message</term>
-	/// 		<description>The <c>GameObject</c> for user's canvas of message</description>
-	/// 	</item>
-	/// 	<item>
-	/// 		<term>result</term>
-	/// 		<description>The <c>GameObject</c> for user's canvas of result</description>
-	/// 	</item>
-	/// 	<item>
 	/// 		<term>record</term>
 	/// 		<description>The goal of missed record</description>
 	/// 	</item>
 	/// 	<item>
-	/// 		<term>speedMetor</term>
-	/// 		<description>The showing of the speed. Moreover, only contained in Car</description>
+	/// 		<term>checkList</term>
+	/// 		<description>Checklist for keeping rules</description>
 	/// 	</item>
 	/// </list>
-	public int status;
-	public int condition;
-	public GameObject obj;
-	public Rigidbody rigid;
-	public GameObject camera;
-	public GameObject timer;
-	public GameObject message;
-	public GameObject result;
-	public TimeSpan record;
-	public GameObject speedMeter;
-	public Dictionary<string, bool> checks = new Dictionary<string, bool>();
-	public UserState(GameObject carObject) {
+
+
+	private int status;
+	private int condition;
+	private TimeSpan record;
+	private Dictionary<string, bool> checkList;
+
+	public UserState() {
 		status = -1;
 		condition = 0;
-		obj = carObject;
-		rigid = carObject.GetComponent<Rigidbody>();
-		if(carObject.transform.FindChild("MainCamera" + carObject.name[carObject.name.Length - 1])) {
-			camera = carObject.transform.FindChild("MainCamera" + carObject.name[carObject.name.Length - 1]).gameObject;
-		}
-		else {
-			camera = GameObject.Find("MainCamera" + carObject.name[carObject.name.Length - 1]).gameObject;
-		}
-		timer = carObject.transform.FindChild("Canvas/Timer").gameObject;
-		message = carObject.transform.FindChild("Canvas/Message").gameObject;
-		result = carObject.transform.FindChild("Canvas/Result").gameObject;
 		record = new TimeSpan(0, 0, 0);
+		checkList =  new Dictionary<string, bool>();
+	}
 
-		if (carObject.transform.FindChild ("Meter/Speed") != null) {
-			speedMeter = carObject.transform.FindChild ("Meter/Speed").gameObject;
+	public int Status {
+		get {
+			return status;
 		}
-		else {
-			speedMeter = null;
+		set {
+			status = value;
 		}
 	}
+		
+	public int Condition {
+		get {
+			return condition;
+		}
+		set {
+			condition = value;
+		}
+	}
+		
+	public TimeSpan Record {
+		get {
+			return record;
+		}
+		set {
+			record = value;
+		}
+	}
+
+	public Dictionary<string, bool> CheckList {
+		get {
+			return checkList;
+		}
+		set {
+			checkList = value;
+		}
+	}
+
 }
