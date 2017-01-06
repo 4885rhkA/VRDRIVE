@@ -25,6 +25,7 @@ public class Signal : MonoBehaviour {
 	private IEnumerator TurnSignal() {
 		while (true) {
 			int waitTime = 10;
+			status = (status + 1) % 3;
 			switch (status) {
 				case 0:
 					waitTime = greenColorTime;
@@ -45,7 +46,6 @@ public class Signal : MonoBehaviour {
 					redRenderer.enabled = true;
 					break;
 			}
-			status = (status + 1) % 3;
 			yield return new WaitForSeconds(waitTime);
 		}
 	}

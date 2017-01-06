@@ -95,6 +95,7 @@ public class GameController : MonoBehaviour {
 	/// <summary>Start preparing playing game after press KeyCode E.</summary>
 	private void ReleaseStartGame() {
 		UserState carValue;
+		GameObject checks = GameObject.Find ("Checks");
 		foreach(KeyValuePair<string, UserState> car in cars) {
 			carValue = car.Value;
             ViewerController.instance.ChangeRawImageState(carValue.obj.transform.FindChild("Canvas/HowTo").gameObject.GetComponent<RawImage>(), false);
@@ -106,9 +107,27 @@ public class GameController : MonoBehaviour {
 			else {
 				Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
 			}
+			if (checks != null) {
+				foreach (Transform child in checks.transform) {
+					if (child.name != "Stop") {
+						car.Value.checks.Add (child.name, true);
+					}
+					else {
+						car.Value.checks.Add (child.name, false);
+					}
+				}
+			}
 		}
         SoundController.instance.ShotClipSound("count");
         StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
+	}
+
+	public void SetUserCheck(string userName, string targetCheckName, bool value) {
+		cars [userName].checks [targetCheckName] = value;
+		Debug.Log (cars [userName].checks ["Stop"]);
+		Debug.Log (cars [userName].checks ["Signal"]);
+		Debug.Log (cars [userName].checks ["50km"]);
+
 	}
 
 	/// <summary>Start the game after finishing the count sound.</summary>
@@ -138,8 +157,7 @@ public class GameController : MonoBehaviour {
 		SoundController.instance.StartStageSound();
 		StageController.instance.StartGimmick ();
 	}
-
-
+		
 
 	/// <summary>Execute viewerController.ChangeTextState with delay.</summary>
 	/// <param name="delayLength">The length of the delay</param>
@@ -178,16 +196,17 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Update the status for user. 
+	/// Get the value for deciding each object should do function or not when touching with them. 
 	/// </summary>
 	/// <param name="incidentObject">The <c>GameObject</c> occurs incident</param>
 	/// <param name="targetObject">The <c>GameObject</c> suffered the incident</param>
 	/// <returns>
-	///  	1:Change the status of user
-	///  	0:Collision both incident with the same tag or user is still in incident, Each incident must do only each defined action /
-	/// 	-1:Collision both incident with the different tag, no incident occurs
+	///  	1:IncidentObject and targetObject should do each functions
+	///  	0:TargetObject should do function
+	/// 	-1:No Objects should do
 	/// </returns>
-	public int UpdateGameState(GameObject incidentObject, GameObject targetObject) {
+	/// TODO Fix this algorithm / It's bad to get value with updating user's condition
+	public int GetOrderCodeForObjectsByTouch(GameObject incidentObject, GameObject targetObject) {
 		if(targetObject.tag == "Car") {
 			string targetObjectName = targetObject.name;
 			if(cars.ContainsKey(targetObjectName)) {
@@ -218,7 +237,7 @@ public class GameController : MonoBehaviour {
 						}
 					}
 					else if(incidentObject.tag == "Check"){
-					
+						return -1;
 					}
 				}
 				return 0;

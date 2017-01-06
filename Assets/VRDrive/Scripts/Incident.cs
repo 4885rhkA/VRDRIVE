@@ -5,7 +5,7 @@ using System.Collections;
 public abstract class Incident : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider) {
-		int result = GameController.instance.UpdateGameState(gameObject.transform.root.gameObject, collider.gameObject.transform.root.gameObject);
+		int result = GameController.instance.GetOrderCodeForObjectsByTouch(gameObject.transform.root.gameObject, collider.gameObject.transform.root.gameObject);
 		if(result > -1) {
 			CollidedActionForMyself();
 		}
@@ -15,12 +15,41 @@ public abstract class Incident : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		int result = GameController.instance.UpdateGameState(gameObject.transform.root.gameObject, collision.gameObject.transform.root.gameObject);
+		int result = GameController.instance.GetOrderCodeForObjectsByTouch(gameObject.transform.root.gameObject, collision.gameObject.transform.root.gameObject);
 		if(result > -1) {
 			CollidedActionForMyself();
 		}
 		if(result > 0) {
 			CollisionActionForUser(collision);
+		}
+	}
+
+	/// <summary>
+	/// Raises the trigger stay event.
+	/// </summary>
+	/// <param name="collider">Collider.</param>
+	/// TODO change the function
+	void OnTriggerStay(Collider collider) {
+		if (collider.gameObject.tag == "Car") {
+			if (gameObject.transform.parent.gameObject.name == "Stop") {
+				ColliderActionForUser(collider);
+			}
+			if (gameObject.transform.parent.gameObject.name == "50km") {
+				ColliderActionForUser(collider);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Raises the trigger exit event.
+	/// </summary>
+	/// <param name="collider">Collider.</param>
+	/// TODO change the function
+	void OnTriggerExit(Collider collider) {
+		if (collider.gameObject.tag == "Car") {
+			if (gameObject.transform.parent.gameObject.name == "Signal") {
+				ColliderActionForUser(collider);
+			}
 		}
 	}
 

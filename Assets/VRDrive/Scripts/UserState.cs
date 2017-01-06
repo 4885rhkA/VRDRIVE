@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 /// Class of the values for oprating parameters.
 public class UserState {
@@ -58,6 +59,7 @@ public class UserState {
 	public GameObject result;
 	public TimeSpan record;
 	public GameObject speedMeter;
+	public Dictionary<string, bool> checks = new Dictionary<string, bool>();
 	public UserState(GameObject carObject) {
 		status = -1;
 		condition = 0;
