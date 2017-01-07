@@ -75,6 +75,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 439832}
+  - 114: {fileID: 11410722}
   m_Layer: 0
   m_Name: WheelFL
   m_TagString: Untagged
@@ -212,6 +213,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 429882}
+  - 114: {fileID: 11467428}
   m_Layer: 0
   m_Name: WheelRR
   m_TagString: Untagged
@@ -277,6 +279,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 433240}
+  - 114: {fileID: 11472024}
   m_Layer: 0
   m_Name: WheelFR
   m_TagString: Untagged
@@ -380,6 +383,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 462226}
+  - 114: {fileID: 11417680}
   m_Layer: 0
   m_Name: WheelRL
   m_TagString: Untagged
@@ -3605,6 +3609,18 @@ MonoBehaviour:
   maxRolloffDistance: 500
   dopplerLevel: 1
   useDoppler: 1
+--- !u!114 &11410722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68087eb5ec0394f158102c07b534100b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carController: {fileID: 11463878}
 --- !u!114 &11410912
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3661,6 +3677,18 @@ MonoBehaviour:
   NormalIsForward: 1
   AspectRatio: 1.5
   MirrorRecursion: 0
+--- !u!114 &11417680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 130566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68087eb5ec0394f158102c07b534100b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carController: {fileID: 11463878}
 --- !u!114 &11423250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3797,6 +3825,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SkidTrailPrefab: {fileID: 400000, guid: 4b6aa99de5d21424eab6ae279f31475b, type: 2}
   skidParticles: {fileID: 0}
+--- !u!114 &11467428
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 117146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68087eb5ec0394f158102c07b534100b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carController: {fileID: 11463878}
+--- !u!114 &11472024
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 120472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68087eb5ec0394f158102c07b534100b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carController: {fileID: 11463878}
 --- !u!114 &11487232
 MonoBehaviour:
   m_ObjectHideFlags: 1

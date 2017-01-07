@@ -28,6 +28,7 @@ GameObject:
   - 4: {fileID: 434528}
   - 33: {fileID: 3338994}
   - 23: {fileID: 2332830}
+  - 114: {fileID: 11499394}
   m_Layer: 0
   m_Name: SkyCarWheelFrontRight
   m_TagString: Untagged
@@ -80,6 +81,7 @@ GameObject:
   - 4: {fileID: 402458}
   - 33: {fileID: 3312382}
   - 23: {fileID: 2327154}
+  - 114: {fileID: 11452776}
   m_Layer: 0
   m_Name: SkyCarWheelRearRight
   m_TagString: Untagged
@@ -183,6 +185,7 @@ GameObject:
   - 4: {fileID: 431032}
   - 33: {fileID: 3316846}
   - 23: {fileID: 2320476}
+  - 114: {fileID: 11437538}
   m_Layer: 0
   m_Name: SkyCarWheelFrontLeft
   m_TagString: Untagged
@@ -367,6 +370,7 @@ GameObject:
   - 4: {fileID: 468256}
   - 33: {fileID: 3366482}
   - 23: {fileID: 2320048}
+  - 114: {fileID: 11447266}
   m_Layer: 0
   m_Name: SkyCarWheelRearLeft
   m_TagString: Untagged
@@ -1500,6 +1504,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SkidTrailPrefab: {fileID: 400000, guid: 4b6aa99de5d21424eab6ae279f31475b, type: 2}
   skidParticles: {fileID: 0}
+--- !u!114 &11437538
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68087eb5ec0394f158102c07b534100b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carController: {fileID: 11440004}
 --- !u!114 &11440004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1552,6 +1568,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   car: {fileID: 0}
+--- !u!114 &11447266
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 179960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68087eb5ec0394f158102c07b534100b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carController: {fileID: 11440004}
+--- !u!114 &11452776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 119560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68087eb5ec0394f158102c07b534100b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carController: {fileID: 11440004}
 --- !u!114 &11458988
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1612,6 +1652,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheel: {fileID: 104920}
+--- !u!114 &11499394
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68087eb5ec0394f158102c07b534100b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carController: {fileID: 11440004}
 --- !u!146 &14601478
 WheelCollider:
   m_ObjectHideFlags: 1
