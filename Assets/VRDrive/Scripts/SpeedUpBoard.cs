@@ -27,11 +27,11 @@ public class SpeedUpBoard : Incident {
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollisionActionForMyself() {}
+	protected override void CollisionActionForMyself(int kindOfCollision) {}
 
 	/// <summary>When collider/collision occurs, do user's action.</summary>
 	/// <param name="userName">The name for user</param>
-	protected override void CollisionActionForUser(string userName) {
+	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;

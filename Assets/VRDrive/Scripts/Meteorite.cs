@@ -44,7 +44,7 @@ public class Meteorite : Incident {
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollisionActionForMyself() {
+	protected override void CollisionActionForMyself(int kindOfCollision) {
 		Detonator detonator = gameObject.GetComponent<Detonator>();
 		float explosionLength = explosionSound.clip.length;
 		gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
@@ -60,7 +60,7 @@ public class Meteorite : Incident {
 
 	/// <summary>When collider/collision occurs, do user's action.</summary>
 	/// <param name="userName">The name for user</param>
-	protected override void CollisionActionForUser(string userName) {
+	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
