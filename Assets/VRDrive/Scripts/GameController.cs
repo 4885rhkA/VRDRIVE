@@ -48,13 +48,6 @@ public class GameController : MonoBehaviour {
 	private bool startGameAtTheSameTimeFlag = false;
 	private int remainingInGame = 0;
 
-	public UserSet GetUserSet(string userName) {
-		if (HasUserSet (userName)) {
-			return userSets [userName];
-		}
-		return new UserSet(new UserObject(), new UserState());
-	}
-
 	void Awake() {
 		instance = this;
 		userSets.Clear ();
@@ -169,11 +162,6 @@ public class GameController : MonoBehaviour {
         StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
 	}
 
-	public void UpdateCheckList(string userName, string checkName, bool value) {
-		// TODO change the how to solve
-		userSets [userName].UserState.CheckList [checkName] = value;
-	}
-
 	/// <summary>Start the game after finishing the count sound.</summary>
 	/// <param name="clipLength">The length of the count <c>AudioClip</c></param>
 	private IEnumerator StartGame(float clipLength) {  
@@ -215,41 +203,27 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>Update the status.</summary>
 	/// <param name="userName">The name for user</param>
-	/// <param name="userStatus">The status of each user</param>
+	/// <param name="status">The status of each user</param>
 	/// TODO Fix this algorithm
-	public void UpdateUserStatus(string userName, int userStatus) {
-		UserSet userSet = userSets [userName];
-		UserObject userObject = userSet.UserObject;
-		UserState userState = userSet.UserState;
+	public void UpdateUserStatus(string userName, int status) {
+		if (HasUserSet (userName)) {
+			UserSet userSet = userSets [userName];
+			UserObject userObject = userSet.UserObject;
+			UserState userState = userSet.UserState;
 
-		if (userState.Status < 1) {
-			userState.Status = userStatus;
-			if(userState.Status > 0) {
-				remainingInGame--;
+			if (userState.Status < 1) {
+				userState.Status = status;
+				if(userState.Status > 0) {
+					remainingInGame--;
+				}
 			}
-		}
-		switch(userStatus) {
-			case -1:
-				UserController.instance.SetFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
-				break;
-			case 0:
-				UserController.instance.ReleaseFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
-				break;
-			default:
-				break;
-		}
-	}
 
-	/// <summary>Update the condition.</summary>
-	/// <param name="carName">The name for user</param>
-	/// <param name="carCondition">The condition of each user</param>
-	/// TODO Fix this algorithm
-	public void UpdateUserCondition(string carName, int carCondition) {
-		if(userSets.ContainsKey(carName)) {
-			userSets[carName].UserState.Condition = carCondition;
-			switch(carCondition) {
-				case 1:
-					StartCoroutine(ViewerController.instance.ChangeDamageView(userSets[carName].UserObject.MainCamera));
+			switch(userState.Status) {
+				case -1:
+					UserController.instance.SetFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
+					break;
+				case 0:
+					UserController.instance.ReleaseFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
 					break;
 				default:
 					break;
@@ -257,31 +231,70 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>Update the condition.</summary>
+	/// <param name="userName">The name for user</param>
+	/// <param name="condition">The condition of each user</param>
+	public void UpdateUserCondition(string userName, int condition) {
+		if (HasUserSet (userName)) {
+			UserSet userSet = userSets [userName];
+			UserState userState = userSet.UserState;
+
+			userState.Condition = condition;
+
+			switch(condition) {
+				case 1:
+					StartCoroutine(ViewerController.instance.ChangeDamageView(userSets[userName].UserObject.MainCamera));
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	/// <summary>Update the finished time.</summary>
+	/// <param name="userName">The name for user</param>
+	/// <param name="timeSpan">PastTime from the starte</param>
+	public void UpdateRecord(string userName, TimeSpan timeSpan) {
+		if (HasUserSet (userName)) {
+			userSets [userName].UserState.Record = timeSpan;
+		}
+	}
+
+	public void UpdateCheckList(string userName, string checkName, bool value) {
+		if (HasUserSet (userName)) {
+			userSets [userName].UserState.CheckList [checkName] = value;
+		}
+	}
+
 	/// <summary>Call the miss display.</summary>
 	/// <param name="userName">The name for user</param>
 	public void MissGame(string userName) {
-		GameObject result = userSets[userName].UserObject.Result;
-		Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
+		if (HasUserSet (userName)) {
+			GameObject result = userSets[userName].UserObject.Result;
+			Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
 
-		// Set View and Sound for Miss
-		if(ColorUtility.TryParseHtmlString(colorMiss, out fontColor)) {
-			ViewerController.instance.ChangeTextContent(resultText, "MISS......", fontColor);
+			// Set View and Sound for Miss
+			if(ColorUtility.TryParseHtmlString(colorMiss, out fontColor)) {
+				ViewerController.instance.ChangeTextContent(resultText, "MISS......", fontColor);
+			}
+			ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
+			ViewerController.instance.ChangeTextState(resultText, true);
+			SoundController.instance.ShotClipSound("miss");
 		}
-		ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
-		ViewerController.instance.ChangeTextState(resultText, true);
-		SoundController.instance.ShotClipSound("miss");
 	}
 
 	/// <summary>Call the miss display quickly.</summary>
 	/// <param name="userName">The name for user</param>
 	private void MissGameQuickly(string userName) {
-		UserSet userSet = userSets [userName];
-		UserObject userObject = userSet.UserObject;
-		UserState userState = userSet.UserState;
+		if (HasUserSet (userName)) {
+			UserSet userSet = userSets [userName];
+			UserObject userObject = userSet.UserObject;
+			UserState userState = userSet.UserState;
 
-		userState.Record = TimerController.instance.PastTime;
-		UpdateUserStatus(userObject.Obj.name, 2);
-		MissGame(userObject.Obj.name);
+			userState.Record = TimerController.instance.PastTime;
+			UpdateUserStatus(userObject.Obj.name, 2);
+			MissGame(userObject.Obj.name);		
+		}
 	}
 
 	/// <summary>Change the vignette in view.</summary>
@@ -298,14 +311,19 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Update the finished time.</summary>
-	/// <param name="userName">The name for user</param>
-	/// <param name="timeSpan">PastTime from the starte</param>
-	public void UpdateRecord(string userName, TimeSpan timeSpan) {
-		userSets [userName].UserState.Record = timeSpan;
+	public bool HasUserSet(string name) {
+		if (userSets.ContainsKey (name)) {
+			return true;
+		}
+		Debug.LogWarning ("Couldn't find " + name + " in UserSet");
+		return false;
 	}
 
-	public bool HasUserSet(string name) {
-		return userSets.ContainsKey (name);
+	public UserSet GetUserSet(string userName) {
+		if (HasUserSet (userName)) {
+			return userSets [userName];
+		}
+		return new UserSet(new UserObject(), new UserState());
 	}
+
 }

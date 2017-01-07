@@ -49,5 +49,4 @@ public abstract class Incident : MonoBehaviour {
 
 	protected abstract void CollisionActionForUser(string collidedObjectName);
 
-
 }
