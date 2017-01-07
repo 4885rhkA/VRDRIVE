@@ -8288,7 +8288,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 121238, guid: 120e73a1370f64454ad09a84777ba111, type: 2}
       propertyPath: m_Name
-      value: User0
+      value: Player0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 120e73a1370f64454ad09a84777ba111, type: 2}
@@ -9009,7 +9009,7 @@ Transform:
   m_Children:
   - {fileID: 1417716108}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 4
 --- !u!1 &2114787645
 GameObject:
   m_ObjectHideFlags: 0

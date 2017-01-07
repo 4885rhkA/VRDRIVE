@@ -45,6 +45,10 @@ public abstract class Incident : MonoBehaviour {
 		}
 	}
 
+	protected bool ContainedCheckList() {
+		return gameObject.transform.root.gameObject.name == "CheckList";
+	}
+
 	protected abstract void CollisionActionForMyself(int kindOfCollision);
 
 	protected abstract void CollisionActionForUser(string userName, int kindOfCollision);

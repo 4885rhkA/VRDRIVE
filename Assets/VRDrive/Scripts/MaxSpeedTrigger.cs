@@ -2,7 +2,9 @@
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
-public class StopTrigger : Incident {
+public class MaxSpeedTrigger: Incident {
+
+	private float maxSpeed;
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
@@ -17,6 +19,7 @@ public class StopTrigger : Incident {
 
 	void Start() {
 		parentName = gameObject.transform.parent.gameObject.name;
+		maxSpeed = float.Parse (parentName.Replace ("km", ""));
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
@@ -30,9 +33,9 @@ public class StopTrigger : Incident {
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		if(ContainedCheckList()) {
-			if (userObject.Obj.GetComponent<MyCarController> ().GetCurrentSpeed () < 5 && userState.CheckList[parentName] == false) {
-				GameController.instance.UpdateCheckList (GetComponent<Collider>().gameObject.name, parentName, true);
+		if (ContainedCheckList ()) {
+			if (userObject.Obj.GetComponent<MyCarController> ().GetCurrentSpeed () > maxSpeed && userState.CheckList[parentName]) {
+				GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
 			}
 		}
 	}

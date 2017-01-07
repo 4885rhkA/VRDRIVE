@@ -15,8 +15,10 @@ public class MenuController : MonoBehaviour {
 	private int selectStageNo = 0;
 
 	private Color fontColor = new Color();
-	private string colorSelected = "#FFFFFFFF";
-	private string colorNoSelected = "#646464FF";
+	private Dictionary<string, string> colorList = new Dictionary<string, string>() {
+		{"selected", "#FFFFFFFF"},
+		{"noSelected", "#646464FF"}
+	};
 
 	private bool changingSelectionFlag = false;
 	private float timeForChangingSelection = 0.1f;
@@ -30,13 +32,10 @@ public class MenuController : MonoBehaviour {
 		if(stageObjects != null) {
 			stageObjects = stageObjects.OrderBy(stageObject => stageObject.name).ToArray();
 		}
-		if(ColorUtility.TryParseHtmlString(colorSelected, out fontColor)) {
+		if(ColorUtility.TryParseHtmlString(colorList["selected"], out fontColor)) {
 			ViewerController.instance.ChangeTextContent(
 				stageObjects[0].transform.FindChild(stageObjects[0].name + "Text").GetComponent<Text>(), null, fontColor
 			);
-		}
-		else {
-			Debug.LogWarning("The color" + colorSelected + "cannnot convert into Color class.");
 		}
 		ViewerController.instance.ChangeRawImageState(stageObjects[0].GetComponent<RawImage>(), true);
 		SoundController.instance.StartMenuSound();
@@ -66,12 +65,12 @@ public class MenuController : MonoBehaviour {
 			else if(Mathf.Abs(horizontal) > 0.5) {
 				changingSelectionFlag = true;
 				stageObjects[selectStageNo].GetComponent<RawImage>().enabled = false;
-				if(ColorUtility.TryParseHtmlString(colorNoSelected, out fontColor)) {
+				if(ColorUtility.TryParseHtmlString(colorList["noSelected"], out fontColor)) {
 					GameObject stageObject = stageObjects[selectStageNo];
 					stageObject.transform.FindChild(stageObject.name + "Text").GetComponent<Text>().color = fontColor;
 				}
 				else {
-					Debug.LogWarning("The color" + colorSelected + "cannnot convert into Color class.");
+					Debug.LogWarning("The color" + colorList["selected"] + "cannnot convert into Color class.");
 				}
 
 				if(horizontal > 0) {
@@ -84,7 +83,7 @@ public class MenuController : MonoBehaviour {
 					selectStageNo = stageObjects.Length - Mathf.Abs(selectStageNo);
 				}
 
-				if(ColorUtility.TryParseHtmlString(colorSelected, out fontColor)) {
+				if(ColorUtility.TryParseHtmlString(colorList["selected"], out fontColor)) {
 					GameObject stageObject = stageObjects[selectStageNo];
 					ViewerController.instance.ChangeTextContent(
 						stageObject.transform.FindChild(stageObject.name + "Text").GetComponent<Text>(), null, fontColor

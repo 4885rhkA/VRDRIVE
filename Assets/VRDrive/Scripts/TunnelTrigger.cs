@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityStandardAssets.Vehicles.Car;
 
-public class StopTrigger : Incident {
+public class TunnelTrigger : Incident {
+
+	private Transform startTransform;
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, false}, 	// OnTriggerEnter
+			{false, true}, 	// OnTriggerEnter
 			{false, false}, 	// OnCollisionEnter
-			{false, true}, 	// OnTriggerStay
+			{false, false}, 	// OnTriggerStay
 			{false, false},		// OnCollisionStay
 			{false, false}, 	// OnTriggerExit
 			{false, false}		// OnCollisionExit
@@ -16,7 +17,7 @@ public class StopTrigger : Incident {
 	}
 
 	void Start() {
-		parentName = gameObject.transform.parent.gameObject.name;
+		startTransform = GameObject.Find ("Start").gameObject.transform;
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
@@ -28,13 +29,12 @@ public class StopTrigger : Incident {
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
-		UserState userState = userSet.UserState;
 
-		if(ContainedCheckList()) {
-			if (userObject.Obj.GetComponent<MyCarController> ().GetCurrentSpeed () < 5 && userState.CheckList[parentName] == false) {
-				GameController.instance.UpdateCheckList (GetComponent<Collider>().gameObject.name, parentName, true);
-			}
+		if(GameController.instance.isPlayer(userObject.Obj.name)) {
+			StartCoroutine(ViewerController.instance.ChangeDamageView(userObject.MainCamera));
 		}
+		userObject.Obj.transform.position = startTransform.position;
+		userObject.Obj.transform.rotation = startTransform.rotation;
+		userObject.Obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 0);
 	}
-
 }

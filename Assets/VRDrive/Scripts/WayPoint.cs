@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityStandardAssets.Vehicles.Car;
 
-public class MaxSpeed: Incident {
+public class WayPoint : Incident {
 
-	private float maxSpeed;
+	Transform startWaypointTransform;
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, false}, 	// OnTriggerEnter
+			{false, true}, 	// OnTriggerEnter
 			{false, false}, 	// OnCollisionEnter
-			{false, true}, 	// OnTriggerStay
+			{false, false}, 	// OnTriggerStay
 			{false, false},		// OnCollisionStay
 			{false, false}, 	// OnTriggerExit
 			{false, false}		// OnCollisionExit
@@ -18,24 +17,22 @@ public class MaxSpeed: Incident {
 	}
 
 	void Start() {
-		parentName = gameObject.transform.parent.gameObject.name;
-		maxSpeed = float.Parse (parentName.Replace ("km", ""));
+		startWaypointTransform = transform.parent.Find ("Waypoint 000").gameObject.transform;
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollisionActionForMyself(int kindOfCollision) {
-	}
+	protected override void CollisionActionForMyself(int kindOfCollision) {}
 
 	/// <summary>When collider/collision occurs, do user's action.</summary>
 	/// <param name="userName">The name for user</param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
-		UserState userState = userSet.UserState;
 
-		if (userObject.Obj.GetComponent<MyCarController> ().GetCurrentSpeed () > maxSpeed && userState.CheckList[parentName]) {
-			GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
+		if(GameController.instance.isPlayer(userObject.Obj.name)) {
+			userObject.Obj.transform.position = startWaypointTransform.position;
+			userObject.Obj.transform.rotation = startWaypointTransform.rotation;
+			userObject.Obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 0);
 		}
 	}
-
 }

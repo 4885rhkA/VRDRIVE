@@ -285,7 +285,7 @@ namespace UnityStandardAssets.Vehicles.Car
         }
 
 
-        // checks if the wheels are spinning and is so does three things
+        // check if the wheels are spinning and is so does three things
         // 1) emits particles
         // 2) plays tiure skidding sounds
         // 3) leaves skidmarks on the ground

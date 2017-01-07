@@ -72,7 +72,7 @@ public class Meteorite : Incident {
 				Vector3 direction = userObject.Obj.GetComponent<Rigidbody>().velocity.normalized;
 				userObject.Obj.GetComponent<Rigidbody>().AddForce(new Vector3(direction.x, 0, Mathf.Abs(direction.z)) * attackPower * (-1), ForceMode.Impulse);
 				int userStatus = 0;
-				if(GameController.instance.oneKillMode) {
+				if(GameController.instance.OneKillMode) {
 					userStatus = 2;
 					GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
 				}
@@ -92,7 +92,7 @@ public class Meteorite : Incident {
 		UserState userState = userSet.UserState;
 
 		GameController.instance.UpdateUserCondition(userObject.Obj.name, 0);
-		if(userState.Status == 2 && GameController.instance.oneKillMode) {
+		if(userState.Status == 2 && GameController.instance.OneKillMode) {
 			GameController.instance.MissGame(userObject.Obj.name);
 		}
 	}

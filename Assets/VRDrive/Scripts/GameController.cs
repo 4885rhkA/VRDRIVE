@@ -35,29 +35,60 @@ public class GameController : MonoBehaviour {
 
 	public static GameController instance;
 
-	[SerializeField] public bool oneKillMode = true;
+	[SerializeField] private bool oneKillMode = true;
 
-	private Dictionary<string, UserSet> userSets = new Dictionary<string, UserSet>();
+	private Dictionary<string, UserSet> userSetList = new Dictionary<string, UserSet>();
 
-	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
 	private Color fontColor = new Color();
-	private string colorReady = "#272629FF";
-	private string colorGo = "#FFFFFFFF";
-	private string colorMiss = "#FFFFFFFF";
-	private string colorTimer = "#FFFFFFFF";
-	private string colorSpeedMeter = "#FFFFFFFF";
+	private Dictionary<string, string> colorList = new Dictionary<string, string>() {
+		{"ready", "#272629FF"},
+		{"go", "#FFFFFFFF"},
+		{"miss", "#FFFFFFFF"},
+		{"timer", "#FFFFFFFF"},
+		{"speedMeter", "#FFFFFFFF"},
+		{"goal", "#FFFFFFFF"},
+		{"record", "#FFFFFFFF"},
+		{"result", "#FFFFFFFF"}
+	};
+
+	private Dictionary<string, string> messageList = new Dictionary<string, string>() {
+		{"ready", "READY..."},
+		{"go", "GO!"},
+		{"miss", "MISS..."},
+		{"goal", "GOAL!"},
+		{"time", "TIME "},
+	};
 
 	private bool startGameAtTheSameTimeFlag = false;
 	private int remainingInGame = 0;
+	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
+
+	public bool OneKillMode {
+		get {
+			return oneKillMode;
+		}
+	}
+
+	public Dictionary<string, string> ColorList {
+		get {
+			return colorList;
+		}
+	}
+
+	public Dictionary<string, string> MessageList {
+		get {
+			return messageList;
+		}
+	}
 
 	void Awake() {
 		instance = this;
-		userSets.Clear ();
+		userSetList.Clear ();
 	}
 
 	void Start() {
 		GameObject[] carObjects = GameObject.FindGameObjectsWithTag("Car");
-		GameObject checks = GameObject.Find ("Checks");
+		GameObject checkList = GameObject.Find ("CheckList");
 		UserSet userSet;
 		UserObject userObject;
 		UserState userState;
@@ -67,20 +98,20 @@ public class GameController : MonoBehaviour {
 		if(carObjects != null) {
 			// Insert data about User's operating Car
 			foreach(GameObject carObject in carObjects) {
-				if (carObject.name.Contains ("User")) {
-					userSets.Add(carObject.name, new UserSet(new UserObject(carObject), new UserState()));
+				userSetList.Add (carObject.name, new UserSet (new UserObject (carObject), new UserState ()));
+				if (isPlayer(carObject.name)) {
 					remainingInGame++;
 				}
 			}
 
-			foreach(KeyValuePair<string, UserSet> eachUserSet in userSets) {
+			foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
 				userSet = eachUserSet.Value;
 				userObject = userSet.UserObject;
 				userState = userSet.UserState;
 
 				// Initialize CheckList
-				if (checks != null) {
-					foreach (Transform check in checks.transform) {
+				if (checkList != null) {
+					foreach (Transform check in checkList.transform) {
 						// TODO find the way how to set
 						if (check.name != "Stop") {
 							userState.CheckList.Add (check.name, true);
@@ -92,7 +123,9 @@ public class GameController : MonoBehaviour {
 				}
 
 				// Set standby position
-				ViewerController.instance.ChangeRawImageState(userObject.HowTo.GetComponent<RawImage>(), true);
+				if (isPlayer (eachUserSet.Key)) {
+					ViewerController.instance.ChangeRawImageState(userObject.HowTo.GetComponent<RawImage>(), true);
+				}
 				UserController.instance.RemoveDefaultGravity(userObject.Obj.GetComponent<Rigidbody>());
 				UpdateUserStatus(userObject.Obj.name, -1);
 			}
@@ -106,27 +139,30 @@ public class GameController : MonoBehaviour {
 		float speed;
 		timeSpan = TimerController.instance.PastTime;
 
-		foreach(KeyValuePair<string, UserSet> eachUserSet in userSets) {
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
 			userSet = eachUserSet.Value;
 			userObject = userSet.UserObject;
 
-			// Update timer
-			timerText = userObject.Timer.transform.FindChild("TimerText").gameObject.GetComponent<Text> ();
-			if (ColorUtility.TryParseHtmlString (colorTimer, out fontColor)) {
-				ViewerController.instance.ChangeTextContent(timerText, ViewerController.instance.GetTimerText (timeSpan), fontColor);
+			if (isPlayer (eachUserSet.Key)) {
+				// Update timer
+				timerText = userObject.Timer.transform.FindChild("TimerText").gameObject.GetComponent<Text> ();
+				if (ColorUtility.TryParseHtmlString (colorList["timer"], out fontColor)) {
+					ViewerController.instance.ChangeTextContent(timerText, ViewerController.instance.GetTimerText (timeSpan), fontColor);
+				}
+
+				// Update Speed Meter 
+				if(userObject.SpeedMeter != null) {
+					speed = userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed();
+
+					if (ColorUtility.TryParseHtmlString (colorList["speedMeter"], out fontColor)) {
+						ViewerController.instance.ChangeTextMeshContent(userObject.SpeedMeter.GetComponent<TextMesh>(), speed.ToString("f1"), fontColor);
+					}
+				}
 			}
 
 			//Keep adding gravity
 			UserController.instance.AddLocalGravity(userObject.Obj.GetComponent<Rigidbody>());
-	
-			// Update Speed Meter 
-			if(userObject.SpeedMeter != null) {
-				speed = userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed();
 
-				if (ColorUtility.TryParseHtmlString (colorSpeedMeter, out fontColor)) {
-					ViewerController.instance.ChangeTextMeshContent(userObject.SpeedMeter.GetComponent<TextMesh>(), speed.ToString("f1"), fontColor);
-				}
-			}
 		}
 	}
 
@@ -134,20 +170,22 @@ public class GameController : MonoBehaviour {
 	private void ReleaseStartGame() {
 		UserObject userObject;
 		GameObject messageText;
-		foreach(KeyValuePair<string, UserSet> eachUserSet in userSets) {
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
 			userObject = eachUserSet.Value.UserObject;
 
-			// Standby for starting
-			messageText = userObject.Message.transform.FindChild ("MessageText").gameObject;
-			ViewerController.instance.ChangeRawImageState(userObject.HowTo.GetComponent<RawImage>(), false);
-			ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(0, messageText.GetComponent<Text>(), true);
-			if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
-				ViewerController.instance.ChangeTextContent(messageText.GetComponent<Text>(), "READY...", fontColor);
+			if (isPlayer (eachUserSet.Key)) {
+				// Standby for starting
+				messageText = userObject.Message.transform.FindChild ("MessageText").gameObject;
+				ViewerController.instance.ChangeRawImageState(userObject.HowTo.GetComponent<RawImage>(), false);
+				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
+				StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText.GetComponent<Text>(), true));
+				if(ColorUtility.TryParseHtmlString(colorList["ready"], out fontColor)) {
+					ViewerController.instance.ChangeTextContent(messageText.GetComponent<Text>(), messageList["ready"], fontColor);
+				}
 			}
 		}
-        SoundController.instance.ShotClipSound("count");
-        StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
+		SoundController.instance.ShotClipSound("count");
+		StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
 	}
 
 	/// <summary>Start the game after finishing the count sound.</summary>
@@ -158,22 +196,25 @@ public class GameController : MonoBehaviour {
 		UserObject userObject;
 		Text messageText;
 		Text timerText;
-		foreach(KeyValuePair<string, UserSet> eachUserSet in userSets){
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList){
 			userSet = eachUserSet.Value;
 			userObject = userSet.UserObject;
-			messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
-			timerText = userObject.Timer.transform.FindChild ("TimerText").GetComponent<Text> ();
 
 			UpdateUserStatus(userObject.Obj.name, 0);
 
-			// Start Game
-			ViewerController.instance.ChangeRawImageState(userObject.Timer.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(0, timerText, true);
-			ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), false);
-			if(ColorUtility.TryParseHtmlString(colorGo, out fontColor)) {
-				ViewerController.instance.ChangeTextContent(messageText, "GO!", fontColor);
+			if (isPlayer (eachUserSet.Key)) {
+				messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
+				timerText = userObject.Timer.transform.FindChild ("TimerText").GetComponent<Text> ();
+
+				// Start Game
+				ViewerController.instance.ChangeRawImageState(userObject.Timer.GetComponent<RawImage>(), true);
+				StartCoroutine(ViewerController.instance.ChangeTextState(0, timerText, true));
+				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), false);
+				if(ColorUtility.TryParseHtmlString(colorList["go"], out fontColor)) {
+					ViewerController.instance.ChangeTextContent(messageText, messageList["go"], fontColor);
+				}
+				StartCoroutine(ViewerController.instance.ChangeTextState(SoundController.instance.GetClipLength("go"), messageText, false));
 			}
-			StartCoroutine(ViewerController.instance.ChangeTextState(SoundController.instance.GetClipLength("go"), messageText, false));
 		}
 		TimerController.instance.ResetStartTime();
 		SoundController.instance.StartStageSound();
@@ -185,7 +226,7 @@ public class GameController : MonoBehaviour {
 	/// <param name="status">The status of each user</param>
 	public void UpdateUserStatus(string userName, int status) {
 		if (HasUserSet (userName)) {
-			UserSet userSet = userSets [userName];
+			UserSet userSet = userSetList [userName];
 			UserObject userObject = userSet.UserObject;
 			UserState userState = userSet.UserState;
 
@@ -214,14 +255,14 @@ public class GameController : MonoBehaviour {
 	/// <param name="condition">The condition of each user</param>
 	public void UpdateUserCondition(string userName, int condition) {
 		if (HasUserSet (userName)) {
-			UserSet userSet = userSets [userName];
+			UserSet userSet = userSetList [userName];
 			UserState userState = userSet.UserState;
 
 			userState.Condition = condition;
 
 			switch(condition) {
 				case 1:
-					StartCoroutine(ViewerController.instance.ChangeDamageView(userSets[userName].UserObject.MainCamera));
+					StartCoroutine(ViewerController.instance.ChangeDamageView(userSetList[userName].UserObject.MainCamera));
 					break;
 				default:
 					break;
@@ -234,13 +275,13 @@ public class GameController : MonoBehaviour {
 	/// <param name="timeSpan">PastTime from the starte</param>
 	public void UpdateRecord(string userName, TimeSpan timeSpan) {
 		if (HasUserSet (userName)) {
-			userSets [userName].UserState.Record = timeSpan;
+			userSetList [userName].UserState.Record = timeSpan;
 		}
 	}
 
 	public void UpdateCheckList(string userName, string checkName, bool value) {
 		if (HasUserSet (userName)) {
-			userSets [userName].UserState.CheckList [checkName] = value;
+			userSetList [userName].UserState.CheckList [checkName] = value;
 		}
 	}
 
@@ -248,16 +289,19 @@ public class GameController : MonoBehaviour {
 	/// <param name="userName">The name for user</param>
 	public void MissGame(string userName) {
 		if (HasUserSet (userName)) {
-			GameObject result = userSets[userName].UserObject.Result;
-			Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
+			GameObject result = userSetList[userName].UserObject.Result;
 
-			// Set View and Sound for Miss
-			if(ColorUtility.TryParseHtmlString(colorMiss, out fontColor)) {
-				ViewerController.instance.ChangeTextContent(resultText, "MISS......", fontColor);
+			if (isPlayer (userName)) {
+				Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
+
+				// Set View and Sound for Miss
+				if(ColorUtility.TryParseHtmlString(colorList["miss"], out fontColor)) {
+					ViewerController.instance.ChangeTextContent(resultText, messageList["miss"], fontColor);
+				}
+				ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
+				StartCoroutine(ViewerController.instance.ChangeTextState(0, resultText, true));
+				SoundController.instance.ShotClipSound("miss");
 			}
-			ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(0, resultText, true);
-			SoundController.instance.ShotClipSound("miss");
 		}
 	}
 
@@ -265,7 +309,7 @@ public class GameController : MonoBehaviour {
 	/// <param name="userName">The name for user</param>
 	private void MissGameQuickly(string userName) {
 		if (HasUserSet (userName)) {
-			UserSet userSet = userSets [userName];
+			UserSet userSet = userSetList [userName];
 			UserObject userObject = userSet.UserObject;
 			UserState userState = userSet.UserState;
 
@@ -287,7 +331,7 @@ public class GameController : MonoBehaviour {
 			SceneManager.LoadScene("menu");
 		}
 
-		foreach(KeyValuePair<string, UserSet> eachUserSet in userSets) {
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
 			userSet = eachUserSet.Value;
 			if(userSet.UserState.Status == 0) {
 				MissGameQuickly(userSet.UserObject.Obj.name);
@@ -296,17 +340,24 @@ public class GameController : MonoBehaviour {
 	}
 
 	public bool HasUserSet(string name) {
-		if (userSets.ContainsKey (name)) {
+		if (userSetList.ContainsKey (name)) {
 			return true;
 		}
 		return false;
 	}
 
-	public UserSet GetUserSet(string userName) {
-		if (HasUserSet (userName)) {
-			return userSets [userName];
+	public UserSet GetUserSet(string name) {
+		if (HasUserSet (name)) {
+			return userSetList [name];
 		}
 		return new UserSet(new UserObject(), new UserState());
+	}
+
+	public bool isPlayer(string name) {
+		if (HasUserSet (name) && name.Contains("Player")) {
+			return true;
+		}
+		return false;
 	}
 
 }

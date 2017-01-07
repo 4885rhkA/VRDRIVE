@@ -11,16 +11,15 @@ public class StageController : MonoBehaviour {
 
 	[SerializeField] private bool meteorites = true;
 	[SerializeField] private bool sppedUpBoards = true;
-	[SerializeField] private bool checks = true;
+	[SerializeField] private bool checkList = true;
 	[SerializeField] private bool tunnnels = true;
-
 
 	public void SetCondition() {
 		if(GameObject.Find ("SpeedUpBoards") != null && !sppedUpBoards) {
 			GameObject.Find ("SpeedUpBoards").gameObject.SetActive(false);
 		}
-		if(GameObject.Find ("Checks") != null && !checks) {
-			GameObject.Find ("Checks").gameObject.SetActive(false);
+		if(GameObject.Find ("CheckList") != null && !checkList) {
+			GameObject.Find ("CheckList").gameObject.SetActive(false);
 		}
 		if(GameObject.Find ("Tunnels") != null && !tunnnels) {
 			GameObject.Find ("Tunnels").gameObject.SetActive(false);

@@ -37,11 +37,12 @@ public class SpeedUpBoard : Incident {
 		UserState userState = userSet.UserState;
 
 		if (userState.Condition == 0) {
-			GameController.instance.UpdateUserCondition (userObject.Obj.name, 2);
-			ViewerController.instance.ChangeMotionBlur(userObject.MainCamera, blurAmount);
+			if(GameController.instance.isPlayer(userObject.Obj.name)) {
+				ViewerController.instance.ChangeMotionBlur(userObject.MainCamera, blurAmount);
+				SoundController.instance.ShotClipSound("speedup");
+			}			GameController.instance.UpdateUserCondition (userObject.Obj.name, 2);
 			userObject.Obj.GetComponent<MyCarController>().MaxSpeed *= multipleSpeed;
 			userObject.Obj.GetComponent<Rigidbody>().AddForce(Vector3.forward * pushPower, ForceMode.VelocityChange);
-			SoundController.instance.ShotClipSound("speedup");
 			GameController.instance.UpdateUserStatus(userObject.Obj.name, 0);
 			StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("speedup"), userSet));
 		}
@@ -54,8 +55,10 @@ public class SpeedUpBoard : Incident {
 
 		UserObject userObject = userSet.UserObject;
 
+		if (GameController.instance.isPlayer (userObject.Obj.name)) {
+			ViewerController.instance.ChangeMotionBlur(userObject.MainCamera, 0);
+		}
 		GameController.instance.UpdateUserCondition(userObject.Obj.name, 0);
-		ViewerController.instance.ChangeMotionBlur(userObject.MainCamera, 0);
 
 		userObject.Obj.GetComponent<MyCarController>().MaxSpeed /= multipleSpeed;
 	}

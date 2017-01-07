@@ -36,30 +36,29 @@ public class UserObject {
 	/// 	</item>
 	/// </list>
 
-	private GameObject obj;
-	private GameObject mainCamera;
-	private GameObject timer;
-	private GameObject message;
-	private GameObject result;
-	private GameObject howTo;
-	private GameObject speedMeter;
+	private GameObject obj = null;
+	private GameObject mainCamera = null;
+	private GameObject timer = null;
+	private GameObject message = null;
+	private GameObject result = null;
+	private GameObject howTo = null;
+	private GameObject speedMeter = null;
 
 	public UserObject() {
 	}
 
 	public UserObject(GameObject userObject) {
 		obj = userObject;
-		mainCamera = obj.transform.FindChild("MainCamera" + obj.name[obj.name.Length - 1]).gameObject;
-		timer = obj.transform.FindChild("Canvas/Timer").gameObject;
-		message = obj.transform.FindChild("Canvas/Message").gameObject;
-		result = obj.transform.FindChild("Canvas/Result").gameObject;
-		howTo = obj.transform.FindChild("Canvas/HowTo").gameObject;
 
-		if (obj.transform.FindChild ("Meter/Speed") != null) {
-			speedMeter = obj.transform.FindChild ("Meter/Speed").gameObject;
-		}
-		else {
-			speedMeter = null;
+		if(userObject.name.Contains ("Player")) {
+			mainCamera = obj.transform.FindChild("MainCamera" + obj.name[obj.name.Length - 1]).gameObject;
+			timer = obj.transform.FindChild("Canvas/Timer").gameObject;
+			message = obj.transform.FindChild("Canvas/Message").gameObject;
+			result = obj.transform.FindChild("Canvas/Result").gameObject;
+			howTo = obj.transform.FindChild("Canvas/HowTo").gameObject;
+			if (obj.transform.FindChild ("Meter/Speed") != null) {
+				speedMeter = obj.transform.FindChild ("Meter/Speed").gameObject;
+			}
 		}
 	}
 
