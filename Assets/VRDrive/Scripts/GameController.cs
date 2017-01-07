@@ -44,6 +44,9 @@ public class GameController : MonoBehaviour {
 	private string colorReady = "#272629FF";
 	private string colorGo = "#FFFFFFFF";
 	private string colorMiss = "#FFFFFFFF";
+	private string colorTimer = "#FFFFFFFF";
+	private string colorResult = "#FFFFFFFF";
+	private string colorSpeedMeter = "#FFFFFFFF";
 
 	private bool startGameAtTheSameTimeFlag = false;
 	private int remainingInGame = 0;
@@ -127,7 +130,9 @@ public class GameController : MonoBehaviour {
 
 			// Update timer
 			timerText = userObject.Timer.transform.FindChild("TimerText").gameObject.GetComponent<Text> ();
-			ViewerController.instance.ChangeTextContent(timerText, ViewerController.instance.GetTimerText (timeSpan), fontColor);
+			if (ColorUtility.TryParseHtmlString (colorTimer, out fontColor)) {
+				ViewerController.instance.ChangeTextContent(timerText, ViewerController.instance.GetTimerText (timeSpan), fontColor);
+			}
 
 			//Keep adding gravity
 			UserController.instance.AddLocalGravity(userObject.Obj.GetComponent<Rigidbody>());
@@ -136,8 +141,9 @@ public class GameController : MonoBehaviour {
 			if(userObject.SpeedMeter != null) {
 				speed = userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed();
 
-				// TODO using viewcontroller
-				userObject.SpeedMeter.GetComponent<TextMesh>().text = speed.ToString("f1");
+				if (ColorUtility.TryParseHtmlString (colorSpeedMeter, out fontColor)) {
+					ViewerController.instance.ChangeTextMeshContent(userObject.SpeedMeter.GetComponent<TextMesh>(), speed.ToString("f1"), fontColor);
+				}
 			}
 		}
 	}
@@ -306,7 +312,10 @@ public class GameController : MonoBehaviour {
 		foreach(char resultTimeText in resultTimeTextArray) {
 			yield return new WaitForSeconds(clipLength);
 			string newResultTimeText = resultText.text + resultTimeText;
-			ViewerController.instance.ChangeTextContent(resultText, newResultTimeText, fontColor);
+
+			if (ColorUtility.TryParseHtmlString (colorResult, out fontColor)) {
+				ViewerController.instance.ChangeTextContent(resultText, newResultTimeText, fontColor);
+			}
 			SoundController.instance.ShotClipSound("record");
 		}
 	}

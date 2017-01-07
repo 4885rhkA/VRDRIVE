@@ -48,6 +48,16 @@ public class ViewerController : MonoBehaviour {
 		text.color = color;
 	}
 
+	/// <summary>Change the text mesh content and color in view.</summary>
+	/// <param name="text">The target <c>Text</c> Component</param>
+	/// <param name="content">New text of <c>Text</c> Component</param>
+	/// <param name="color">The color for the <c>Text</c></param>
+	public void ChangeTextMeshContent(TextMesh text, string content, Color color) {
+		if(content != null) {
+			text.text = content;
+		}
+		text.color = color;
+	}
 	/// <summary>Change the motion blour in view.</summary>
 	/// <param name="camera">Camera <c>GameObject</c></param>
 	/// <param name="blurAmount">Blur amount(from 0 to 1)</param>
