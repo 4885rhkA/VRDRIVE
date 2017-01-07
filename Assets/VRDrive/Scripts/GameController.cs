@@ -193,7 +193,6 @@ public class GameController : MonoBehaviour {
 	/// <summary>Update the status.</summary>
 	/// <param name="userName">The name for user</param>
 	/// <param name="status">The status of each user</param>
-	/// TODO Fix this algorithm
 	public void UpdateUserStatus(string userName, int status) {
 		if (HasUserSet (userName)) {
 			UserSet userSet = userSets [userName];

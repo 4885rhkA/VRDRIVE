@@ -57,7 +57,6 @@ public class SpeedUpBoard : Incident {
 		GameController.instance.UpdateUserCondition(userObject.Obj.name, 0);
 		ViewerController.instance.ChangeMotionBlur(userObject.MainCamera, 0);
 
-		// TODO fix this function
 		userObject.Obj.GetComponent<MyCarController>().MaxSpeed /= multipleSpeed;
 	}
 
