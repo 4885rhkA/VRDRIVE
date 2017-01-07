@@ -19,7 +19,7 @@ public class MenuController : MonoBehaviour {
 	private string colorNoSelected = "#646464FF";
 
 	private bool changingSelectionFlag = false;
-	private float timeForChangingSelection = 0.25f;
+	private float timeForChangingSelection = 0.1f;
 
 	void Awake() {
 		instance = this;
@@ -47,8 +47,8 @@ public class MenuController : MonoBehaviour {
 		if (h == 0) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
-		bool b = CrossPlatformInputManager.GetButtonUp("Decide");
-		StartCoroutine(ChangeSelectedStage(h, b, changingSelectionFlag));
+		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
+		StartCoroutine(ChangeSelectedStage(h, d, changingSelectionFlag));
 	}
 
 	/// <summary>Change selected stage.</summary>

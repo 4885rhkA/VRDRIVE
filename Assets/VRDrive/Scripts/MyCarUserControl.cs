@@ -49,9 +49,13 @@ namespace UnityStandardAssets.Vehicles.Car
 			// back = backtrigger + straight
 			float b = Input.GetAxis("BackTrigger");
 
+			// decide
+			bool d = CrossPlatformInputManager.GetButtonUp("Decide");
+
 			if(s > 0) {
 				m_Car.Move(h, 0, 0, s); // stop
-			} else {
+			}
+			else {
 				if (v == 0) {
 					m_Car.Move (h, 0, 0, 0); // do nothing
 				} else {
@@ -61,6 +65,10 @@ namespace UnityStandardAssets.Vehicles.Car
 						m_Car.Move (h, 0, (-1) * v, 0); // back
 					}
 				}
+			}
+
+			if (d) {
+				GameController.instance.ChangeGameScene ();
 			}
 		}
 	}

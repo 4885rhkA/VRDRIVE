@@ -107,23 +107,6 @@ public class GameController : MonoBehaviour {
 		float speed;
 		timeSpan = TimerController.instance.PastTime;
 
-		// TODO move this program or create other function
-		if(CrossPlatformInputManager.GetButtonUp("Decide")) {
-			if(!startGameAtTheSameTimeFlag) {
-				startGameAtTheSameTimeFlag = true;
-				ReleaseStartGame();
-			}
-			if(remainingInGame == 0) {
-				SceneManager.LoadScene("menu");
-			}
-			foreach(KeyValuePair<string, UserSet> eachUserSet in userSets) {
-				userSet = eachUserSet.Value;
-				if(userSet.UserState.Status == 0) {
-					MissGameQuickly(userSet.UserObject.Obj.name);
-				}
-			}
-		}
-
 		foreach(KeyValuePair<string, UserSet> eachUserSet in userSets) {
 			userSet = eachUserSet.Value;
 			userObject = userSet.UserObject;
@@ -202,8 +185,8 @@ public class GameController : MonoBehaviour {
 	/// <param name="delayLength">The length of the delay</param>
 	/// <param name="messsageText">The target <c>Text</c> component</param>
 	/// <param name="state">The trigger for showing text or not</param>
-	private IEnumerator ChangeTextStateWithDelay(float delayLength, Text messageText, bool state) {  
-		yield return new WaitForSeconds(delayLength);
+	private IEnumerator ChangeTextStateWithDelay(float delay, Text messageText, bool state) {  
+		yield return new WaitForSeconds(delay);
 		ViewerController.instance.ChangeTextState(messageText, state);
 	}
 
@@ -299,7 +282,27 @@ public class GameController : MonoBehaviour {
 
 			userState.Record = TimerController.instance.PastTime;
 			UpdateUserStatus(userObject.Obj.name, 2);
-			MissGame(userObject.Obj.name);		
+			MissGame(userObject.Obj.name);
+		}
+	}
+
+	public void ChangeGameScene() {
+		UserSet userSet;
+
+		if(!startGameAtTheSameTimeFlag) {
+			startGameAtTheSameTimeFlag = true;
+			ReleaseStartGame();
+		}
+
+		if(remainingInGame == 0) {
+			SceneManager.LoadScene("menu");
+		}
+
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSets) {
+			userSet = eachUserSet.Value;
+			if(userSet.UserState.Status == 0) {
+				MissGameQuickly(userSet.UserObject.Obj.name);
+			}
 		}
 	}
 
