@@ -90,9 +90,6 @@ public class MenuController : MonoBehaviour {
 						stageObject.transform.FindChild(stageObject.name + "Text").GetComponent<Text>(), null, fontColor
 					);
 				}
-				else {
-					Debug.LogWarning("The color" + colorSelected + "cannnot convert into Color class.");
-				}
 				ViewerController.instance.ChangeRawImageState(stageObjects[selectStageNo].GetComponent<RawImage>(), true);
 				SoundController.instance.ShotClipSound("select");
 				yield return new WaitForSeconds(timeForChangingSelection);
