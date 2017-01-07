@@ -9,7 +9,7 @@ public class StageController : MonoBehaviour {
 		instance = this;
 	}
 
-	[SerializeField] private bool sun = true;
+	[SerializeField] private bool meteorites = true;
 	[SerializeField] private bool sppedUpBoards = true;
 	[SerializeField] private bool checks = true;
 	[SerializeField] private bool tunnnels = true;
@@ -29,8 +29,8 @@ public class StageController : MonoBehaviour {
 
 	/// <summary>Start the gimmick after finishing the count sound.</summary>
 	public void StartGimmick() {
-		if (GameObject.Find ("Sun") != null && sun) {
-			GameObject.Find ("Sun").GetComponent<Sun> ().StartRockFalling ();
+		if (GameObject.Find ("Meteorites") != null && meteorites) {
+			GameObject.Find ("Meteorites").GetComponent<Meteorites> ().StartRockFalling ();
 		}
 	}
 

@@ -2,16 +2,14 @@
 using System.Collections;
 
 /// Class for the creating meteorite continuously
-public class Sun : MonoBehaviour {
+public class Meteorites : MonoBehaviour {
 
 	[SerializeField] private GameObject meteorite;
 	[SerializeField] private float createInterval = 4;
 
 	private float[] createMeteoriteZPositions = new float[5]{-18f, -9f, 0f, 9f, 18f};
-	private GameObject meteorites;
 
 	public void StartRockFalling() {
-		meteorites = GameObject.Find("Meteorites");
 		if(meteorite != null) {
 			StartCoroutine(CreateMeteorite());
 		}
@@ -27,7 +25,7 @@ public class Sun : MonoBehaviour {
 			GameObject newMeteorite = Instantiate(
 				meteorite, new Vector3(createMeteoriteZPositions[Random.Range(0, 5)], gameObject.transform.position.y, gameObject.transform.position.z), transform.rotation
 			) as GameObject;
-			newMeteorite.transform.parent = meteorites.transform;
+			newMeteorite.transform.parent = gameObject.transform;
 		}
 	}
 
