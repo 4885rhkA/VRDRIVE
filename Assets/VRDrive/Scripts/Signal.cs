@@ -4,11 +4,14 @@ using System.Collections;
 /// Class for turning signal on interval
 public class Signal : MonoBehaviour {
 
+	[SerializeField] private bool startRedColorFlag = false;
 	[SerializeField] private int greenColorTime = 10;
 	[SerializeField] private int yellowColorTime = 1;
-	[SerializeField] private int redColorTime = 10;
+	[SerializeField] private int redColorTime = 11;
 
-	private int status = 0;
+	private int DEFAULTSTOPTIME = 10;
+
+	private int status = 2;
 
 	private MeshRenderer greenRenderer;
 	private MeshRenderer yellowRenderer;
@@ -18,13 +21,19 @@ public class Signal : MonoBehaviour {
 		greenRenderer = gameObject.transform.FindChild ("Green").gameObject.GetComponent<MeshRenderer>();
 		yellowRenderer = gameObject.transform.FindChild ("Yellow").gameObject.GetComponent<MeshRenderer>();
 		redRenderer = gameObject.transform.FindChild ("Red").gameObject.GetComponent<MeshRenderer>();
+
+		// Color select when game started
+		if (startRedColorFlag) {
+			status = 1;
+		}
+
 		StartCoroutine(TurnSignal());
 	}
 
 	/// <summary>Turn the signal on interval.</summary>
 	private IEnumerator TurnSignal() {
 		while (true) {
-			int waitTime = 10;
+			int waitTime = DEFAULTSTOPTIME;
 			status = (status + 1) % 3;
 			switch (status) {
 				case 0:
