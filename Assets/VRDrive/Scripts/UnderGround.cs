@@ -5,31 +5,34 @@ using UnityEngine.UI;
 /// Class for the dropping the stage
 public class UnderGround : Incident {
 
+	void Awake() {
+		collisionFlag = new bool[6, 2] {
+			{false, true}, 	// OnTriggerEnter
+			{false, true}, 	// OnCollisionEnter
+			{false, false}, 	// OnTriggerStay
+			{false, false},		// OnCollisionStay
+			{false, false}, 	// OnTriggerExit
+			{false, false}		// OnCollisionExit
+		};
+	}
+
 	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollidedActionForMyself() {}
+	protected override void CollisionActionForMyself() {
+	}
 
-	/// <summary>When collider occurs, do user's action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void ColliderActionForUser(Collider collider) {
-		UserSet userSet = GameController.instance.GetUserSet (collider.gameObject.name);
+	/// <summary>When collider/collision occurs, do user's action.</summary>
+	/// <param name="userName">The name for user</param>
+	protected override void CollisionActionForUser(string userName) {
+		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
 
-		GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
-		StartCoroutine(AfterTriggerEnter(0, userObject.Obj.name, 2, collider));
+		if (userState.Status < 1) {
+			GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+			GameController.instance.UpdateUserStatus(userObject.Obj.name, 2);
+			GameController.instance.MissGame(userObject.Obj.name);
+		}
 	}
 
-	/// <summary>After collider occurs, do action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void AfterTriggerEnterAction(Collider collider) {
-		GameController.instance.MissGame(collider.gameObject.name);
-	}
-
-	/// <summary>When collision occurs, do user's action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void CollisionActionForUser(Collision collision) {}
-
-	/// <summary>After collision occurs, do action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void AfterCollisionEnterAction(Collision collision) {}
 
 }

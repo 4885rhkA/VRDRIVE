@@ -59,4 +59,5 @@ public class Signal : MonoBehaviour {
 	public int GetStatus() {
 		return status;
 	}
+
 }

@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour {
 	private int remainingInGame = 0;
 
 	public UserSet GetUserSet(string userName) {
-		if (userSets.ContainsKey (userName)) {
+		if (HasUserSet (userName)) {
 			return userSets [userName];
 		}
 		return new UserSet(new UserObject(), new UserState());
@@ -77,7 +77,6 @@ public class GameController : MonoBehaviour {
 					remainingInGame++;
 				}
 			}
-				
 
 			foreach(KeyValuePair<string, UserSet> eachUserSet in userSets) {
 				userSet = eachUserSet.Value;
@@ -222,7 +221,8 @@ public class GameController : MonoBehaviour {
 		UserSet userSet = userSets [userName];
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
-		if(userState.Status < 1) {
+
+		if (userState.Status < 1) {
 			userState.Status = userStatus;
 			if(userState.Status > 0) {
 				remainingInGame--;
@@ -230,68 +230,14 @@ public class GameController : MonoBehaviour {
 		}
 		switch(userStatus) {
 			case -1:
-			UserController.instance.SetFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
+				UserController.instance.SetFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
 				break;
 			case 0:
-			UserController.instance.ReleaseFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
+				UserController.instance.ReleaseFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
 				break;
 			default:
 				break;
 		}
-	}
-
-	/// <summary>
-	/// Get the value for deciding each object should do function or not when touching with them. 
-	/// </summary>
-	/// <param name="incidentObject">The <c>GameObject</c> occurs incident</param>
-	/// <param name="targetObject">The <c>GameObject</c> suffered the incident</param>
-	/// <returns>
-	///  	1:IncidentObject and targetObject should do each functions
-	///  	0:TargetObject should do function
-	/// 	-1:No Objects should do
-	/// </returns>
-	/// TODO Fix this algorithm / It's bad to get value with updating user's condition
-	public int GetOrderCodeForObjectsByTouch(GameObject incidentObject, GameObject targetObject) {
-		if(targetObject.tag == "Car") {
-			string targetObjectName = targetObject.name;
-			if(userSets.ContainsKey(targetObjectName)) {
-				if(userSets[targetObjectName].UserState.Status == 0) {
-					if (incidentObject.tag == "Base") {
-						if(incidentObject.name == "Goal" || incidentObject.name == "UnderGround") {
-							return 1;
-						}
-						else if(incidentObject.name == "Start") {
-							return -1;
-						}
-					}
-					else if(incidentObject.tag == "Gimmick") {
-						int userCondition = 1;
-						if(userSets[targetObjectName].UserState.Condition == 0) {
-							if(incidentObject.name == "SpeedUpBoards") {
-								userCondition = 2;
-							}
-							UpdateUserCondition(targetObjectName, userCondition);
-							return 1;
-						}
-						else if(userSets[targetObjectName].UserState.Condition == 2) {
-							if(incidentObject.name == "SpeedUpBoards") {
-								return -1;
-							}
-							UpdateUserCondition(targetObjectName, userCondition);
-							return 1;
-						}
-					}
-					else if(incidentObject.tag == "Check"){
-						return -1;
-					}
-				}
-				return 0;
-			}
-		}
-		else if(incidentObject.tag == targetObject.tag) {
-			return 0;
-		}
-		return -1;
 	}
 
 	/// <summary>Update the condition.</summary>
@@ -308,9 +254,6 @@ public class GameController : MonoBehaviour {
 				default:
 					break;
 			}
-		}
-		else {
-			Debug.LogWarning("The system cannot find the target:" + carName);
 		}
 	}
 
@@ -362,4 +305,7 @@ public class GameController : MonoBehaviour {
 		userSets [userName].UserState.Record = timeSpan;
 	}
 
+	public bool HasUserSet(string name) {
+		return userSets.ContainsKey (name);
+	}
 }

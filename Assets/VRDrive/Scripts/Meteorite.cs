@@ -12,6 +12,17 @@ public class Meteorite : Incident {
 	private AudioSource loopSound;
 	private AudioSource explosionSound;
 
+	void Awake() {
+		collisionFlag = new bool[6, 2] {
+			{true, true}, 	// OnTriggerEnter
+			{true, true}, 	// OnCollisionEnter
+			{false, false}, 	// OnTriggerStay
+			{false, false},		// OnCollisionStay
+			{false, false}, 	// OnTriggerExit
+			{false, false}		// OnCollisionExit
+		};
+	}
+
 	void Start() {
 		audioSources = gameObject.GetComponents<AudioSource>();
 		loopSound = audioSources[0];
@@ -33,7 +44,7 @@ public class Meteorite : Incident {
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollidedActionForMyself() {
+	protected override void CollisionActionForMyself() {
 		Detonator detonator = gameObject.GetComponent<Detonator>();
 		float explosionLength = explosionSound.clip.length;
 		gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
@@ -47,36 +58,36 @@ public class Meteorite : Incident {
 		gameObject.GetComponent<Detonator>().Explode();
 	}
 
-	/// <summary>When collider occurs, do user's action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void ColliderActionForUser(Collider collider) {}
-
-	/// <summary>After collider occurs, do action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void AfterTriggerEnterAction(Collider collider) {}
-
-	/// <summary>When collision occurs, do user's action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void CollisionActionForUser(Collision collision) {
-		UserSet userSet = GameController.instance.GetUserSet (collision.gameObject.name);
+	/// <summary>When collider/collision occurs, do user's action.</summary>
+	/// <param name="userName">The name for user</param>
+	protected override void CollisionActionForUser(string userName) {
+		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
 
-		Vector3 direction = userObject.Obj.GetComponent<Rigidbody>().velocity.normalized;
-		userObject.Obj.GetComponent<Rigidbody>().AddForce(new Vector3(direction.x, 0, Mathf.Abs(direction.z)) * attackPower * (-1), ForceMode.Impulse);
-		int carStatus = 0;
-		if(GameController.instance.oneKillMode) {
-			carStatus = 2;
-			GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+		if (userState.Status < 1) {
+			if (userState.Condition != 1) {
+				GameController.instance.UpdateUserCondition(userObject.Obj.name, 1);
+
+				Vector3 direction = userObject.Obj.GetComponent<Rigidbody>().velocity.normalized;
+				userObject.Obj.GetComponent<Rigidbody>().AddForce(new Vector3(direction.x, 0, Mathf.Abs(direction.z)) * attackPower * (-1), ForceMode.Impulse);
+				int userStatus = 0;
+				if(GameController.instance.oneKillMode) {
+					userStatus = 2;
+					GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+				}
+
+				GameController.instance.UpdateUserStatus(userObject.Obj.name, userStatus);
+				StartCoroutine(AfterCollisionAction(explosionSound.clip.length, userSet));
+			}
 		}
-		StartCoroutine(AfterCollisionEnter(
-			explosionSound.clip.length, 
-			userObject.Obj.name, carStatus, collision));
 	}
 
-	/// <summary>After collision occurs, do action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void AfterCollisionEnterAction(Collision collision) {
-		UserSet userSet = GameController.instance.GetUserSet (collision.gameObject.name);
+	/// <summary>After collider/collision occurs, do action.</summary>
+	/// <param name="userSet">User's State and Object</param>
+	private IEnumerator AfterCollisionAction(float delay, UserSet userSet) {
+		yield return new WaitForSeconds(delay);
+
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 

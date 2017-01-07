@@ -4,94 +4,50 @@ using System.Collections;
 /// The Class for defined action when collision between user's car and gimmick
 public abstract class Incident : MonoBehaviour {
 
+	protected bool[, ] collisionFlag;
+	protected string parentName;
+
 	void OnTriggerEnter(Collider collider) {
-		int result = GameController.instance.GetOrderCodeForObjectsByTouch(gameObject.transform.root.gameObject, collider.gameObject.transform.root.gameObject);
-		if(result > -1) {
-			CollidedActionForMyself();
-		}
-		if(result > 0) {
-			ColliderActionForUser(collider);
-		}
+		CollisionAction (collisionFlag[0, 0], collisionFlag[0, 1], collider.gameObject);
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		int result = GameController.instance.GetOrderCodeForObjectsByTouch(gameObject.transform.root.gameObject, collision.gameObject.transform.root.gameObject);
-		if(result > -1) {
-			CollidedActionForMyself();
-		}
-		if(result > 0) {
-			CollisionActionForUser(collision);
-		}
+		CollisionAction (collisionFlag[1, 0], collisionFlag[1, 1], collision.gameObject);
 	}
 
-	/// <summary>
-	/// Raises the trigger stay event.
-	/// </summary>
-	/// <param name="collider">Collider.</param>
-	/// TODO change the function
 	void OnTriggerStay(Collider collider) {
-		if (collider.gameObject.tag == "Car") {
-			if (gameObject.transform.parent.gameObject.name == "Stop") {
-				ColliderActionForUser(collider);
-			}
-			if (gameObject.transform.parent.gameObject.name == "50km") {
-				ColliderActionForUser(collider);
-			}
-		}
+		CollisionAction (collisionFlag[2, 0], collisionFlag[2, 1], collider.gameObject);
 	}
 
-	/// <summary>
-	/// Raises the trigger exit event.
-	/// </summary>
-	/// <param name="collider">Collider.</param>
-	/// TODO change the function
+	void OnCollisionStay(Collision collision) {
+		CollisionAction (collisionFlag[3, 0], collisionFlag[3, 1], collision.gameObject);
+	}
+
 	void OnTriggerExit(Collider collider) {
-		if (collider.gameObject.tag == "Car") {
-			if (gameObject.transform.parent.gameObject.name == "Signal") {
-				ColliderActionForUser(collider);
+		CollisionAction (collisionFlag[4, 0], collisionFlag[4, 1], collider.gameObject);
+	}
+
+	void OnCollisionExit(Collision collision) {
+		CollisionAction (collisionFlag[5, 0], collisionFlag[5, 1], collision.gameObject);
+	}
+
+	protected void CollisionAction(bool myselfFlag, bool userFlag, GameObject collidedObject) {
+		if(GameController.instance.HasUserSet(collidedObject.name)) {
+			if(myselfFlag) {
+				CollisionActionForMyself();
 			}
+			if(userFlag) {
+				CollisionActionForUser(collidedObject.name);
+			}
+		}
+		else if(collidedObject.tag!= "Untagged" && gameObject.tag == collidedObject.tag) {
+			CollisionActionForMyself();
 		}
 	}
 
-	/// <summary>After collider occurs, do object's action.</summary>
-	/// <param name="delayLength">The delay how long this function will execute</param>
-	/// <param name="carName">User's car name</param>
-	/// <param name="carStatus">User's car status</param>
-	/// <param name="collider">Collided object</param>
-	protected IEnumerator AfterTriggerEnter(float delayLength, string carName, int carStatus, Collider collider) {  
-		GameController.instance.UpdateUserStatus(carName, carStatus);
-		yield return new WaitForSeconds(delayLength);
-		AfterTriggerEnterAction(collider);
-	}
+	protected abstract void CollisionActionForMyself();
 
-	/// <summary>After collision occurs, do object's action.</summary>
-	/// <param name="delayLength">The delay how long this function will execute</param>
-	/// <param name="carName">User's car name</param>
-	/// <param name="carStatus">User's car status</param>
-	/// <param name="collision">collided object</param>
-	protected IEnumerator AfterCollisionEnter(float delayLength, string carName, int carStatus, Collision collision) {  
-		GameController.instance.UpdateUserStatus(carName, carStatus);
-		yield return new WaitForSeconds(delayLength);
-		AfterCollisionEnterAction(collision);
-	}
+	protected abstract void CollisionActionForUser(string collidedObjectName);
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected abstract void CollidedActionForMyself();
-
-	/// <summary>When collider occurs, do user's action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected abstract void ColliderActionForUser(Collider collider);
-
-	/// <summary>After collider occurs, do action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected abstract void AfterTriggerEnterAction(Collider collider);
-
-	/// <summary>When collision occurs, do user's action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected abstract void CollisionActionForUser(Collision collision);
-
-	/// <summary>After collision occurs, do action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected abstract void AfterCollisionEnterAction(Collision collision);
 
 }

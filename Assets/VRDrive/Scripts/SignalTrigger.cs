@@ -4,7 +4,17 @@ using System.Collections;
 public class SignalTrigger : Incident {
 
 	private Signal signal;
-	private string parentName;
+
+	void Awake() {
+		collisionFlag = new bool[6, 2] {
+			{false, false}, 	// OnTriggerEnter
+			{false, false}, 	// OnCollisionEnter
+			{false, false}, 	// OnTriggerStay
+			{false, false},		// OnCollisionStay
+			{false, true}, 	// OnTriggerExit
+			{false, true}		// OnCollisionExit
+		};
+	}
 
 	void Start() {
 		GameObject parentObj = gameObject.transform.parent.gameObject;
@@ -13,34 +23,19 @@ public class SignalTrigger : Incident {
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollidedActionForMyself() {
+	protected override void CollisionActionForMyself() {
 	}
 
-	/// <summary>When collider occurs, do user's action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void ColliderActionForUser(Collider collider) {
-		UserSet userSet = GameController.instance.GetUserSet (collider.gameObject.name);
+	/// <summary>When collider/collision occurs, do user's action.</summary>
+	/// <param name="userName">The name for user</param>
+	protected override void CollisionActionForUser(string userName) {
+		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		if(signal.GetStatus() == 2 && userState.CheckList[parentName] == true) {
+		if(signal.GetStatus() == 2 && userState.CheckList[parentName]) {
 			GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
 		}
-	}
-
-	/// <summary>After collider occurs, do action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void AfterTriggerEnterAction(Collider collider) {
-	}
-
-	/// <summary>When collision occurs, do user's action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void CollisionActionForUser(Collision collision) {
-	}
-
-	/// <summary>After collision occurs, do action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void AfterCollisionEnterAction(Collision collision) {
 	}
 
 }

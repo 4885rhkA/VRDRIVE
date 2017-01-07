@@ -3,21 +3,23 @@
 /// Class for the Start line
 public class Start : Incident {
 
+	void Awake() {
+		collisionFlag = new bool[6, 2] {
+			{false, false}, 	// OnTriggerEnter
+			{false, false}, 	// OnCollisionEnter
+			{false, false}, 	// OnTriggerStay
+			{false, false},		// OnCollisionStay
+			{false, false}, 	// OnTriggerExit
+			{false, false}		// OnCollisionExit
+		};
+	}
+
 	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollidedActionForMyself() {}
+	protected override void CollisionActionForMyself() {
+	}
 
-	/// <summary>When collider occurs, do user's action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void ColliderActionForUser(Collider collider) {}
-
-	/// <summary>After collider occurs, do action.</summary>
-	protected override void AfterTriggerEnterAction(Collider collider) {}
-
-	/// <summary>When collision occurs, do user's action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void CollisionActionForUser(Collision collision) {}
-
-	/// <summary>After collision occurs, do action.</summary>
-	protected override void AfterCollisionEnterAction(Collision collision) {}
-
+	/// <summary>When collider/collision occurs, do user's action.</summary>
+	/// <param name="userName">The name for user</param>
+	protected override void CollisionActionForUser(string userName) {
+	}
 }
