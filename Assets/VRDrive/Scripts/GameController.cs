@@ -45,7 +45,6 @@ public class GameController : MonoBehaviour {
 	private string colorGo = "#FFFFFFFF";
 	private string colorMiss = "#FFFFFFFF";
 	private string colorTimer = "#FFFFFFFF";
-	private string colorResult = "#FFFFFFFF";
 	private string colorSpeedMeter = "#FFFFFFFF";
 
 	private bool startGameAtTheSameTimeFlag = false;
@@ -142,7 +141,7 @@ public class GameController : MonoBehaviour {
 			messageText = userObject.Message.transform.FindChild ("MessageText").gameObject;
 			ViewerController.instance.ChangeRawImageState(userObject.HowTo.GetComponent<RawImage>(), false);
 			ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(messageText.GetComponent<Text>(), true);
+			ViewerController.instance.ChangeTextState(0, messageText.GetComponent<Text>(), true);
 			if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
 				ViewerController.instance.ChangeTextContent(messageText.GetComponent<Text>(), "READY...", fontColor);
 			}
@@ -169,25 +168,16 @@ public class GameController : MonoBehaviour {
 
 			// Start Game
 			ViewerController.instance.ChangeRawImageState(userObject.Timer.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(timerText, true);
+			ViewerController.instance.ChangeTextState(0, timerText, true);
 			ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), false);
 			if(ColorUtility.TryParseHtmlString(colorGo, out fontColor)) {
 				ViewerController.instance.ChangeTextContent(messageText, "GO!", fontColor);
 			}
-			StartCoroutine(ChangeTextStateWithDelay(SoundController.instance.GetClipLength("go"), messageText, false));
+			StartCoroutine(ViewerController.instance.ChangeTextState(SoundController.instance.GetClipLength("go"), messageText, false));
 		}
 		TimerController.instance.ResetStartTime();
 		SoundController.instance.StartStageSound();
 		StageController.instance.StartGimmick ();
-	}
-
-	/// <summary>Execute viewerController.ChangeTextState with delay.</summary>
-	/// <param name="delayLength">The length of the delay</param>
-	/// <param name="messsageText">The target <c>Text</c> component</param>
-	/// <param name="state">The trigger for showing text or not</param>
-	private IEnumerator ChangeTextStateWithDelay(float delay, Text messageText, bool state) {  
-		yield return new WaitForSeconds(delay);
-		ViewerController.instance.ChangeTextState(messageText, state);
 	}
 
 	/// <summary>Update the status.</summary>
@@ -266,7 +256,7 @@ public class GameController : MonoBehaviour {
 				ViewerController.instance.ChangeTextContent(resultText, "MISS......", fontColor);
 			}
 			ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(resultText, true);
+			ViewerController.instance.ChangeTextState(0, resultText, true);
 			SoundController.instance.ShotClipSound("miss");
 		}
 	}
@@ -302,23 +292,6 @@ public class GameController : MonoBehaviour {
 			if(userSet.UserState.Status == 0) {
 				MissGameQuickly(userSet.UserObject.Obj.name);
 			}
-		}
-	}
-
-	/// <summary>Change the vignette in view.</summary>
-	/// <param name="resultText">User's showing <c>Text</c> </param>
-	/// <param name="resultTimeTextArray">Array of char for showing number one by one</param>
-	public IEnumerator AddCharacterContinuouslyForResult(Text resultText, char[] resultTimeTextArray) {
-		float clipLength = SoundController.instance.GetClipLength("record");
-
-		foreach(char resultTimeText in resultTimeTextArray) {
-			yield return new WaitForSeconds(clipLength);
-			string newResultTimeText = resultText.text + resultTimeText;
-
-			if (ColorUtility.TryParseHtmlString (colorResult, out fontColor)) {
-				ViewerController.instance.ChangeTextContent(resultText, newResultTimeText, fontColor);
-			}
-			SoundController.instance.ShotClipSound("record");
 		}
 	}
 

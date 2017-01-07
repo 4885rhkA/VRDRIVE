@@ -8,6 +8,7 @@ public class Goal : Incident {
 	private Color fontColor = new Color();
 	private string colorGoal = "#BC151CFF";
 	private string colorRecord = "#FFFFFFFF";
+	private string colorResult = "#FFFFFFFF";
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
@@ -39,7 +40,7 @@ public class Goal : Incident {
 				ViewerController.instance.ChangeTextContent(messageText, "GOAL!", fontColor);
 			}
 			ViewerController.instance.ChangeRawImageState(message.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(messageText, true);
+			ViewerController.instance.ChangeTextState(0, messageText, true);
 			SoundController.instance.ShotClipSound("goal");
 			GameController.instance.UpdateUserStatus(userObject.Obj.name, 1);
 			StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("goal"), userSet));
@@ -61,9 +62,23 @@ public class Goal : Incident {
 			ViewerController.instance.ChangeTextContent(resultText, "TIME ", fontColor);
 		}
 		ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
-		ViewerController.instance.ChangeTextState(resultText, true);
+		ViewerController.instance.ChangeTextState(0, resultText, true);
 		SoundController.instance.ShotClipSound("record");
-		StartCoroutine(GameController.instance.AddCharacterContinuouslyForResult(resultText, resultTimeText.ToCharArray()));
+		StartCoroutine(AddCharacterContinuouslyForResult(resultText, resultTimeText.ToCharArray()));
+	}
+
+	private IEnumerator AddCharacterContinuouslyForResult(Text resultText, char[] resultTimeTextArray) {
+		float clipLength = SoundController.instance.GetClipLength("record");
+
+		foreach(char resultTimeText in resultTimeTextArray) {
+			yield return new WaitForSeconds(clipLength);
+			string newResultTimeText = resultText.text + resultTimeText;
+
+			if (ColorUtility.TryParseHtmlString (colorResult, out fontColor)) {
+				ViewerController.instance.ChangeTextContent(resultText, newResultTimeText, fontColor);
+			}
+			SoundController.instance.ShotClipSound("record");
+		}
 	}
 
 }
