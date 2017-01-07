@@ -326,7 +326,6 @@ public class GameController : MonoBehaviour {
 		if (userSets.ContainsKey (name)) {
 			return true;
 		}
-		Debug.LogWarning ("Couldn't find " + name + " in UserSet");
 		return false;
 	}
 
