@@ -14,7 +14,7 @@ public class Meteorite : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{true, true}, 	// OnTriggerEnter
+			{true, false}, 	// OnTriggerEnter
 			{true, true}, 	// OnCollisionEnter
 			{false, false}, 	// OnTriggerStay
 			{false, false},		// OnCollisionStay

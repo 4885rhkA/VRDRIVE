@@ -12,7 +12,7 @@ public class SignalTrigger : Incident {
 			{false, false}, 	// OnTriggerStay
 			{false, false},		// OnCollisionStay
 			{false, true}, 	// OnTriggerExit
-			{false, true}		// OnCollisionExit
+			{false, false}		// OnCollisionExit
 		};
 	}
 

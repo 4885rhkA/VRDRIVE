@@ -9,7 +9,7 @@ public class StopTrigger : Incident {
 			{false, false}, 	// OnTriggerEnter
 			{false, false}, 	// OnCollisionEnter
 			{false, true}, 	// OnTriggerStay
-			{false, true},		// OnCollisionStay
+			{false, false},		// OnCollisionStay
 			{false, false}, 	// OnTriggerExit
 			{false, false}		// OnCollisionExit
 		};

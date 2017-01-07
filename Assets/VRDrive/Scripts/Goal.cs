@@ -12,7 +12,7 @@ public class Goal : Incident {
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
 			{false, true}, 	// OnTriggerEnter
-			{false, true}, 	// OnCollisionEnter
+			{false, false}, 	// OnCollisionEnter
 			{false, false}, 	// OnTriggerStay
 			{false, false},		// OnCollisionStay
 			{false, false}, 	// OnTriggerExit
