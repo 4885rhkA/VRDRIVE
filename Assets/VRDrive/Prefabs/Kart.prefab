@@ -1527,7 +1527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b16463a27ef4b8bb54a3c253d59c2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CarDriveType: 1
+  m_CarDriveType: 2
   m_WheelColliders:
   - {fileID: 14649186}
   - {fileID: 14693100}
@@ -1547,7 +1547,7 @@ MonoBehaviour:
   m_MaximumSteerAngle: 5
   m_SteerHelper: 1
   m_TractionControl: 1
-  m_FullTorqueOverAllWheels: 2500
+  m_FullTorqueOverAllWheels: 800
   m_ReverseTorque: 200
   m_Downforce: 700
   m_SpeedType: 1
