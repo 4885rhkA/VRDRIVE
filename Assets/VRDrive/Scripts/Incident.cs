@@ -33,10 +33,11 @@ public abstract class Incident : MonoBehaviour {
 
 	protected void CollisionAction(bool myselfFlag, bool userFlag, GameObject collidedObject, int kindOfCollision) {
 		if(GameController.instance.HasUserSet(collidedObject.name)) {
+			UserState userState = GameController.instance.GetUserSet (collidedObject.name).UserState;
 			if(myselfFlag) {
 				CollisionActionForMyself(kindOfCollision);
 			}
-			if(userFlag) {
+			if(userFlag && userState.Status < 1) {
 				CollisionActionForUser(collidedObject.name, kindOfCollision);
 			}
 		}

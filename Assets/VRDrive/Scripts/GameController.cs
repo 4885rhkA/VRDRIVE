@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour {
 		{"miss", "#FFFFFFFF"},
 		{"timer", "#FFFFFFFF"},
 		{"speedMeter", "#FFFFFFFF"},
-		{"goal", "#FFFFFFFF"},
+		{"goal", "#272629FF"},
 		{"record", "#FFFFFFFF"},
 		{"result", "#FFFFFFFF"}
 	};
@@ -222,21 +222,19 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Update the status.</summary>
-	/// <param name="userName">The name for user</param>
+	/// <param name="name">The name for GameObject</param>
 	/// <param name="status">The status of each user</param>
-	public void UpdateUserStatus(string userName, int status) {
-		if (HasUserSet (userName)) {
-			UserSet userSet = userSetList [userName];
+	public void UpdateUserStatus(string name, int status) {
+		if (HasUserSet (name)) {
+			UserSet userSet = userSetList [name];
 			UserObject userObject = userSet.UserObject;
 			UserState userState = userSet.UserState;
 
-			if (userState.Status < 1) {
-				userState.Status = status;
-				if(userState.Status > 0) {
-					remainingInGame--;
-				}
-			}
+			userState.Status = status;
 
+			if(userState.Status > 0) {
+				remainingInGame--;
+			}
 			switch(userState.Status) {
 				case -1:
 					UserController.instance.SetFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
@@ -251,18 +249,18 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Update the condition.</summary>
-	/// <param name="userName">The <c>GameObject</c> name for user</param>
+	/// <param name="name">The <c>GameObject</c> name </param>
 	/// <param name="condition">The condition of each user</param>
-	public void UpdateUserCondition(string userName, int condition) {
-		if (HasUserSet (userName)) {
-			UserSet userSet = userSetList [userName];
+	public void UpdateUserCondition(string name, int condition) {
+		if (HasUserSet (name)) {
+			UserSet userSet = userSetList [name];
 			UserState userState = userSet.UserState;
 
 			userState.Condition = condition;
 
 			switch(condition) {
 				case 1:
-					StartCoroutine(ViewerController.instance.ChangeDamageView(userSetList[userName].UserObject.MainCamera));
+					StartCoroutine(ViewerController.instance.ChangeDamageView(userSetList[name].UserObject.MainCamera));
 					break;
 				default:
 					break;
@@ -271,36 +269,39 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Update the finished time.</summary>
-	/// <param name="userName">The <c>GameObject</c> name for user</param>
-	/// <param name="timeSpan">PastTime from the starte</param>
-	public void UpdateRecord(string userName, TimeSpan timeSpan) {
-		if (HasUserSet (userName)) {
-			userSetList [userName].UserState.Record = timeSpan;
+	/// <param name="name">The <c>GameObject</c> name </param>
+	/// <param name="timeSpan">PastTime from the start</param>
+	public void UpdateRecord(string name, TimeSpan timeSpan) {
+		if (HasUserSet (name)) {
+			userSetList [name].UserState.Record = timeSpan;
 		}
 	}
 
 	/// <summary>Update the check list.</summary>
-	/// <param name="userName">The <c>GameObject</c> name for user</param>
+	/// <param name="name">The <c>GameObject</c> name </param>
 	/// <param name="checkName">The <c>GameObject</c> name for check</param>
 	/// <param name="value">Keep the traffic rules or not</param>
-	public void UpdateCheckList(string userName, string checkName, bool value) {
-		if (HasUserSet (userName)) {
-			userSetList [userName].UserState.CheckList [checkName] = value;
+	public void UpdateCheckList(string name, string checkName, bool value) {
+		if (HasUserSet (name)) {
+			UserState userState = userSetList [name].UserState;
+			if(userState.CheckList.ContainsKey(checkName)) {
+				userState.CheckList [checkName] = value;
+			}
 		}
 
 		// Debug
-		foreach(KeyValuePair<string, bool> check in userSetList [userName].UserState.CheckList) {
+		foreach(KeyValuePair<string, bool> check in userSetList [name].UserState.CheckList) {
 			Debug.Log (Time.time + " / " + check.Key + " : " + check.Value);
 		}
 	}
 
 	/// <summary>Call the miss display.</summary>
-	/// <param name="userName">The <c>GameObject</c> name for user</param>
-	public void MissGame(string userName) {
-		if (HasUserSet (userName)) {
-			GameObject result = userSetList[userName].UserObject.Result;
+	/// <param name="name">The <c>GameObject</c> name </param>
+	public void MissGame(string name) {
+		if (HasUserSet (name)) {
+			GameObject result = userSetList[name].UserObject.Result;
 
-			if (isPlayer (userName)) {
+			if (isPlayer (name)) {
 				Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
 
 				// Set View and Sound for Miss
@@ -315,10 +316,10 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Call the miss display quickly.</summary>
-	/// <param name="userName">The <c>GameObject</c> name for user</param>
-	private void MissGameQuickly(string userName) {
-		if (HasUserSet (userName)) {
-			UserSet userSet = userSetList [userName];
+	/// <param name="name">The <c>GameObject<userNamename </param>
+	private void MissGameQuickly(string name) {
+		if (HasUserSet (name)) {
+			UserSet userSet = userSetList [name];
 			UserObject userObject = userSet.UserObject;
 			UserState userState = userSet.UserState;
 

@@ -43,23 +43,20 @@ public class Goal : Incident {
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
-		UserState userState = userSet.UserState;
 
-		if (userState.Status < 1) {
-			if(GameController.instance.isPlayer(userObject.Obj.name)) {
-				GameObject message = userObject.Message;
-				Text messageText = message.transform.FindChild("MessageText").GetComponent<Text>();
-				if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
-					ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
-				}
-				ViewerController.instance.ChangeRawImageState(message.GetComponent<RawImage>(), true);
-				StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText, true));
-				SoundController.instance.ShotClipSound("goal");
+		if(GameController.instance.isPlayer(userObject.Obj.name)) {
+			GameObject message = userObject.Message;
+			Text messageText = message.transform.FindChild("MessageText").GetComponent<Text>();
+			if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
+				ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
 			}
-			GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
-			GameController.instance.UpdateUserStatus(userObject.Obj.name, 1);
-			StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("goal"), userSet));
+			ViewerController.instance.ChangeRawImageState(message.GetComponent<RawImage>(), true);
+			StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText, true));
+			SoundController.instance.ShotClipSound("goal");
 		}
+		GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+		GameController.instance.UpdateUserStatus(userObject.Obj.name, 1);
+		StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("goal"), userSet));
 	}
 
 	/// <summary>After collider/collision occurs, do action.</summary>

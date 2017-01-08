@@ -33,13 +33,10 @@ public class UnderGround : Incident {
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
-		UserState userState = userSet.UserState;
 
-		if (userState.Status < 1) {
-			GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
-			GameController.instance.UpdateUserStatus(userObject.Obj.name, 2);
-			GameController.instance.MissGame(userObject.Obj.name);
-		}
+		GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+		GameController.instance.UpdateUserStatus(userObject.Obj.name, 2);
+		GameController.instance.MissGame(userObject.Obj.name);
 	}
 
 }

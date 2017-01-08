@@ -14,7 +14,7 @@ public class UserState {
 	/// 	<item>
 	/// 		<term>condition</term>
 	/// 		<description>By its value, decide whether collision occurs or not.</description>
-	/// 		<value>-1:courseout / 0:normal / 1:damage / 2:dash</value>
+	/// 		<value>0:normal / 1:damage / 2:dash</value>
 	/// 	</item>
 	/// 	<item>
 	/// 		<term>record</term>

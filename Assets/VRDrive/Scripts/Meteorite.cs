@@ -73,21 +73,19 @@ public class Meteorite : Incident {
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		if (userState.Status < 1) {
-			if (userState.Condition != 1) {
-				GameController.instance.UpdateUserCondition(userObject.Obj.name, 1);
+		if (userState.Condition != 1) {
+			GameController.instance.UpdateUserCondition(userObject.Obj.name, 1);
 
-				Vector3 direction = userObject.Obj.GetComponent<Rigidbody>().velocity.normalized;
-				userObject.Obj.GetComponent<Rigidbody>().AddForce(new Vector3(direction.x, 0, Mathf.Abs(direction.z)) * attackPower * (-1), ForceMode.Impulse);
-				int userStatus = 0;
-				if(GameController.instance.OneKillMode) {
-					userStatus = 2;
-					GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
-				}
-
-				GameController.instance.UpdateUserStatus(userObject.Obj.name, userStatus);
-				StartCoroutine(AfterCollisionAction(explosionSound.clip.length, userSet));
+			Vector3 direction = userObject.Obj.GetComponent<Rigidbody>().velocity.normalized;
+			userObject.Obj.GetComponent<Rigidbody>().AddForce(new Vector3(direction.x, 0, Mathf.Abs(direction.z)) * attackPower * (-1), ForceMode.Impulse);
+			int userStatus = 0;
+			if(GameController.instance.OneKillMode) {
+				userStatus = 2;
+				GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
 			}
+
+			GameController.instance.UpdateUserStatus(userObject.Obj.name, userStatus);
+			StartCoroutine(AfterCollisionAction(explosionSound.clip.length, userSet));
 		}
 	}
 
