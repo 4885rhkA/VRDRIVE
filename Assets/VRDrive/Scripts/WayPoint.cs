@@ -29,7 +29,7 @@ public class WayPoint : Incident {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 
-		if(GameController.instance.isPlayer(userObject.Obj.name)) {
+		if(!GameController.instance.isPlayer(userObject.Obj.name)) {
 			userObject.Obj.transform.position = startWaypointTransform.position;
 			userObject.Obj.transform.rotation = startWaypointTransform.rotation;
 			userObject.Obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 0);
