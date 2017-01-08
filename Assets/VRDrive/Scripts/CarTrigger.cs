@@ -2,27 +2,24 @@
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
-/// Class for defined action when collision between user's car and trigger of MaxSpeed Label
-public class MaxSpeedTrigger: Incident {
-
-	private float maxSpeed;
+/// Class for defined action when collision between user's car and trigger of Car
+public class CarTrigger : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, false}, 	// OnTriggerEnter
+			{false, true}, 		// OnTriggerEnter
 			{false, false}, 	// OnCollisionEnter
-			{false, true}, 	// OnTriggerStay
+			{false, false}, 	// OnTriggerStay
 			{false, false},		// OnCollisionStay
 			{false, false}, 	// OnTriggerExit
 			{false, false}		// OnCollisionExit
 		};
 	}
 
-	void Start() {
+	void Start () {
 		parentName = gameObject.transform.parent.gameObject.name;
-		maxSpeed = float.Parse (parentName.Replace ("km", ""));
 	}
-
+	
 	/// <summary>When collider/collision occurs, do object's action.</summary>
 	/// <param name="kindOfCollision">
 	/// 	The kind of collision
@@ -40,12 +37,12 @@ public class MaxSpeedTrigger: Incident {
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
-		UserState userState = userSet.UserState;
+
+		// little moving
+		GameController.instance.GetUserSet (parentName).UserObject.Obj.GetComponent<MyCarController>().MaxSpeed = 0.1f;
 
 		if (ContainedCheckList ()) {
-			if (userObject.Obj.GetComponent<MyCarController> ().GetCurrentSpeed () > maxSpeed && userState.CheckList[parentName]) {
-				GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
-			}
+			GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
 		}
 	}
 

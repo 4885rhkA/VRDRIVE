@@ -251,7 +251,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Update the condition.</summary>
-	/// <param name="userName">The name for user</param>
+	/// <param name="userName">The <c>GameObject</c> name for user</param>
 	/// <param name="condition">The condition of each user</param>
 	public void UpdateUserCondition(string userName, int condition) {
 		if (HasUserSet (userName)) {
@@ -271,7 +271,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Update the finished time.</summary>
-	/// <param name="userName">The name for user</param>
+	/// <param name="userName">The <c>GameObject</c> name for user</param>
 	/// <param name="timeSpan">PastTime from the starte</param>
 	public void UpdateRecord(string userName, TimeSpan timeSpan) {
 		if (HasUserSet (userName)) {
@@ -279,14 +279,23 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>Update the check list.</summary>
+	/// <param name="userName">The <c>GameObject</c> name for user</param>
+	/// <param name="checkName">The <c>GameObject</c> name for check</param>
+	/// <param name="value">Keep the traffic rules or not</param>
 	public void UpdateCheckList(string userName, string checkName, bool value) {
 		if (HasUserSet (userName)) {
 			userSetList [userName].UserState.CheckList [checkName] = value;
 		}
+
+		// Debug
+		foreach(KeyValuePair<string, bool> check in userSetList [userName].UserState.CheckList) {
+			Debug.Log (Time.time + " / " + check.Key + " : " + check.Value);
+		}
 	}
 
 	/// <summary>Call the miss display.</summary>
-	/// <param name="userName">The name for user</param>
+	/// <param name="userName">The <c>GameObject</c> name for user</param>
 	public void MissGame(string userName) {
 		if (HasUserSet (userName)) {
 			GameObject result = userSetList[userName].UserObject.Result;
@@ -306,7 +315,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>Call the miss display quickly.</summary>
-	/// <param name="userName">The name for user</param>
+	/// <param name="userName">The <c>GameObject</c> name for user</param>
 	private void MissGameQuickly(string userName) {
 		if (HasUserSet (userName)) {
 			UserSet userSet = userSetList [userName];
@@ -319,6 +328,7 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>Call the scene.</summary>
 	public void ChangeGameScene() {
 		UserSet userSet;
 
@@ -339,6 +349,9 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>Have UserSet or not.</summary>
+	/// <param name="name">The <c>GameObject</c> name</param>
+	/// <returns>Has UserSet or not</returns>
 	public bool HasUserSet(string name) {
 		if (userSetList.ContainsKey (name)) {
 			return true;
@@ -346,6 +359,9 @@ public class GameController : MonoBehaviour {
 		return false;
 	}
 
+	/// <summary>Get UserSet.</summary>
+	/// <param name="name">The <c>GameObject</c> name</param>
+	/// <returns>UserSet</returns>
 	public UserSet GetUserSet(string name) {
 		if (HasUserSet (name)) {
 			return userSetList [name];
@@ -353,6 +369,9 @@ public class GameController : MonoBehaviour {
 		return new UserSet(new UserObject(), new UserState());
 	}
 
+	/// <summary>Have UserSet or not.</summary>
+	/// <param name="name">The <c>GameObject</c> name</param>
+	/// <returns>Name is play or not</returns>
 	public bool isPlayer(string name) {
 		if (HasUserSet (name) && name.Contains("Player")) {
 			return true;

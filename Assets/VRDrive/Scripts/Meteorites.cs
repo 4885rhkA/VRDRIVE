@@ -9,6 +9,7 @@ public class Meteorites : MonoBehaviour {
 
 	private float[] createMeteoriteZPositions = new float[5]{-18f, -9f, 0f, 9f, 18f};
 
+	/// <summary>Start to create the meteorite on interval.</summary>
 	public void StartRockFalling() {
 		if(meteorite != null) {
 			StartCoroutine(CreateMeteorite());

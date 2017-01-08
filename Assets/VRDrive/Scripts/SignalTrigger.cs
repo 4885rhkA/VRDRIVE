@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
+/// Class for defined action when collision between user's car and trigger of Signal
 public class SignalTrigger : Incident {
 
 	private Signal signal;
@@ -25,11 +26,19 @@ public class SignalTrigger : Incident {
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
+	/// <param name="kindOfCollision">
+	/// 	The kind of collision
+	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
+	/// </param>
 	protected override void CollisionActionForMyself(int kindOfCollision) {
 	}
 
 	/// <summary>When collider/collision occurs, do user's action.</summary>
 	/// <param name="userName">The name for user</param>
+	/// <param name="kindOfCollision">
+	/// 	The kind of collision
+	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
+	/// </param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;

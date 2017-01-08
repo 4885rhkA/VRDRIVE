@@ -11,7 +11,7 @@ public class SpeedUpBoard : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, true}, 	// OnTriggerEnter
+			{false, true}, 		// OnTriggerEnter
 			{false, false}, 	// OnCollisionEnter
 			{false, false}, 	// OnTriggerStay
 			{false, false},		// OnCollisionStay
@@ -27,10 +27,18 @@ public class SpeedUpBoard : Incident {
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
+	/// <param name="kindOfCollision">
+	/// 	The kind of collision
+	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
+	/// </param>
 	protected override void CollisionActionForMyself(int kindOfCollision) {}
 
 	/// <summary>When collider/collision occurs, do user's action.</summary>
 	/// <param name="userName">The name for user</param>
+	/// <param name="kindOfCollision">
+	/// 	The kind of collision
+	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
+	/// </param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
@@ -49,6 +57,7 @@ public class SpeedUpBoard : Incident {
 	}
 
 	/// <summary>After collider/collision occurs, do action.</summary>
+	/// <param name="delay">How long it occurs</param>
 	/// <param name="userSet">User's State and Object</param>
 	private IEnumerator AfterCollisionAction(float delay, UserSet userSet) {
 		yield return new WaitForSeconds(delay);

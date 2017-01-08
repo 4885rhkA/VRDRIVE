@@ -14,6 +14,7 @@ public class StageController : MonoBehaviour {
 	[SerializeField] private bool checkList = true;
 	[SerializeField] private bool tunnnels = true;
 
+	/// <summary>Check and set existing objects.</summary>
 	public void SetCondition() {
 		if(GameObject.Find ("SpeedUpBoards") != null && !sppedUpBoards) {
 			GameObject.Find ("SpeedUpBoards").gameObject.SetActive(false);

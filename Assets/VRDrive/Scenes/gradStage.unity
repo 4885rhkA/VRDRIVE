@@ -22183,6 +22183,59 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
   m_PrefabInternal: {fileID: 1978192818}
+--- !u!1 &1995666591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1995666592}
+  - 65: {fileID: 1995666593}
+  - 114: {fileID: 1995666594}
+  m_Layer: 0
+  m_Name: Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1995666592
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1995666591}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 2028443391}
+  m_RootOrder: 8
+--- !u!65 &1995666593
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1995666591}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.5, y: 1.5, z: 5.5}
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1995666594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1995666591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d9bc1ab9cc0d472b875698cf577ae4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1996191785
 GameObject:
   m_ObjectHideFlags: 0
@@ -22612,6 +22665,7 @@ Transform:
   - {fileID: 872501962}
   - {fileID: 1914210080}
   - {fileID: 1136054769}
+  - {fileID: 1995666592}
   m_Father: {fileID: 2064629256}
   m_RootOrder: 3
 --- !u!114 &2028443392
@@ -22651,7 +22705,7 @@ MonoBehaviour:
   m_Downforce: 700
   m_SpeedType: 1
   m_RevRangeBoundary: 1
-  m_Maxspeed: 120
+  m_Maxspeed: 40
   m_SlipLimit: 1
   m_BrakeTorque: 20000
   m_MaxHandleRotation: 90

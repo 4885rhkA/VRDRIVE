@@ -23,6 +23,11 @@ public class ViewerController : MonoBehaviour {
 		return pastTime.Minutes.ToString().PadLeft(1, '0') + ':' + pastTime.Seconds.ToString().PadLeft(2, '0') + ':' + pastTime.Milliseconds.ToString().PadLeft(3, '0');
 	}
 
+
+	/// <summary>Switch the showing text.</summary>
+	/// <param name="delay">How long it occurs after calling this function</param>
+	/// <param name="text">The target <c>Text</c> Component</param>
+	/// <param name="state">The trigger for showing text or not</param>
 	public IEnumerator ChangeTextState(float delay, Text text, bool state) {
 		yield return new WaitForSeconds(delay);
 		text.enabled = state;

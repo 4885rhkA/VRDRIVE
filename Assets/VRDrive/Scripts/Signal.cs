@@ -59,7 +59,7 @@ public class Signal : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Get the status of signal</summary>
+	/// <summary>Get the status of signal.</summary>
 	/// <returns>
 	///  	2:Red
 	///  	1:Yellow

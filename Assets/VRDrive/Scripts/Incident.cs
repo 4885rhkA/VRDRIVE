@@ -49,8 +49,19 @@ public abstract class Incident : MonoBehaviour {
 		return gameObject.transform.root.gameObject.name == "CheckList";
 	}
 
+	/// <summary>When collider/collision occurs, do object's action.</summary>
+	/// <param name="kindOfCollision">
+	/// 	The kind of collision
+	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
+	/// </param>
 	protected abstract void CollisionActionForMyself(int kindOfCollision);
 
+	/// <summary>When collider/collision occurs, do user's action.</summary>
+	/// <param name="userName">The name for user</param>
+	/// <param name="kindOfCollision">
+	/// 	The kind of collision
+	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
+	/// </param>
 	protected abstract void CollisionActionForUser(string userName, int kindOfCollision);
 
 }
