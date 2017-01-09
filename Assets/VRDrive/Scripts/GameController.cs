@@ -38,7 +38,10 @@ public class GameController : MonoBehaviour {
 		{"time", "TIME "},
 	};
 
-	private bool startGameAtTheSameTimeFlag = false;
+	private bool startGameFlag = false;
+	private bool finishGameFlag = false;
+	private bool exitGameFlag = false;
+
 	private int remainingInGame = 0;
 	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
 
@@ -205,6 +208,76 @@ public class GameController : MonoBehaviour {
 		SoundController.instance.StartStageSound();
 		StageController.instance.StartGimmick ();
 	}
+		
+	public void ClearGame(string name) {
+		if (HasUserSet (name)) {
+			UserSet userSet = userSetList [name];
+			UserObject userObject = userSet.UserObject;
+
+			UpdateUserStatus(userObject.Obj.name, 1);
+			UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+
+			if(GameController.instance.IsPlayer(userObject.Obj.name)) {
+				Text messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
+
+				if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
+					ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
+				}
+				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
+				StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText, true));
+				SoundController.instance.ShotClipSound("goal");
+			}
+		}
+	}
+
+	/// <summary>Call the miss display.</summary>
+	/// <param name="name">The <c>GameObject</c> name </param>
+	public void MissGame(string name) {
+		if (HasUserSet (name)) {
+			UserSet userSet = userSetList [name];
+			UserObject userObject = userSet.UserObject;
+
+			UpdateUserStatus(userObject.Obj.name, 2);
+			UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+
+			if (IsPlayer (name)) {
+				Text resultText = userObject.Result.transform.FindChild("ResultText").GetComponent<Text>();
+
+				// Set View and Sound for Miss
+				if(ColorUtility.TryParseHtmlString(colorList["miss"], out fontColor)) {
+					ViewerController.instance.ChangeTextContent(resultText, messageList["miss"], fontColor);
+				}
+				ViewerController.instance.ChangeRawImageState(userObject.Result.GetComponent<RawImage>(), true);
+				StartCoroutine(ViewerController.instance.ChangeTextState(0, resultText, true));
+				SoundController.instance.ShotClipSound("miss");
+			}
+		}
+	}
+
+	/// <summary>Call the scene.</summary>
+	public void ChangeGameScene() {
+		UserSet userSet;
+
+		if(!startGameFlag) {
+			startGameFlag = true;
+			ReleaseStartGame();
+		}
+
+		if (!exitGameFlag) {
+			if(remainingInGame == 0 && finishGameFlag) {
+				exitGameFlag = true;
+				KeepValuesToNextScene ();
+				SceneManager.LoadScene("menu");
+			}
+		}
+
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
+			userSet = eachUserSet.Value;
+			if(userSet.UserState.Status == 0) {
+				MissGame(userSet.UserObject.Obj.name);
+			}
+		}
+	}
 
 	/// <summary>Update the status.</summary>
 	/// <param name="name">The name for GameObject</param>
@@ -219,6 +292,9 @@ public class GameController : MonoBehaviour {
 
 			if(IsPlayer(userObject.Obj.name) && userState.Status > 0) {
 				remainingInGame--;
+				if (remainingInGame == 0) {
+					finishGameFlag = true;
+				}
 			}
 			switch(userState.Status) {
 				case -1:
@@ -280,78 +356,11 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-
-	public void ClearGame(string name) {
-		if (HasUserSet (name)) {
-			UserSet userSet = userSetList [name];
-			UserObject userObject = userSet.UserObject;
-
-			UpdateUserStatus(userObject.Obj.name, 1);
-			UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
-
-			if(GameController.instance.IsPlayer(userObject.Obj.name)) {
-				Text messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
-
-				if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
-					ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
-				}
-				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
-				StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText, true));
-				SoundController.instance.ShotClipSound("goal");
-			}
-		}
-	}
-
-	/// <summary>Call the miss display.</summary>
-	/// <param name="name">The <c>GameObject</c> name </param>
-	public void MissGame(string name) {
-		if (HasUserSet (name)) {
-			UserSet userSet = userSetList [name];
-			UserObject userObject = userSet.UserObject;
-
-			UpdateUserStatus(userObject.Obj.name, 2);
-			UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
-
-			if (IsPlayer (name)) {
-				Text resultText = userObject.Result.transform.FindChild("ResultText").GetComponent<Text>();
-
-				// Set View and Sound for Miss
-				if(ColorUtility.TryParseHtmlString(colorList["miss"], out fontColor)) {
-					ViewerController.instance.ChangeTextContent(resultText, messageList["miss"], fontColor);
-				}
-				ViewerController.instance.ChangeRawImageState(userObject.Result.GetComponent<RawImage>(), true);
-				StartCoroutine(ViewerController.instance.ChangeTextState(0, resultText, true));
-				SoundController.instance.ShotClipSound("miss");
-			}
-		}
-	}
-
-	/// <summary>Call the scene.</summary>
-	public void ChangeGameScene() {
-		UserSet userSet;
-
-		if(!startGameAtTheSameTimeFlag) {
-			startGameAtTheSameTimeFlag = true;
-			ReleaseStartGame();
-		}
-
-		if(remainingInGame == 0) {
-			KeepValuesToNextScene ();
-			SceneManager.LoadScene("menu");
-		}
-
-		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
-			userSet = eachUserSet.Value;
-			if(userSet.UserState.Status == 0) {
-				MissGame(userSet.UserObject.Obj.name);
-			}
-		}
-	}
-
 	private void KeepValuesToNextScene() {
 		GameObject newValueKeeper = Instantiate(
 			valueKeeper, transform.position, transform.rotation
 		) as GameObject;
+		newValueKeeper.name = valueKeeper.name;
 		newValueKeeper.GetComponent<ValueKeeper> ().UserSetList = userSetList;
 		DontDestroyOnLoad (newValueKeeper);
 	}

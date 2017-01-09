@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets.Vehicles.Car
@@ -11,6 +12,17 @@ namespace UnityStandardAssets.Vehicles.Car
 		[SerializeField] private bool isKeyboardMode = false;
 
 		private MyCarController m_Car; // the car controller we want to use
+		private bool enableToPush = true;
+		private float timeForPermitPush = 1f;
+
+		private bool EnableToPush {
+			get {
+				return enableToPush;
+			}
+			set {
+				enableToPush = value;
+			}
+		}
 
 		private void Awake()
 		{
@@ -18,8 +30,7 @@ namespace UnityStandardAssets.Vehicles.Car
 			m_Car = GetComponent<MyCarController>();
 		}
 
-		private void FixedUpdate()
-		{
+		private void FixedUpdate() {
 			// lr
 			float h;
 			if (isKeyboardMode) {
@@ -67,9 +78,16 @@ namespace UnityStandardAssets.Vehicles.Car
 				}
 			}
 
-			if (d) {
+			if (d && EnableToPush) {
+				EnableToPush = false;
 				GameController.instance.ChangeGameScene ();
+				StartCoroutine(PreventSuccessionPush ());
 			}
+		}
+
+		private IEnumerator PreventSuccessionPush() {
+			yield return new WaitForSeconds(timeForPermitPush);
+			EnableToPush = true;
 		}
 	}
 }
