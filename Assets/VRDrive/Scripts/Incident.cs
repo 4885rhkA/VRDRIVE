@@ -91,7 +91,7 @@ public abstract class Incident : MonoBehaviour {
 		Directory.CreateDirectory(Application.dataPath + "/" + path);
 
 		path = "Assets/" + path;
-		while (isSituationForSaveScreenshot) {
+		while (isSituationForSaveScreenshot && GameController.instance.TakeScreenshotsForChecklist) {
 			Application.CaptureScreenshot (path + "/" + userName + "-" + count.ToString().PadLeft(4, '0') +".png");
 			count++;
 			yield return new WaitForSeconds(intervalForCapture);

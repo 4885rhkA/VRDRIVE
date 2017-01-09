@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 	public static GameController instance;
 
 	[SerializeField] private bool oneKillMode = true;
+	[SerializeField] private bool takeScreenshotsForChecklist = true;
 	[SerializeField] private GameObject valueKeeper;
 
 	private Dictionary<string, UserSet> userSetList = new Dictionary<string, UserSet>();
@@ -44,6 +45,12 @@ public class GameController : MonoBehaviour {
 	public bool OneKillMode {
 		get {
 			return oneKillMode;
+		}
+	}
+
+	public bool TakeScreenshotsForChecklist {
+		get {
+			return takeScreenshotsForChecklist;
 		}
 	}
 
