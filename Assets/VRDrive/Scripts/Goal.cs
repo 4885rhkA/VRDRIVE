@@ -44,27 +44,17 @@ public class Goal : Incident {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 
-		if(GameController.instance.IsPlayer(userObject.Obj.name)) {
-			GameObject message = userObject.Message;
-			Text messageText = message.transform.FindChild("MessageText").GetComponent<Text>();
-			if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
-				ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
-			}
-			ViewerController.instance.ChangeRawImageState(message.GetComponent<RawImage>(), true);
-			StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText, true));
-			SoundController.instance.ShotClipSound("goal");
-		}
-		GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
-		GameController.instance.UpdateUserStatus(userObject.Obj.name, 1);
-		StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("goal"), userSet));
+		GameController.instance.ClearGame (userObject.Obj.name);
+		StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("goal"), userObject.Obj.name));
 	}
 
 	/// <summary>After collider/collision occurs, do action.</summary>
 	/// <param name="delay">How long it occurs</param>
-	/// <param name="userSet">User's State and Object</param>
-	private IEnumerator AfterCollisionAction(float delay, UserSet userSet) {
+	/// <param name="userName">The name for user</param>
+	private IEnumerator AfterCollisionAction(float delay, string userName) {
 		yield return new WaitForSeconds(delay);
 
+		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 

@@ -273,37 +273,49 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+
+	public void ClearGame(string name) {
+		if (HasUserSet (name)) {
+			UserSet userSet = userSetList [name];
+			UserObject userObject = userSet.UserObject;
+
+			UpdateUserStatus(userObject.Obj.name, 1);
+			UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+
+			if(GameController.instance.IsPlayer(userObject.Obj.name)) {
+				Text messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
+
+				if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
+					ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
+				}
+				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
+				StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText, true));
+				SoundController.instance.ShotClipSound("goal");
+			}
+		}
+	}
+
 	/// <summary>Call the miss display.</summary>
 	/// <param name="name">The <c>GameObject</c> name </param>
 	public void MissGame(string name) {
 		if (HasUserSet (name)) {
-			GameObject result = userSetList[name].UserObject.Result;
+			UserSet userSet = userSetList [name];
+			UserObject userObject = userSet.UserObject;
+
+			UpdateUserStatus(userObject.Obj.name, 2);
+			UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
 
 			if (IsPlayer (name)) {
-				Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
+				Text resultText = userObject.Result.transform.FindChild("ResultText").GetComponent<Text>();
 
 				// Set View and Sound for Miss
 				if(ColorUtility.TryParseHtmlString(colorList["miss"], out fontColor)) {
 					ViewerController.instance.ChangeTextContent(resultText, messageList["miss"], fontColor);
 				}
-				ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
+				ViewerController.instance.ChangeRawImageState(userObject.Result.GetComponent<RawImage>(), true);
 				StartCoroutine(ViewerController.instance.ChangeTextState(0, resultText, true));
 				SoundController.instance.ShotClipSound("miss");
 			}
-		}
-	}
-
-	/// <summary>Call the miss display quickly.</summary>
-	/// <param name="name">The <c>GameObject<userNamename </param>
-	private void MissGameQuickly(string name) {
-		if (HasUserSet (name)) {
-			UserSet userSet = userSetList [name];
-			UserObject userObject = userSet.UserObject;
-			UserState userState = userSet.UserState;
-
-			userState.Record = TimerController.instance.PastTime;
-			UpdateUserStatus(userObject.Obj.name, 2);
-			MissGame(userObject.Obj.name);
 		}
 	}
 
@@ -324,7 +336,7 @@ public class GameController : MonoBehaviour {
 		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
 			userSet = eachUserSet.Value;
 			if(userSet.UserState.Status == 0) {
-				MissGameQuickly(userSet.UserObject.Obj.name);
+				MissGame(userSet.UserObject.Obj.name);
 			}
 		}
 	}

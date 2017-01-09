@@ -34,8 +34,6 @@ public class UnderGround : Incident {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 
-		GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
-		GameController.instance.UpdateUserStatus(userObject.Obj.name, 2);
 		GameController.instance.MissGame(userObject.Obj.name);
 	}
 

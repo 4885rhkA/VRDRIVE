@@ -74,34 +74,27 @@ public class Meteorite : Incident {
 		UserState userState = userSet.UserState;
 
 		if (userState.Condition != 1) {
-			GameController.instance.UpdateUserCondition(userObject.Obj.name, 1);
-
 			Vector3 direction = userObject.Obj.GetComponent<Rigidbody>().velocity.normalized;
 			userObject.Obj.GetComponent<Rigidbody>().AddForce(new Vector3(direction.x, 0, Mathf.Abs(direction.z)) * attackPower * (-1), ForceMode.Impulse);
-			int userStatus = 0;
-			if(GameController.instance.OneKillMode) {
-				userStatus = 2;
-				GameController.instance.UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
-			}
 
-			GameController.instance.UpdateUserStatus(userObject.Obj.name, userStatus);
-			StartCoroutine(AfterCollisionAction(explosionSound.clip.length, userSet));
+			if (GameController.instance.OneKillMode) {
+				GameController.instance.MissGame (userObject.Obj.name);
+			}
+			else {
+				GameController.instance.UpdateUserCondition(userObject.Obj.name, 1);
+				GameController.instance.UpdateUserStatus(userObject.Obj.name, 0);
+				StartCoroutine(AfterCollisionAction(explosionSound.clip.length, userObject.Obj.name));
+			}
 		}
 	}
 
 	/// <summary>After collider/collision occurs, do action.</summary>
 	/// <param name="delay">How long it occurs</param>
-	/// <param name="userSet">User's State and Object</param>
-	private IEnumerator AfterCollisionAction(float delay, UserSet userSet) {
+	/// <param name="userName">User's name</param>
+	private IEnumerator AfterCollisionAction(float delay, string userName) {
 		yield return new WaitForSeconds(delay);
 
-		UserObject userObject = userSet.UserObject;
-		UserState userState = userSet.UserState;
-
-		GameController.instance.UpdateUserCondition(userObject.Obj.name, 0);
-		if(userState.Status == 2 && GameController.instance.OneKillMode) {
-			GameController.instance.MissGame(userObject.Obj.name);
-		}
+		GameController.instance.UpdateUserCondition(userName, 0);
 	}
 
 }
