@@ -7,35 +7,13 @@ using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.UI;
 using UnityStandardAssets.Vehicles.Car;
 
-public struct UserSet{
-	private UserObject userObject;
-	private UserState userState;
-
-	public UserSet(UserObject userObject, UserState userState) {
-		this.userObject = userObject;
-		this.userState = userState;
-	}
-
-	public UserObject UserObject {
-		get {
-			return userObject;
-		}
-	}
-
-	public UserState UserState {
-		get {
-			return userState;
-		}
-	}
-
-}
-
 /// Control class for the each user's status
 public class GameController : MonoBehaviour {
 
 	public static GameController instance;
 
 	[SerializeField] private bool oneKillMode = true;
+	[SerializeField] private GameObject valueKeeper;
 
 	private Dictionary<string, UserSet> userSetList = new Dictionary<string, UserSet>();
 
@@ -339,6 +317,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		if(remainingInGame == 0) {
+			KeepValuesToNextScene ();
 			SceneManager.LoadScene("menu");
 		}
 
@@ -348,6 +327,14 @@ public class GameController : MonoBehaviour {
 				MissGameQuickly(userSet.UserObject.Obj.name);
 			}
 		}
+	}
+
+	private void KeepValuesToNextScene() {
+		GameObject newValueKeeper = Instantiate(
+			valueKeeper, transform.position, transform.rotation
+		) as GameObject;
+		newValueKeeper.GetComponent<ValueKeeper> ().UserSetList = userSetList;
+		DontDestroyOnLoad (newValueKeeper);
 	}
 
 	/// <summary>Have UserSet or not.</summary>
@@ -373,7 +360,7 @@ public class GameController : MonoBehaviour {
 	/// <summary>Have UserSet or not.</summary>
 	/// <param name="name">The <c>GameObject</c> name</param>
 	/// <returns>Name is play or not</returns>
-	public bool isPlayer(string name) {
+	public bool IsPlayer(string name) {
 		if (HasUserSet (name) && name.Contains("Player")) {
 			return true;
 		}

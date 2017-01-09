@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oneKillMode: 0
+  valueKeeper: {fileID: 198210, guid: 2d04266fe2bb54960b48b7bffbf9a4e0, type: 2}
 --- !u!114 &11482568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -191,9 +192,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72486396221cf42a3bd88bfa83f0bf67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sun: 1
+  meteorites: 1
   sppedUpBoards: 1
-  checks: 1
+  checkList: 1
   tunnnels: 1
 --- !u!114 &11497208
 MonoBehaviour:
