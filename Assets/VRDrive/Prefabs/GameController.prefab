@@ -124,6 +124,9 @@ MonoBehaviour:
   cameraDistanceY: 0
   cameraDistanceZ: 0
   cameraRotationUpDown: 0
+  directoryForScreenshot: VRDrive/Result/Screenshots
+  intervalForCapture: 0.5
+  delayForCaptureAfterTriggerExit: 2
 --- !u!114 &11416244
 MonoBehaviour:
   m_ObjectHideFlags: 1
