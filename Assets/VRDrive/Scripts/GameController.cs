@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour {
 		{"go", "#FFFFFFFF"},
 		{"miss", "#FFFFFFFF"},
 		{"timer", "#FFFFFFFF"},
-		{"speedMeter", "#FFFFFFFF"},
+		{"speedMeter", "#272629FF"},
 		{"goal", "#272629FF"},
 		{"record", "#FFFFFFFF"},
 		{"result", "#FFFFFFFF"}

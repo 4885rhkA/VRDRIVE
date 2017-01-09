@@ -17,6 +17,20 @@ public class Signal : MonoBehaviour {
 	private MeshRenderer yellowRenderer;
 	private MeshRenderer redRenderer;
 
+	/// <returns>
+	///  	2:Red
+	///  	1:Yellow
+	/// 	0:Green
+	/// </returns>
+	public int Status {
+		get {
+			return status;
+		}
+		set {
+			status = value;
+		}
+	}
+
 	void Start () {
 		greenRenderer = gameObject.transform.FindChild ("Green").gameObject.GetComponent<MeshRenderer>();
 		yellowRenderer = gameObject.transform.FindChild ("Yellow").gameObject.GetComponent<MeshRenderer>();
@@ -34,8 +48,8 @@ public class Signal : MonoBehaviour {
 	private IEnumerator TurnSignal() {
 		while (true) {
 			int waitTime = DEFAULTSTOPTIME;
-			status = (status + 1) % 3;
-			switch (status) {
+			Status = (Status + 1) % 3;
+			switch (Status) {
 				case 0:
 					waitTime = greenColorTime;
 					greenRenderer.enabled = true;
@@ -57,16 +71,6 @@ public class Signal : MonoBehaviour {
 			}
 			yield return new WaitForSeconds(waitTime);
 		}
-	}
-
-	/// <summary>Get the status of signal.</summary>
-	/// <returns>
-	///  	2:Red
-	///  	1:Yellow
-	/// 	0:Green
-	/// </returns>
-	public int GetStatus() {
-		return status;
 	}
 
 }

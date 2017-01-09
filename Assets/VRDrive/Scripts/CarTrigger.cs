@@ -11,7 +11,7 @@ public class CarTrigger : Incident {
 			{false, false}, 	// OnCollisionEnter
 			{false, false}, 	// OnTriggerStay
 			{false, false},		// OnCollisionStay
-			{false, false}, 	// OnTriggerExit
+			{false, true}, 		// OnTriggerExit
 			{false, false}		// OnCollisionExit
 		};
 	}
@@ -42,7 +42,17 @@ public class CarTrigger : Incident {
 		GameController.instance.GetUserSet (parentName).UserObject.Obj.GetComponent<MyCarController>().MaxSpeed = 0.1f;
 
 		if (ContainedCheckList ()) {
-			GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
+			if (kindOfCollision == 0) {
+				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+					StartCoroutine (SaveScreenshotWithInterval (userObject.Obj.name));
+				}
+				GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
+			}
+			if (kindOfCollision == 4) {
+				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+					StartCoroutine (IsSituationForSaveScreenshotWithDelay (false));
+				}
+			}
 		}
 	}
 

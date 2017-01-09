@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.IO;
 using System.Collections;
 
 /// The Class for defined action when collision between user's car and gimmick
@@ -6,6 +7,17 @@ public abstract class Incident : MonoBehaviour {
 
 	protected bool[, ] collisionFlag;
 	protected string parentName;
+
+	protected bool isSituationForSaveScreenshot = true;
+
+	public bool IsSituationForSaveScreenshot {
+		get {
+			return isSituationForSaveScreenshot;
+		}
+		set {
+			isSituationForSaveScreenshot = value;
+		}
+	}
 
 	void OnTriggerEnter(Collider collider) {
 		CollisionAction (collisionFlag[0, 0], collisionFlag[0, 1], collider.gameObject, 0);
@@ -64,5 +76,26 @@ public abstract class Incident : MonoBehaviour {
 	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
 	/// </param>
 	protected abstract void CollisionActionForUser(string userName, int kindOfCollision);
+
+	protected IEnumerator IsSituationForSaveScreenshotWithDelay(bool value) {
+		yield return new WaitForSeconds(CameraController.instance.DelayForCaptureAfterTriggerExit);
+		IsSituationForSaveScreenshot = value;
+	}
+
+	protected IEnumerator SaveScreenshotWithInterval(string userName) {
+		int count = 0;
+		CameraController cameraController = CameraController.instance;
+		string directoryForScreenshot = cameraController.DirectoryForScreenshot;
+		float intervalForCapture = cameraController.IntervalForCapture;
+		string path = directoryForScreenshot + "/" + parentName;
+		Directory.CreateDirectory(Application.dataPath + "/" + path);
+
+		path = "Assets/" + path;
+		while (isSituationForSaveScreenshot) {
+			Application.CaptureScreenshot (path + "/" + userName + "-" + count.ToString().PadLeft(4, '0') +".png");
+			count++;
+			yield return new WaitForSeconds(intervalForCapture);
+		}
+	}
 
 }

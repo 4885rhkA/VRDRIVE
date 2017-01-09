@@ -9,11 +9,11 @@ public class MaxSpeedTrigger: Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, false}, 	// OnTriggerEnter
+			{false, true}, 	// OnTriggerEnter
 			{false, false}, 	// OnCollisionEnter
 			{false, true}, 	// OnTriggerStay
 			{false, false},		// OnCollisionStay
-			{false, false}, 	// OnTriggerExit
+			{false, true}, 	// OnTriggerExit
 			{false, false}		// OnCollisionExit
 		};
 	}
@@ -43,8 +43,20 @@ public class MaxSpeedTrigger: Incident {
 		UserState userState = userSet.UserState;
 
 		if (ContainedCheckList ()) {
-			if (userObject.Obj.GetComponent<MyCarController> ().GetCurrentSpeed () > maxSpeed && userState.CheckList[parentName]) {
-				GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
+			if (kindOfCollision == 0) {
+				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+					StartCoroutine (SaveScreenshotWithInterval (userObject.Obj.name));
+				}
+			}
+			if (kindOfCollision == 2) {
+				if (userObject.Obj.GetComponent<MyCarController> ().GetCurrentSpeed () > maxSpeed && userState.CheckList[parentName]) {
+					GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
+				}
+			}
+			if (kindOfCollision == 4) {
+				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+					StartCoroutine (IsSituationForSaveScreenshotWithDelay (false));
+				}
 			}
 		}
 	}

@@ -10,11 +10,11 @@ public class SignalTrigger : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, false}, 	// OnTriggerEnter
+			{false, true}, 		// OnTriggerEnter
 			{false, false}, 	// OnCollisionEnter
-			{false, true}, 	// OnTriggerStay
+			{false, true}, 		// OnTriggerStay
 			{false, false},		// OnCollisionStay
-			{false, true}, 	// OnTriggerExit
+			{false, true}, 		// OnTriggerExit
 			{false, false}		// OnCollisionExit
 		};
 	}
@@ -44,26 +44,34 @@ public class SignalTrigger : Incident {
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		if(signal.GetStatus() == 2) {
-			if(kindOfCollision == 2) {
-				if(!GameController.instance.isPlayer(userObject.Obj.name)) {
-					if (userObject.Obj.GetComponent<Rigidbody> ().velocity.magnitude > 1) {
-						Vector3 aaa = -Time.deltaTime * brakePowerGivenByAI * userObject.Obj.GetComponent<Rigidbody> ().velocity;
-						userObject.Obj.GetComponent<Rigidbody> ().velocity += aaa;
-					}
-					else {
-						userObject.Obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 0);
-					}
+
+		if(kindOfCollision == 2) {
+			if(signal.Status == 2 && !GameController.instance.isPlayer(userObject.Obj.name)) {
+				if (userObject.Obj.GetComponent<Rigidbody> ().velocity.magnitude > 1) {
+					Vector3 brakeVec = -Time.deltaTime * brakePowerGivenByAI * userObject.Obj.GetComponent<Rigidbody> ().velocity;
+					userObject.Obj.GetComponent<Rigidbody> ().velocity += brakeVec;
 				}
-			}
-			if (kindOfCollision == 4) {
-				if (ContainedCheckList ()) {
-					if (userState.CheckList [parentName]) {
-						GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
-					}
+				else {
+					userObject.Obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 0);
 				}
 			}
 		}
+		if (ContainedCheckList ()) {
+			if (kindOfCollision == 0) {
+				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+					StartCoroutine (SaveScreenshotWithInterval (userObject.Obj.name));
+				}
+			}
+			if (kindOfCollision == 4) {
+				if (signal.Status == 2 && userState.CheckList [parentName]) {
+					GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
+				}
+				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+					StartCoroutine (IsSituationForSaveScreenshotWithDelay (false));
+				}
+			}
+		}
+
 	}
 
 }
