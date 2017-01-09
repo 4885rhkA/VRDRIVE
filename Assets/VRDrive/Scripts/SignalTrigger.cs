@@ -46,7 +46,7 @@ public class SignalTrigger : Incident {
 
 
 		if(kindOfCollision == 2) {
-			if(signal.Status == 2 && !GameController.instance.isPlayer(userObject.Obj.name)) {
+			if(signal.Status == 2 && !GameController.instance.IsPlayer(userObject.Obj.name)) {
 				if (userObject.Obj.GetComponent<Rigidbody> ().velocity.magnitude > 1) {
 					Vector3 brakeVec = -Time.deltaTime * brakePowerGivenByAI * userObject.Obj.GetComponent<Rigidbody> ().velocity;
 					userObject.Obj.GetComponent<Rigidbody> ().velocity += brakeVec;
@@ -58,7 +58,7 @@ public class SignalTrigger : Incident {
 		}
 		if (ContainedCheckList ()) {
 			if (kindOfCollision == 0) {
-				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 					StartCoroutine (SaveScreenshotWithInterval (userObject.Obj.name));
 				}
 			}
@@ -66,7 +66,7 @@ public class SignalTrigger : Incident {
 				if (signal.Status == 2 && userState.CheckList [parentName]) {
 					GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
 				}
-				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 					StartCoroutine (IsSituationForSaveScreenshotWithDelay (false));
 				}
 			}

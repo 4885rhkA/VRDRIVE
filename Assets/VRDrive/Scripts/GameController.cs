@@ -99,7 +99,7 @@ public class GameController : MonoBehaviour {
 			// Insert data about User's operating Car
 			foreach(GameObject carObject in carObjects) {
 				userSetList.Add (carObject.name, new UserSet (new UserObject (carObject), new UserState ()));
-				if (isPlayer(carObject.name)) {
+				if (IsPlayer(carObject.name)) {
 					remainingInGame++;
 				}
 			}
@@ -123,7 +123,7 @@ public class GameController : MonoBehaviour {
 				}
 
 				// Set standby position
-				if (isPlayer (eachUserSet.Key)) {
+				if (IsPlayer (eachUserSet.Key)) {
 					ViewerController.instance.ChangeRawImageState(userObject.HowTo.GetComponent<RawImage>(), true);
 				}
 				UserController.instance.RemoveDefaultGravity(userObject.Obj.GetComponent<Rigidbody>());
@@ -143,7 +143,7 @@ public class GameController : MonoBehaviour {
 			userSet = eachUserSet.Value;
 			userObject = userSet.UserObject;
 
-			if (isPlayer (eachUserSet.Key)) {
+			if (IsPlayer (eachUserSet.Key)) {
 				// Update timer
 				timerText = userObject.Timer.transform.FindChild("TimerText").gameObject.GetComponent<Text> ();
 				if (ColorUtility.TryParseHtmlString (colorList["timer"], out fontColor)) {
@@ -173,7 +173,7 @@ public class GameController : MonoBehaviour {
 		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
 			userObject = eachUserSet.Value.UserObject;
 
-			if (isPlayer (eachUserSet.Key)) {
+			if (IsPlayer (eachUserSet.Key)) {
 				// Standby for starting
 				messageText = userObject.Message.transform.FindChild ("MessageText").gameObject;
 				ViewerController.instance.ChangeRawImageState(userObject.HowTo.GetComponent<RawImage>(), false);
@@ -202,7 +202,7 @@ public class GameController : MonoBehaviour {
 
 			UpdateUserStatus(userObject.Obj.name, 0);
 
-			if (isPlayer (eachUserSet.Key)) {
+			if (IsPlayer (eachUserSet.Key)) {
 				messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
 				timerText = userObject.Timer.transform.FindChild ("TimerText").GetComponent<Text> ();
 
@@ -232,7 +232,7 @@ public class GameController : MonoBehaviour {
 
 			userState.Status = status;
 
-			if(userState.Status > 0) {
+			if(IsPlayer(userObject.Obj.name) && userState.Status > 0) {
 				remainingInGame--;
 			}
 			switch(userState.Status) {
@@ -301,7 +301,7 @@ public class GameController : MonoBehaviour {
 		if (HasUserSet (name)) {
 			GameObject result = userSetList[name].UserObject.Result;
 
-			if (isPlayer (name)) {
+			if (IsPlayer (name)) {
 				Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
 
 				// Set View and Sound for Miss

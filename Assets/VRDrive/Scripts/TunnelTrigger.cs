@@ -39,7 +39,7 @@ public class TunnelTrigger : Incident {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 
-		if(GameController.instance.isPlayer(userObject.Obj.name)) {
+		if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 			StartCoroutine(ViewerController.instance.ChangeDamageView(userObject.MainCamera));
 		}
 		userObject.Obj.transform.position = startTransform.position;

@@ -43,13 +43,13 @@ public class CarTrigger : Incident {
 
 		if (ContainedCheckList ()) {
 			if (kindOfCollision == 0) {
-				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 					StartCoroutine (SaveScreenshotWithInterval (userObject.Obj.name));
 				}
 				GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
 			}
 			if (kindOfCollision == 4) {
-				if(GameController.instance.isPlayer(userObject.Obj.name)) {
+				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 					StartCoroutine (IsSituationForSaveScreenshotWithDelay (false));
 				}
 			}

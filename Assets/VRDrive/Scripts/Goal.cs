@@ -44,7 +44,7 @@ public class Goal : Incident {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 
-		if(GameController.instance.isPlayer(userObject.Obj.name)) {
+		if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 			GameObject message = userObject.Message;
 			Text messageText = message.transform.FindChild("MessageText").GetComponent<Text>();
 			if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
@@ -68,7 +68,7 @@ public class Goal : Incident {
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		if (GameController.instance.isPlayer (userObject.Obj.name)) {
+		if (GameController.instance.IsPlayer (userObject.Obj.name)) {
 			GameObject result = userObject.Result;
 			Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
 			string resultTimeText = ViewerController.instance.GetTimerText(userState.Record);
