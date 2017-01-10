@@ -177,8 +177,6 @@ public class ResultController : MonoBehaviour {
 		// ShowPreview();
 	}
 
-	private void Create
-
 	private IEnumerator ShowPreview() {
 		int nowSelectBox = selectBox;
 		// summary : checktextlist[selectBox]フォルダにあるPlayerNo-****の画像を連番で呼び出す

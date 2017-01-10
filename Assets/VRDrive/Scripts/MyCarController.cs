@@ -35,7 +35,7 @@ namespace UnityStandardAssets.Vehicles.Car
         [SerializeField] private float m_Maxspeed = 60; // Its column is for m_Topspeed initialization
 		[Range(-1, 1)] [SerializeField] private float m_SlipLimit;
         [SerializeField] private float m_BrakeTorque;
-        [Range(0, 90)] [SerializeField] private float m_MaxHandleRotation;
+        [Range(0, 720)] [SerializeField] private float m_MaxHandleRotation;
 
         private float m_MaxHandbrakeTorque;
         private Quaternion[] m_WheelMeshLocalRotations;
