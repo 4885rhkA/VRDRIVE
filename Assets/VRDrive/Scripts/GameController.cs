@@ -205,56 +205,53 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		TimerController.instance.ResetStartTime();
-		SoundController.instance.StartStageSound();
+		SoundController.instance.StartGameSound();
 		StageController.instance.StartGimmick ();
 	}
-		
-	public void ClearGame(string name) {
-		if (HasUserSet (name)) {
-			UserSet userSet = userSetList [name];
-			UserObject userObject = userSet.UserObject;
 
-			UpdateUserStatus(userObject.Obj.name, 1);
-			UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+	/// <summary>Call the clear display.</summary>
+	/// <param name="userName">The name for user</param>
+	public void ClearGame(string userName) {
+		UserSet userSet = userSetList [userName];
+		UserObject userObject = userSet.UserObject;
 
-			if(GameController.instance.IsPlayer(userObject.Obj.name)) {
-				Text messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
+		UpdateUserStatus(userObject.Obj.name, 1);
+		UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
 
-				if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
-					ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
-				}
-				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
-				StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText, true));
-				SoundController.instance.ShotClipSound("goal");
+		if(GameController.instance.IsPlayer(userObject.Obj.name)) {
+			Text messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
+			if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
+				ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
 			}
+			ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
+			StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText, true));
+			SoundController.instance.ShotClipSound("goal");
 		}
 	}
 
 	/// <summary>Call the miss display.</summary>
 	/// <param name="name">The <c>GameObject</c> name </param>
-	public void MissGame(string name) {
-		if (HasUserSet (name)) {
-			UserSet userSet = userSetList [name];
-			UserObject userObject = userSet.UserObject;
+	public void MissGame(string userName) {
+		UserSet userSet = userSetList [userName];
+		UserObject userObject = userSet.UserObject;
 
-			UpdateUserStatus(userObject.Obj.name, 2);
-			UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
+		UpdateUserStatus(userObject.Obj.name, 2);
+		UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
 
-			if (IsPlayer (name)) {
-				Text resultText = userObject.Result.transform.FindChild("ResultText").GetComponent<Text>();
+		if (IsPlayer (name)) {
+			Text resultText = userObject.Result.transform.FindChild("ResultText").GetComponent<Text>();
 
-				// Set View and Sound for Miss
-				if(ColorUtility.TryParseHtmlString(colorList["miss"], out fontColor)) {
-					ViewerController.instance.ChangeTextContent(resultText, messageList["miss"], fontColor);
-				}
-				ViewerController.instance.ChangeRawImageState(userObject.Result.GetComponent<RawImage>(), true);
-				StartCoroutine(ViewerController.instance.ChangeTextState(0, resultText, true));
-				SoundController.instance.ShotClipSound("miss");
+			// Set View and Sound for Miss
+			if(ColorUtility.TryParseHtmlString(colorList["miss"], out fontColor)) {
+				ViewerController.instance.ChangeTextContent(resultText, messageList["miss"], fontColor);
 			}
+			ViewerController.instance.ChangeRawImageState(userObject.Result.GetComponent<RawImage>(), true);
+			StartCoroutine(ViewerController.instance.ChangeTextState(0, resultText, true));
+			SoundController.instance.ShotClipSound("miss");
 		}
 	}
 
-	/// <summary>Call the scene.</summary>
+	/// <summary>Go to the other scene.</summary>
 	public void ChangeGameScene() {
 		UserSet userSet;
 
@@ -267,7 +264,7 @@ public class GameController : MonoBehaviour {
 			if(remainingInGame == 0 && finishGameFlag) {
 				exitGameFlag = true;
 				KeepValuesToNextScene ();
-				SceneManager.LoadScene("menu");
+				SceneManager.LoadScene("result");
 			}
 		}
 
@@ -279,90 +276,91 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Update the status.</summary>
-	/// <param name="name">The name for GameObject</param>
-	/// <param name="status">The status of each user</param>
-	public void UpdateUserStatus(string name, int status) {
-		if (HasUserSet (name)) {
-			UserSet userSet = userSetList [name];
-			UserObject userObject = userSet.UserObject;
-			UserState userState = userSet.UserState;
-
-			userState.Status = status;
-
-			if(IsPlayer(userObject.Obj.name) && userState.Status > 0) {
-				remainingInGame--;
-				if (remainingInGame == 0) {
-					finishGameFlag = true;
-				}
-			}
-			switch(userState.Status) {
-				case -1:
-					UserController.instance.SetFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
-					break;
-				case 0:
-					UserController.instance.ReleaseFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
-					break;
-				default:
-					break;
-			}
-		}
-	}
-
-	/// <summary>Update the condition.</summary>
-	/// <param name="name">The <c>GameObject</c> name </param>
-	/// <param name="condition">The condition of each user</param>
-	public void UpdateUserCondition(string name, int condition) {
-		if (HasUserSet (name)) {
-			UserSet userSet = userSetList [name];
-			UserState userState = userSet.UserState;
-
-			userState.Condition = condition;
-
-			switch(condition) {
-				case 1:
-					StartCoroutine(ViewerController.instance.ChangeDamageView(userSetList[name].UserObject.MainCamera));
-					break;
-				default:
-					break;
-			}
-		}
-	}
-
-	/// <summary>Update the finished time.</summary>
-	/// <param name="name">The <c>GameObject</c> name </param>
-	/// <param name="timeSpan">PastTime from the start</param>
-	public void UpdateRecord(string name, TimeSpan timeSpan) {
-		if (HasUserSet (name)) {
-			userSetList [name].UserState.Record = timeSpan;
-		}
-	}
-
-	/// <summary>Update the check list.</summary>
-	/// <param name="name">The <c>GameObject</c> name </param>
-	/// <param name="checkName">The <c>GameObject</c> name for check</param>
-	/// <param name="value">Keep the traffic rules or not</param>
-	public void UpdateCheckList(string name, string checkName, bool value) {
-		if (HasUserSet (name)) {
-			UserState userState = userSetList [name].UserState;
-			if(userState.CheckList.ContainsKey(checkName)) {
-				userState.CheckList [checkName] = value;
-			}
-		}
-
-		// Debug
-		foreach(KeyValuePair<string, bool> check in userSetList [name].UserState.CheckList) {
-			Debug.Log (Time.time + " / " + check.Key + " : " + check.Value);
-		}
-	}
-
+	/// <summary>Keep the values for the other scene.</summary>
 	private void KeepValuesToNextScene() {
 		GameObject newValueKeeper = Instantiate(
 			valueKeeper, transform.position, transform.rotation
 		) as GameObject;
 		newValueKeeper.name = valueKeeper.name;
-		newValueKeeper.GetComponent<ValueKeeper> ().UserSetList = userSetList;
+
+		Dictionary<string, UserState> userStateList = new Dictionary<string, UserState> ();
+		foreach (KeyValuePair<string, UserSet> eachUserSet in userSetList) {
+			userStateList.Add (eachUserSet.Key, eachUserSet.Value.UserState);
+		}
+		newValueKeeper.GetComponent<ValueKeeper> ().UserStateList = userStateList;
 		DontDestroyOnLoad (newValueKeeper);
+	}
+
+	/// <summary>Update the status.</summary>
+	/// <param name="userName">The name for user</param>
+	/// <param name="status">The status of each user</param>
+	public void UpdateUserStatus(string userName, int status) {
+		UserSet userSet = userSetList [userName];
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		userState.Status = status;
+
+		if(IsPlayer(userObject.Obj.name) && userState.Status > 0) {
+			remainingInGame--;
+			if (remainingInGame == 0) {
+				finishGameFlag = true;
+			}
+		}
+		switch(userState.Status) {
+			case -1:
+				UserController.instance.SetFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
+				break;
+			case 0:
+				UserController.instance.ReleaseFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
+				break;
+			default:
+				break;
+		}
+	}
+
+	/// <summary>Update the condition.</summary>
+	/// <param name="userName">The name for user</param>
+	/// <param name="condition">The condition of each user</param>
+	public void UpdateUserCondition(string userName, int condition) {
+		UserSet userSet = userSetList [userName];
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		userState.Condition = condition;
+
+		switch(condition) {
+			case 1:
+				StartCoroutine(ViewerController.instance.ChangeDamageView(userObject.MainCamera));
+				break;
+			default:
+				break;
+		}
+	}
+
+	/// <summary>Update the finished time.</summary>
+	/// <param name="userName">The name for user</param>
+	/// <param name="timeSpan">PastTime from the start</param>
+	public void UpdateRecord(string userName, TimeSpan timeSpan) {
+		userSetList [userName].UserState.Record = timeSpan;
+	}
+
+	/// <summary>Update the check list.</summary>
+	/// <param name="userName">The name for user</param>
+	/// <param name="checkName">The <c>GameObject</c> name for check</param>
+	/// <param name="value">Keep the traffic rules or not</param>
+	public void UpdateCheckList(string userName, string checkName, bool value) {
+		UserState userState = userSetList [userName].UserState;
+		if(userState.CheckList.ContainsKey(checkName)) {
+			userState.CheckList [checkName] = value;
+		}
+
+		// TODO Remove Debug
+		if(IsPlayer(userName)) {
+			foreach(KeyValuePair<string, bool> check in userState.CheckList) {
+				Debug.Log (Time.time + " / " + check.Key + " : " + check.Value);
+			}
+		}
 	}
 
 	/// <summary>Have UserSet or not.</summary>
@@ -377,7 +375,7 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>Get UserSet.</summary>
 	/// <param name="name">The <c>GameObject</c> name</param>
-	/// <returns>UserSet</returns>
+	/// <returns>Found UserSet</returns>
 	public UserSet GetUserSet(string name) {
 		if (HasUserSet (name)) {
 			return userSetList [name];

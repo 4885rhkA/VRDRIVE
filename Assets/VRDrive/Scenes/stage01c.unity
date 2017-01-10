@@ -5779,7 +5779,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 601335111}
   m_Layer: 0
-  m_Name: 50km
+  m_Name: 50kmh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16531,7 +16531,7 @@ GameObject:
   - 114: {fileID: 1432469487}
   - 114: {fileID: 1432469486}
   m_Layer: 0
-  m_Name: AI
+  m_Name: AI0
   m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23524,7 +23524,7 @@ GameObject:
   - 114: {fileID: 2028443394}
   - 114: {fileID: 2028443393}
   m_Layer: 0
-  m_Name: AI0
+  m_Name: AI
   m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25084,7 +25084,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11403154, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: directoryForScreenshot
-      value: VRDrive/Result/Screenshots
+      value: VRDrive/Resources/Screenshots
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: valueKeeper

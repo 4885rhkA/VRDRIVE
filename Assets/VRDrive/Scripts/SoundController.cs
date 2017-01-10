@@ -51,17 +51,24 @@ public class SoundController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Start the sound for starting game.</summary>
-	public void StartStageSound() {
-		source.clip = audioClips["stage"];
+	/// <summary>Start the sound for game.</summary>
+	public void StartGameSound() {
+		source.clip = audioClips["scene"];
 		ShotClipSound("go");
 		source.loop = true;
 		source.Play();
 	}
 
-	/// <summary>Start the sound for starting game.</summary>
+	/// <summary>Start the sound for menu.</summary>
 	public void StartMenuSound() {
-		source.clip = audioClips["stage"];
+		source.clip = audioClips["scene"];
+		source.loop = true;
+		source.Play();
+	}
+
+	/// <summary>Start the sound for menu.</summary>
+	public void StartResultSound() {
+		source.clip = audioClips["scene"];
 		source.loop = true;
 		source.Play();
 	}

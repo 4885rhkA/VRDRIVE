@@ -38,7 +38,7 @@ public class CarTrigger : Incident {
 		UserSet userSet = GameController.instance.GetUserSet (userName);
 		UserObject userObject = userSet.UserObject;
 
-		// little moving
+		// Little moving
 		GameController.instance.GetUserSet (parentName).UserObject.Obj.GetComponent<MyCarController>().MaxSpeed = 0.1f;
 
 		if (ContainedCheckList ()) {

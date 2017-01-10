@@ -15,3 +15,5 @@ EditorBuildSettings:
     path: Assets/VRDrive/Scenes/3d31.unity
   - enabled: 1
     path: Assets/VRDrive/Scenes/vr10.unity
+  - enabled: 1
+    path: Assets/VRDrive/Scenes/result.unity

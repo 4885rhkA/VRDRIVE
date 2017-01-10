@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public class ValueKeeper : MonoBehaviour {
 
-	private Dictionary<string, UserSet> userSetList = new Dictionary<string, UserSet>();
+	private Dictionary<string, UserState> userStateList = new Dictionary<string, UserState>();
 
-	public Dictionary<string, UserSet> UserSetList {
+	public Dictionary<string, UserState> UserStateList {
 		get {
-			return userSetList;
+			return userStateList;
 		}
 		set {
-			userSetList = value;
+			userStateList = value;
 		}
 	}
 

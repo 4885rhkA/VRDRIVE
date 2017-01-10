@@ -43,6 +43,11 @@ public abstract class Incident : MonoBehaviour {
 		CollisionAction (collisionFlag[5, 0], collisionFlag[5, 1], collision.gameObject, 5);
 	}
 
+	/// <summary>When Collisions occurs, do action.</summary>
+	/// <param name="myselfFlag">Do gameObject's acition or not</param>
+	/// <param name="userFlag">Do action for user or not</param>
+	/// <param name="collidedObject">Collided object</param>
+	/// <param name="kindOfCollision">Kind of collision</param>
 	protected void CollisionAction(bool myselfFlag, bool userFlag, GameObject collidedObject, int kindOfCollision) {
 		if(GameController.instance.HasUserSet(collidedObject.name)) {
 			UserState userState = GameController.instance.GetUserSet (collidedObject.name).UserState;
@@ -58,8 +63,37 @@ public abstract class Incident : MonoBehaviour {
 		}
 	}
 
+	/// <summary>Containeds the check list.</summary>
+	/// <returns><c>true</c>, if check list was containeded, <c>false</c> otherwise</returns>
 	protected bool ContainedCheckList() {
 		return gameObject.transform.root.gameObject.name == "CheckList";
+	}
+
+	/// <summary>Determines whether this instance is situation for save screenshot with delay the specified value.</summary>
+	/// <returns><c>true</c> if this instance is situation for save screenshot with delay the specified value; otherwise, <c>false</c></returns>
+	/// <param name="value">If set to <c>true</c> value</param>
+	protected IEnumerator IsSituationForSaveScreenshotWithDelay(bool value) {
+		yield return new WaitForSeconds(CameraController.instance.DelayForCaptureAfterTriggerExit);
+		IsSituationForSaveScreenshot = value;
+	}
+
+	/// <summary>Saves the screenshot with interval.</summary>
+	/// <returns>The screenshot with interval</returns>
+	/// <param name="userName">User name</param>
+	protected IEnumerator SaveScreenshotWithInterval(string userName) {
+		int count = 0;
+		CameraController cameraController = CameraController.instance;
+		string directoryForScreenshot = cameraController.DirectoryForScreenshot;
+		float intervalForCapture = cameraController.IntervalForCapture;
+		string path = directoryForScreenshot + "/" + parentName;
+		Directory.CreateDirectory(Application.dataPath + "/" + path);
+
+		path = "Assets/" + path;
+		while (isSituationForSaveScreenshot && GameController.instance.TakeScreenshotsForChecklist) {
+			Application.CaptureScreenshot (path + "/" + userName + "-" + count.ToString().PadLeft(4, '0') +".png");
+			count++;
+			yield return new WaitForSeconds(intervalForCapture);
+		}
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
@@ -76,26 +110,5 @@ public abstract class Incident : MonoBehaviour {
 	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
 	/// </param>
 	protected abstract void CollisionActionForUser(string userName, int kindOfCollision);
-
-	protected IEnumerator IsSituationForSaveScreenshotWithDelay(bool value) {
-		yield return new WaitForSeconds(CameraController.instance.DelayForCaptureAfterTriggerExit);
-		IsSituationForSaveScreenshot = value;
-	}
-
-	protected IEnumerator SaveScreenshotWithInterval(string userName) {
-		int count = 0;
-		CameraController cameraController = CameraController.instance;
-		string directoryForScreenshot = cameraController.DirectoryForScreenshot;
-		float intervalForCapture = cameraController.IntervalForCapture;
-		string path = directoryForScreenshot + "/" + parentName;
-		Directory.CreateDirectory(Application.dataPath + "/" + path);
-
-		path = "Assets/" + path;
-		while (isSituationForSaveScreenshot && GameController.instance.TakeScreenshotsForChecklist) {
-			Application.CaptureScreenshot (path + "/" + userName + "-" + count.ToString().PadLeft(4, '0') +".png");
-			count++;
-			yield return new WaitForSeconds(intervalForCapture);
-		}
-	}
 
 }

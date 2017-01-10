@@ -302,7 +302,7 @@ GameObject:
   - 114: {fileID: 646008352}
   m_Layer: 5
   m_Name: 3-stage01c
-  m_TagString: StageName
+  m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -370,7 +370,7 @@ GameObject:
   - 114: {fileID: 684612934}
   m_Layer: 5
   m_Name: 1-stage01a
-  m_TagString: StageName
+  m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -438,7 +438,7 @@ GameObject:
   - 114: {fileID: 728074973}
   m_Layer: 5
   m_Name: 0-howto
-  m_TagString: StageName
+  m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -506,7 +506,7 @@ GameObject:
   - 114: {fileID: 836230294}
   m_Layer: 5
   m_Name: 4-vr10
-  m_TagString: StageName
+  m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1265,7 +1265,7 @@ GameObject:
   - 114: {fileID: 1968705401}
   m_Layer: 5
   m_Name: 2-stage01b
-  m_TagString: StageName
+  m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -20,7 +20,7 @@ public class MaxSpeedTrigger: Incident {
 
 	void Start() {
 		parentName = gameObject.transform.parent.gameObject.name;
-		maxSpeed = float.Parse (parentName.Replace ("km", ""));
+		maxSpeed = float.Parse (parentName.Replace ("kmh", ""));
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>

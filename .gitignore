@@ -6,8 +6,8 @@
 /Assets/*
 !/Assets/VRDrive
 !/Assets/VRDrive/*
-/Assets/VRDrive/Result/*
-!/Assets/VRDrive/Result/Screenshots
+!/Assets/Resources
+!/Assets/Resources/ScreenShots
 !/Assets/Plugins
 !/Assets/Plugins/*
 !.gitkeep

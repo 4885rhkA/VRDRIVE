@@ -26,7 +26,6 @@ public class UserState {
 	/// 	</item>
 	/// </list>
 
-
 	private int status;
 	private int condition;
 	private TimeSpan record;
