@@ -6210,7 +6210,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 711558323}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 0.05, z: 161.8}
+  m_LocalPosition: {x: 10, y: 0.01, z: 161.8}
   m_LocalScale: {x: 2.4999995, y: 1, z: 2.4999995}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -25084,7 +25084,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11403154, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: directoryForScreenshot
-      value: VRDrive/Resources/Screenshots
+      value: Resources/Screenshots
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: valueKeeper

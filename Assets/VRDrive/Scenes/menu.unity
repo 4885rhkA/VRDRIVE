@@ -437,7 +437,7 @@ GameObject:
   - 222: {fileID: 728074974}
   - 114: {fileID: 728074973}
   m_Layer: 5
-  m_Name: 0-howto
+  m_Name: 0-3d10
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1332,7 +1332,7 @@ GameObject:
   - 222: {fileID: 2064504858}
   - 114: {fileID: 2064504857}
   m_Layer: 5
-  m_Name: 0-howtoText
+  m_Name: 0-3d10Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

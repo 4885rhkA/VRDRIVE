@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour {
 
 	public static CameraController instance;
 
-	[SerializeField] private string directoryForScreenshot = "VRDrive/Resources/Screenshots";
+	[SerializeField] private string directoryForScreenshot = "Resources/Screenshots";
 	[SerializeField] private float intervalForCapture = 0.5f;
 	[SerializeField] private float delayForCaptureAfterTriggerExit = 2f;
 
