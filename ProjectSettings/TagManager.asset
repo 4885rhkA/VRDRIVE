@@ -5,11 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Fire
-  - Stage
   - Gimmick
   - Car
   - Base
   - Check
+  - Scene
   layers:
   - Default
   - TransparentFX

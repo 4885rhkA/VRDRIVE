@@ -49,6 +49,8 @@ public class ResultController : MonoBehaviour {
 	private bool flag = false;
 	private float delay = 0.1f;
 
+	private float interval = 0.5f;
+
 	void Awake() {
 		instance = this;
 	}
@@ -172,16 +174,25 @@ public class ResultController : MonoBehaviour {
 		string target = ConvertWordForJPWordList(checkTextList [selectBox]);
 		pickUp.GetComponent<Text> ().text = checkTextJPWordList[target];
 		evaluation.GetComponent<Text> ().text = checkTextJPEvaluationList[target];
-		// Preview画像のloop開始
+		// ShowPreview();
 	}
 
-	private IEnumerator ShowPreview(float interval, string checkName, string userName) {
+	private void Create
+
+	private IEnumerator ShowPreview() {
+		int nowSelectBox = selectBox;
 		// summary : checktextlist[selectBox]フォルダにあるPlayerNo-****の画像を連番で呼び出す
 
-		// playerStateList ["Player" + player].CheckList [checkTextList [selectBox]]がtrue = clearしてるので画像は一つだけ
-		// falseならmissしてる = summary : checktextlist[selectBox]フォルダにあるPlayerNo-****の画像を連番で呼び出す
-		// whileループを抜ける条件は次の項目をセレクトしたら
-		while (true) {
+		if (playerStateList ["Player" + player].CheckList [checkTextList [nowSelectBox]]) {
+			// clearしてるので画像は一つだけ
+			// falseならmissしてる = summary : checktextlist[selectBox]フォルダにあるPlayer*-****の画像を連番で呼び出す
+		}
+		else {
+			// clearしてるので画像は一つだけ
+			// falseならmissしてる = summary : checktextlist[selectBox]フォルダにあるPlayer*-****の画像を連番で呼び出す
+		}
+
+		while (nowSelectBox == selectBox) {
 			yield return new WaitForSeconds(interval);
 		}
 	}
