@@ -35,7 +35,7 @@ public class UserState {
 		status = -1;
 		condition = 0;
 		record = new TimeSpan(0, 0, 0);
-		checkList =  new Dictionary<string, bool>();
+		checkList = new Dictionary<string, bool>();
 	}
 
 	public int Status {
@@ -46,7 +46,7 @@ public class UserState {
 			status = value;
 		}
 	}
-		
+
 	public int Condition {
 		get {
 			return condition;
@@ -55,7 +55,7 @@ public class UserState {
 			condition = value;
 		}
 	}
-		
+
 	public TimeSpan Record {
 		get {
 			return record;

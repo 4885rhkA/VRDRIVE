@@ -12,12 +12,12 @@ public class Goal : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, true}, 		// OnTriggerEnter
-			{false, false}, 	// OnCollisionEnter
-			{false, false}, 	// OnTriggerStay
-			{false, false},		// OnCollisionStay
-			{false, false}, 	// OnTriggerExit
-			{false, false}		// OnCollisionExit
+			{ false, true }, 		// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, false }, 	// OnTriggerStay
+			{ false, false },		// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }		// OnCollisionExit
 		};
 	}
 
@@ -41,10 +41,10 @@ public class Goal : Incident {
 	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
 	/// </param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
-		UserSet userSet = GameController.instance.GetUserSet (userName);
+		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
 
-		GameController.instance.ClearGame (userObject.Obj.name);
+		GameController.instance.ClearGame(userObject.Obj.name);
 		StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("goal"), userObject.Obj.name));
 	}
 
@@ -54,11 +54,11 @@ public class Goal : Incident {
 	private IEnumerator AfterCollisionAction(float delay, string userName) {
 		yield return new WaitForSeconds(delay);
 
-		UserSet userSet = GameController.instance.GetUserSet (userName);
+		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		if (GameController.instance.IsPlayer (userObject.Obj.name)) {
+		if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 			GameObject result = userObject.Result;
 			Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
 			string resultTimeText = ViewerController.instance.GetTimerText(userState.Record);
@@ -82,7 +82,7 @@ public class Goal : Incident {
 			yield return new WaitForSeconds(clipLength);
 			string newResultTimeText = resultText.text + resultTimeText;
 
-			if (ColorUtility.TryParseHtmlString (colorList["result"], out fontColor)) {
+			if(ColorUtility.TryParseHtmlString(colorList["result"], out fontColor)) {
 				ViewerController.instance.ChangeTextContent(resultText, newResultTimeText, fontColor);
 			}
 			SoundController.instance.ShotClipSound("record");

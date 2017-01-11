@@ -61,6 +61,7 @@ public class ViewerController : MonoBehaviour {
 		}
 		text.color = color;
 	}
+
 	/// <summary>Change the motion blour in view.</summary>
 	/// <param name="camera">Camera <c>GameObject</c></param>
 	/// <param name="blurAmount">Blur amount(from 0 to 1)</param>
@@ -73,7 +74,7 @@ public class ViewerController : MonoBehaviour {
 	public IEnumerator ChangeDamageView(GameObject camera) {
 		VignetteAndChromaticAberration vignette = camera.GetComponent<VignetteAndChromaticAberration>();
 		float startTime = Time.time;
-		while (vignettingTime - (Time.time - startTime) > 0) {
+		while(vignettingTime - (Time.time - startTime) > 0) {
 			float rate = vignettingTime / (vignettingTime + Time.time - startTime);
 			vignette.intensity = baseVignetteIntensity * Mathf.Clamp(rate, 0, 1);
 			yield return new WaitForEndOfFrame();

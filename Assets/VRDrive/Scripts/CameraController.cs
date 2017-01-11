@@ -34,15 +34,15 @@ public class CameraController : MonoBehaviour {
 	}
 
 	public IEnumerator CaptureAndSaveScreenshots(string key) {
-		if (!playerScreenshotList.ContainsKey (key)) {
-			playerScreenshotList.Add (key, new List<Texture2D> ());
+		if(!playerScreenshotList.ContainsKey(key)) {
+			playerScreenshotList.Add(key, new List<Texture2D>());
 		}
 
 		Texture2D texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, true);
 		yield return new WaitForEndOfFrame();
 		texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, true);
 		texture.Apply();
-		playerScreenshotList [key].Add (texture);
+		playerScreenshotList[key].Add(texture);
 	}
 
 }

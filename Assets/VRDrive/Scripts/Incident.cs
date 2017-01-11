@@ -12,27 +12,27 @@ public abstract class Incident : MonoBehaviour {
 	protected bool nowTakingScreenshot = false;
 
 	void OnTriggerEnter(Collider collider) {
-		CollisionAction (collisionFlag[0, 0], collisionFlag[0, 1], collider.gameObject, 0);
+		CollisionAction(collisionFlag[0, 0], collisionFlag[0, 1], collider.gameObject, 0);
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		CollisionAction (collisionFlag[1, 0], collisionFlag[1, 1], collision.gameObject, 1);
+		CollisionAction(collisionFlag[1, 0], collisionFlag[1, 1], collision.gameObject, 1);
 	}
 
 	void OnTriggerStay(Collider collider) {
-		CollisionAction (collisionFlag[2, 0], collisionFlag[2, 1], collider.gameObject, 2);
+		CollisionAction(collisionFlag[2, 0], collisionFlag[2, 1], collider.gameObject, 2);
 	}
 
 	void OnCollisionStay(Collision collision) {
-		CollisionAction (collisionFlag[3, 0], collisionFlag[3, 1], collision.gameObject, 3);
+		CollisionAction(collisionFlag[3, 0], collisionFlag[3, 1], collision.gameObject, 3);
 	}
 
 	void OnTriggerExit(Collider collider) {
-		CollisionAction (collisionFlag[4, 0], collisionFlag[4, 1], collider.gameObject, 4);
+		CollisionAction(collisionFlag[4, 0], collisionFlag[4, 1], collider.gameObject, 4);
 	}
 
 	void OnCollisionExit(Collision collision) {
-		CollisionAction (collisionFlag[5, 0], collisionFlag[5, 1], collision.gameObject, 5);
+		CollisionAction(collisionFlag[5, 0], collisionFlag[5, 1], collision.gameObject, 5);
 	}
 
 	/// <summary>When Collisions occurs, do action.</summary>
@@ -42,7 +42,7 @@ public abstract class Incident : MonoBehaviour {
 	/// <param name="kindOfCollision">Kind of collision</param>
 	protected void CollisionAction(bool myselfFlag, bool userFlag, GameObject collidedObject, int kindOfCollision) {
 		if(GameController.instance.HasUserSet(collidedObject.name)) {
-			UserState userState = GameController.instance.GetUserSet (collidedObject.name).UserState;
+			UserState userState = GameController.instance.GetUserSet(collidedObject.name).UserState;
 			if(myselfFlag) {
 				CollisionActionForMyself(kindOfCollision);
 			}
@@ -50,7 +50,7 @@ public abstract class Incident : MonoBehaviour {
 				CollisionActionForUser(collidedObject.name, kindOfCollision);
 			}
 		}
-		else if(collidedObject.tag!= "Untagged" && gameObject.tag == collidedObject.tag) {
+		else if(collidedObject.tag != "Untagged" && gameObject.tag == collidedObject.tag) {
 			CollisionActionForMyself(kindOfCollision);
 		}
 	}
@@ -64,10 +64,10 @@ public abstract class Incident : MonoBehaviour {
 	/// <summary>Saves the screenshot with interval.</summary>
 	/// <param name="playerName">Player name</param>
 	protected IEnumerator SetScreenshots(string playerName) {
-		if (!nowTakingScreenshot) {
+		if(!nowTakingScreenshot) {
 			nowTakingScreenshot = true;
 			string key = CameraController.instance.CreateKeyForScreenshot(playerName, parentName);
-			yield return StartCoroutine (CameraController.instance.CaptureAndSaveScreenshots (key));
+			yield return StartCoroutine(CameraController.instance.CaptureAndSaveScreenshots(key));
 			yield return new WaitForSeconds(CameraController.instance.Intereval);
 			nowTakingScreenshot = false;
 		}

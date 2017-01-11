@@ -50,14 +50,14 @@ public class UserObject {
 	public UserObject(GameObject userObject) {
 		obj = userObject;
 
-		if(userObject.name.Contains ("Player")) {
+		if(userObject.name.Contains("Player")) {
 			mainCamera = obj.transform.FindChild("MainCamera" + obj.name[obj.name.Length - 1]).gameObject;
 			timer = obj.transform.FindChild("Canvas/Timer").gameObject;
 			message = obj.transform.FindChild("Canvas/Message").gameObject;
 			result = obj.transform.FindChild("Canvas/Result").gameObject;
 			howTo = obj.transform.FindChild("Canvas/HowTo").gameObject;
-			if (obj.transform.FindChild ("Meter/Speed") != null) {
-				speedMeter = obj.transform.FindChild ("Meter/Speed").gameObject;
+			if(obj.transform.FindChild("Meter/Speed") != null) {
+				speedMeter = obj.transform.FindChild("Meter/Speed").gameObject;
 			}
 		}
 	}

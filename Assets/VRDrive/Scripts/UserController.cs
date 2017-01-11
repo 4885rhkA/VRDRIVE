@@ -20,7 +20,7 @@ public class UserController : MonoBehaviour {
 
 	/// <summary>Add force.</summary>
 	/// <param name="rigid">The target's <c>Rigidbody</c> Component</param>
-	public void AddLocalGravity(Rigidbody rigid){
+	public void AddLocalGravity(Rigidbody rigid) {
 		rigid.AddForce(localGravity, ForceMode.Acceleration);
 	}
 

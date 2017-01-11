@@ -5,7 +5,7 @@ using System.Collections;
 public class Meteorite : Incident {
 
 	[SerializeField] private int attackPower = 200000;
-	[SerializeField] private int[] moveTime = new int[2]{10, 11};
+	[SerializeField] private int[] moveTime = new int[2]{ 10, 11 };
 	private float[] moveToPosition;
 
 	private AudioSource[] audioSources;
@@ -14,12 +14,12 @@ public class Meteorite : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{true, false}, 	// OnTriggerEnter
-			{true, true}, 	// OnCollisionEnter
-			{false, false}, 	// OnTriggerStay
-			{false, false},		// OnCollisionStay
-			{false, false}, 	// OnTriggerExit
-			{false, false}		// OnCollisionExit
+			{ true, false }, 	// OnTriggerEnter
+			{ true, true }, 	// OnCollisionEnter
+			{ false, false }, 	// OnTriggerStay
+			{ false, false },		// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }		// OnCollisionExit
 		};
 	}
 
@@ -29,14 +29,8 @@ public class Meteorite : Incident {
 		explosionSound = audioSources[1];
 		if(moveTime[0] < moveTime[1]) {
 			moveToPosition = new float[3]{ gameObject.transform.position.x, gameObject.transform.position.y, -20 };
-			iTween.RotateAdd(gameObject.transform.FindChild("ShapeMeteorite").gameObject, iTween.Hash(
-				"x", Random.Range(0, 2) * 360, "y", Random.Range(0, 2) * 360, "z", Random.Range(0, 2) * 360, 
-				"time", Random.Range(10, 21), "easeType", "linear", "loopType", "loop"
-			));
-			iTween.MoveTo(gameObject, iTween.Hash(
-				"x", moveToPosition[0], "y", moveToPosition[1], "z", moveToPosition[2], 
-				"time", Random.Range(moveTime[0], moveTime[1]), "easeType", "linear"
-			));
+			iTween.RotateAdd(gameObject.transform.FindChild("ShapeMeteorite").gameObject, iTween.Hash("x", Random.Range(0, 2) * 360, "y", Random.Range(0, 2) * 360, "z", Random.Range(0, 2) * 360, "time", Random.Range(10, 21), "easeType", "linear", "loopType", "loop"));
+			iTween.MoveTo(gameObject, iTween.Hash("x", moveToPosition[0], "y", moveToPosition[1], "z", moveToPosition[2], "time", Random.Range(moveTime[0], moveTime[1]), "easeType", "linear"));
 		}
 		else {
 			Debug.LogWarning("You need to set the correct number, the range of the moving time for the meteorite.");
@@ -69,16 +63,16 @@ public class Meteorite : Incident {
 	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
 	/// </param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
-		UserSet userSet = GameController.instance.GetUserSet (userName);
+		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		if (userState.Condition != 1) {
+		if(userState.Condition != 1) {
 			Vector3 direction = userObject.Obj.GetComponent<Rigidbody>().velocity.normalized;
 			userObject.Obj.GetComponent<Rigidbody>().AddForce(new Vector3(direction.x, 0, Mathf.Abs(direction.z)) * attackPower * (-1), ForceMode.Impulse);
 
-			if (GameController.instance.OneKillMode) {
-				GameController.instance.MissGame (userObject.Obj.name);
+			if(GameController.instance.OneKillMode) {
+				GameController.instance.MissGame(userObject.Obj.name);
 			}
 			else {
 				GameController.instance.UpdateUserCondition(userObject.Obj.name, 1);

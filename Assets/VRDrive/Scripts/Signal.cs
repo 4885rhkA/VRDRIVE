@@ -31,13 +31,13 @@ public class Signal : MonoBehaviour {
 		}
 	}
 
-	void Start () {
-		greenRenderer = gameObject.transform.FindChild ("Green").gameObject.GetComponent<MeshRenderer>();
-		yellowRenderer = gameObject.transform.FindChild ("Yellow").gameObject.GetComponent<MeshRenderer>();
-		redRenderer = gameObject.transform.FindChild ("Red").gameObject.GetComponent<MeshRenderer>();
+	void Start() {
+		greenRenderer = gameObject.transform.FindChild("Green").gameObject.GetComponent<MeshRenderer>();
+		yellowRenderer = gameObject.transform.FindChild("Yellow").gameObject.GetComponent<MeshRenderer>();
+		redRenderer = gameObject.transform.FindChild("Red").gameObject.GetComponent<MeshRenderer>();
 
 		// Color select when game started
-		if (startRedColorFlag) {
+		if(startRedColorFlag) {
 			status = 1;
 		}
 
@@ -46,10 +46,10 @@ public class Signal : MonoBehaviour {
 
 	/// <summary>Turn the signal on interval.</summary>
 	private IEnumerator TurnSignal() {
-		while (true) {
+		while(true) {
 			int waitTime = DEFAULTSTOPTIME;
 			Status = (Status + 1) % 3;
-			switch (Status) {
+			switch(Status) {
 				case 0:
 					waitTime = greenColorTime;
 					greenRenderer.enabled = true;

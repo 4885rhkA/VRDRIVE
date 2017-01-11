@@ -5,12 +5,12 @@ public class Start : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, false}, 	// OnTriggerEnter
-			{false, false}, 	// OnCollisionEnter
-			{false, false}, 	// OnTriggerStay
-			{false, false},		// OnCollisionStay
-			{false, false}, 	// OnTriggerExit
-			{false, false}		// OnCollisionExit
+			{ false, false }, 	// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, false }, 	// OnTriggerStay
+			{ false, false },		// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }		// OnCollisionExit
 		};
 	}
 

@@ -14,11 +14,11 @@ public class TimerController : MonoBehaviour {
 			return pastTime;
 		}
 	}
-		
+
 	void Awake() {
 		instance = this;
 	}
-		
+
 	void Update() {
 		TimerCount();
 	}

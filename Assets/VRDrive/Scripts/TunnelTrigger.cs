@@ -8,17 +8,17 @@ public class TunnelTrigger : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, true}, 		// OnTriggerEnter
-			{false, false}, 	// OnCollisionEnter
-			{false, false}, 	// OnTriggerStay
-			{false, false},		// OnCollisionStay
-			{false, false}, 	// OnTriggerExit
-			{false, false}		// OnCollisionExit
+			{ false, true }, 		// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, false }, 	// OnTriggerStay
+			{ false, false },		// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }		// OnCollisionExit
 		};
 	}
 
 	void Start() {
-		startTransform = GameObject.Find ("Start").gameObject.transform;
+		startTransform = GameObject.Find("Start").gameObject.transform;
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
@@ -36,7 +36,7 @@ public class TunnelTrigger : Incident {
 	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
 	/// </param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
-		UserSet userSet = GameController.instance.GetUserSet (userName);
+		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
 
 		if(GameController.instance.IsPlayer(userObject.Obj.name)) {
@@ -44,7 +44,7 @@ public class TunnelTrigger : Incident {
 		}
 		userObject.Obj.transform.position = startTransform.position;
 		userObject.Obj.transform.rotation = startTransform.rotation;
-		userObject.Obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 0);
+		userObject.Obj.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 	}
 
 }

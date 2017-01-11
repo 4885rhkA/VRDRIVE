@@ -11,19 +11,17 @@ public class SpeedUpBoard : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, true}, 		// OnTriggerEnter
-			{false, false}, 	// OnCollisionEnter
-			{false, false}, 	// OnTriggerStay
-			{false, false},		// OnCollisionStay
-			{false, false}, 	// OnTriggerExit
-			{false, false}		// OnCollisionExit
+			{ false, true }, 		// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, false }, 	// OnTriggerStay
+			{ false, false },		// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }		// OnCollisionExit
 		};
 	}
 
 	void Start() {
-		iTween.RotateTo (gameObject.transform.FindChild("SpeedUpBoardMessage/SpeedUpBoardTriangle").gameObject, iTween.Hash (
-			"y", 360, "time", 0.5, "islocal", true, "loopType", "loop", "easeType", "linear"
-		));
+		iTween.RotateTo(gameObject.transform.FindChild("SpeedUpBoardMessage/SpeedUpBoardTriangle").gameObject, iTween.Hash("y", 360, "time", 0.5, "islocal", true, "loopType", "loop", "easeType", "linear"));
 	}
 
 	/// <summary>When collider/collision occurs, do object's action.</summary>
@@ -31,7 +29,8 @@ public class SpeedUpBoard : Incident {
 	/// 	The kind of collision
 	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
 	/// </param>
-	protected override void CollisionActionForMyself(int kindOfCollision) {}
+	protected override void CollisionActionForMyself(int kindOfCollision) {
+	}
 
 	/// <summary>When collider/collision occurs, do user's action.</summary>
 	/// <param name="userName">The name for user</param>
@@ -40,17 +39,17 @@ public class SpeedUpBoard : Incident {
 	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
 	/// </param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
-		UserSet userSet = GameController.instance.GetUserSet (userName);
+		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		if (userState.Status < 1) {
-			if (userState.Condition == 0) {
+		if(userState.Status < 1) {
+			if(userState.Condition == 0) {
 				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 					ViewerController.instance.ChangeMotionBlur(userObject.MainCamera, blurAmount);
 					SoundController.instance.ShotClipSound("speedup");
 				}
-				GameController.instance.UpdateUserCondition (userObject.Obj.name, 2);
+				GameController.instance.UpdateUserCondition(userObject.Obj.name, 2);
 				userObject.Obj.GetComponent<MyCarController>().MaxSpeed *= multipleSpeed;
 				userObject.Obj.GetComponent<Rigidbody>().AddForce(Vector3.forward * pushPower, ForceMode.VelocityChange);
 				StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("speedup"), userSet));
@@ -66,7 +65,7 @@ public class SpeedUpBoard : Incident {
 
 		UserObject userObject = userSet.UserObject;
 
-		if (GameController.instance.IsPlayer (userObject.Obj.name)) {
+		if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 			ViewerController.instance.ChangeMotionBlur(userObject.MainCamera, 0);
 		}
 		GameController.instance.UpdateUserCondition(userObject.Obj.name, 0);

@@ -3,7 +3,7 @@ using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 using System.Linq;
 
 /// Class for controlling menu
@@ -18,8 +18,8 @@ public class MenuController : MonoBehaviour {
 
 	private Color fontColor = new Color();
 	private Dictionary<string, string> colorList = new Dictionary<string, string>() {
-		{"selected", "#FFFFFFFF"},
-		{"noSelected", "#646464FF"}
+		{ "selected", "#FFFFFFFF" },
+		{ "noSelected", "#646464FF" }
 	};
 
 	private bool flag = false;
@@ -36,15 +36,15 @@ public class MenuController : MonoBehaviour {
 			sceneObjects = sceneObjects.OrderBy(sceneObject => sceneObject.name).ToArray();
 		}
 
-		MoveSelection (0);
+		MoveSelection(0);
 
 		SoundController.instance.StartMenuSound();
 	}
 
 	private void FixedUpdate() {
 		float h;
-		if (keyboardMode) {
-			h = CrossPlatformInputManager.GetAxis ("Horizontal");
+		if(keyboardMode) {
+			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
 		else {
 			h = Input.GetAxis("Handle");
@@ -76,7 +76,7 @@ public class MenuController : MonoBehaviour {
 					move = -1;
 				}
 
-				MoveSelection (move);
+				MoveSelection(move);
 
 				yield return new WaitForSeconds(delay);
 				flag = false;
@@ -88,15 +88,13 @@ public class MenuController : MonoBehaviour {
 	/// <param name="move">Param for move up or down</param>
 	private void MoveSelection(int move) {
 		if(ColorUtility.TryParseHtmlString(colorList["noSelected"], out fontColor)) {
-			ViewerController.instance.ChangeTextContent(
-				sceneObjects[sceneNo].transform.FindChild(sceneObjects[sceneNo].name + "Text").GetComponent<Text>(), null, fontColor
-			);
+			ViewerController.instance.ChangeTextContent(sceneObjects[sceneNo].transform.FindChild(sceneObjects[sceneNo].name + "Text").GetComponent<Text>(), null, fontColor);
 		}
 		ViewerController.instance.ChangeRawImageState(sceneObjects[sceneNo].GetComponent<RawImage>(), false);
 
 		sceneNo += move;
 
-		if (sceneNo < 0 || sceneNo > sceneObjects.Length - 1) {
+		if(sceneNo < 0 || sceneNo > sceneObjects.Length - 1) {
 			sceneNo -= move;
 		}
 		else {
@@ -104,9 +102,7 @@ public class MenuController : MonoBehaviour {
 		}
 
 		if(ColorUtility.TryParseHtmlString(colorList["selected"], out fontColor)) {
-			ViewerController.instance.ChangeTextContent(
-				sceneObjects[sceneNo].transform.FindChild(sceneObjects[sceneNo].name + "Text").GetComponent<Text>(), null, fontColor
-			);
+			ViewerController.instance.ChangeTextContent(sceneObjects[sceneNo].transform.FindChild(sceneObjects[sceneNo].name + "Text").GetComponent<Text>(), null, fontColor);
 		}
 		ViewerController.instance.ChangeRawImageState(sceneObjects[sceneNo].GetComponent<RawImage>(), true);
 	}

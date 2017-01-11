@@ -7,12 +7,12 @@ public class UnderGround : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, true}, 		// OnTriggerEnter
-			{false, false}, 	// OnCollisionEnter
-			{false, false}, 	// OnTriggerStay
-			{false, false},		// OnCollisionStay
-			{false, false}, 	// OnTriggerExit
-			{false, false}		// OnCollisionExit
+			{ false, true }, 		// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, false }, 	// OnTriggerStay
+			{ false, false },		// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }		// OnCollisionExit
 		};
 	}
 
@@ -31,7 +31,7 @@ public class UnderGround : Incident {
 	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
 	/// </param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
-		UserSet userSet = GameController.instance.GetUserSet (userName);
+		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
 
 		GameController.instance.MissGame(userObject.Obj.name);

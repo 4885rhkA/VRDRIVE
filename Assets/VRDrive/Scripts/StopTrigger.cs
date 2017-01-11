@@ -7,12 +7,12 @@ public class StopTrigger : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, false}, 	// OnTriggerEnter
-			{false, false}, 	// OnCollisionEnter
-			{false, true}, 		// OnTriggerStay
-			{false, false},		// OnCollisionStay
-			{false, false}, 	// OnTriggerExit
-			{false, false}		// OnCollisionExit
+			{ false, false }, 	// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, true }, 		// OnTriggerStay
+			{ false, false },		// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }		// OnCollisionExit
 		};
 	}
 
@@ -35,17 +35,17 @@ public class StopTrigger : Incident {
 	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
 	/// </param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
-		UserSet userSet = GameController.instance.GetUserSet (userName);
+		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		if (ContainedCheckList ()) {
-			if (kindOfCollision == 2) {
+		if(ContainedCheckList()) {
+			if(kindOfCollision == 2) {
 				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
-					StartCoroutine (SetScreenshots (userObject.Obj.name));
+					StartCoroutine(SetScreenshots(userObject.Obj.name));
 				}
-				if (userObject.Obj.GetComponent<MyCarController> ().GetCurrentSpeed () < 5 && userState.CheckList[parentName] == false) {
-					GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, true);
+				if(userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed() < 5 && userState.CheckList[parentName] == false) {
+					GameController.instance.UpdateCheckList(userObject.Obj.name, parentName, true);
 				}
 			}
 		}
