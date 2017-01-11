@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// User set.
+/// </summary>
 public class UserSet {
 
 	private UserObject userObject;

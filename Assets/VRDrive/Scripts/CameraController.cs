@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/// Control class for the each user's camera
+/// <summary>
+/// Camera controller.
+/// </summary>
 public class CameraController : MonoBehaviour {
 
 	public static CameraController instance;
@@ -25,14 +27,28 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		instance = this;
 	}
 
+	/// <summary>
+	/// Creates the key for screenshot.
+	/// </summary>
+	/// <returns>The key for screenshot.</returns>
+	/// <param name="playerName">Player name.</param>
+	/// <param name="incidentName">Incident name.</param>
 	public string CreateKeyForScreenshot(string playerName, string incidentName) {
 		return playerName + "-" + incidentName;
 	}
 
+	/// <summary>
+	/// Captures the and save screenshots.
+	/// </summary>
+	/// <returns>The and save screenshots.</returns>
+	/// <param name="key">Key.</param>
 	public IEnumerator CaptureAndSaveScreenshots(string key) {
 		if(!playerScreenshotList.ContainsKey(key)) {
 			playerScreenshotList.Add(key, new List<Texture2D>());

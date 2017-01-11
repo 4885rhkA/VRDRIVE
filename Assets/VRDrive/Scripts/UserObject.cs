@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/// Class of the values for caching.
+/// <summary>
+/// User object.
+/// </summary>
 public class UserObject {
 
 	/// <list type="bullet">

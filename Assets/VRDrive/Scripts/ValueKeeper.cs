@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Value keeper.
+/// </summary>
 public class ValueKeeper : MonoBehaviour {
 
 	private Dictionary<string, UserState> userStateList = new Dictionary<string, UserState>();

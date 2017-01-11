@@ -1,40 +1,46 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/// Class for defined action when collision between user's car and WayPoint
+/// <summary>
+/// Final way point.
+/// </summary>
 public class FinalWayPoint : Incident {
 
 	Transform startWaypointTransform;
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
 			{ false, true }, 	// OnTriggerEnter
 			{ false, false }, 	// OnCollisionEnter
 			{ false, false }, 	// OnTriggerStay
-			{ false, false },		// OnCollisionStay
+			{ false, false },	// OnCollisionStay
 			{ false, false }, 	// OnTriggerExit
-			{ false, false }		// OnCollisionExit
+			{ false, false }	// OnCollisionExit
 		};
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
 		startWaypointTransform = transform.parent.Find("Waypoint 000").gameObject.transform;
 	}
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// When collider/collision occurs, do object's action.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForMyself(int kindOfCollision) {
 	}
 
-	/// <summary>When collider/collision occurs, do user's action.</summary>
+	/// <summary>
+	/// When collider/collision occurs, do user's action.
+	/// </summary>
 	/// <param name="userName">The name for user</param>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;

@@ -2,6 +2,9 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+/// <summary>
+/// My car AI control.
+/// </summary>
 namespace UnityStandardAssets.Vehicles.Car {
 	[RequireComponent(typeof(MyCarController))]
 	public class MyCarAIControl : MonoBehaviour {

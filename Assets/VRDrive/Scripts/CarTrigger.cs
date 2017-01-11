@@ -2,13 +2,18 @@
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
-/// Class for defined action when collision between user's car and trigger of Car
+/// <summary>
+/// Car trigger.
+/// </summary>
 public class CarTrigger : Incident {
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
 			{ false, true }, 		// OnTriggerEnter
-			{ false, false }, 	// OnCollisionEnter
+			{ false, false }, 		// OnCollisionEnter
 			{ false, true }, 		// OnTriggerStay
 			{ false, false },		// OnCollisionStay
 			{ false, false }, 		// OnTriggerExit
@@ -16,24 +21,25 @@ public class CarTrigger : Incident {
 		};
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
 		parentName = gameObject.transform.parent.gameObject.name;
 	}
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// When collider/collision occurs, do object's action.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForMyself(int kindOfCollision) {
 	}
 
-	/// <summary>When collider/collision occurs, do user's action.</summary>
+	/// <summary>
+	/// When collider/collision occurs, do user's action.
+	/// </summary>
 	/// <param name="userName">The name for user</param>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;

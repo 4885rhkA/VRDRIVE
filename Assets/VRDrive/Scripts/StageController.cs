@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Stage controller.
+/// </summary>
 public class StageController : MonoBehaviour {
 
 	public static StageController instance;
@@ -14,7 +17,9 @@ public class StageController : MonoBehaviour {
 	[SerializeField] private bool checkList = true;
 	[SerializeField] private bool tunnnels = true;
 
-	/// <summary>Check and set existing objects.</summary>
+	/// <summary>
+	/// Sets the condition.
+	/// </summary>
 	public void SetCondition() {
 		if(GameObject.Find("SpeedUpBoards") != null && !sppedUpBoards) {
 			GameObject.Find("SpeedUpBoards").gameObject.SetActive(false);
@@ -27,7 +32,9 @@ public class StageController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Start the gimmick after finishing the count sound.</summary>
+	/// <summary>
+	/// Starts the gimmick.
+	/// </summary>
 	public void StartGimmick() {
 		if(GameObject.Find("Meteorites") != null && meteorites) {
 			GameObject.Find("Meteorites").GetComponent<Meteorites>().StartRockFalling();

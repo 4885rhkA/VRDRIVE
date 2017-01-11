@@ -3,7 +3,9 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
-/// The Class for defined action when collision between user's car and gimmick
+/// <summary>
+/// Incident.
+/// </summary>
 public abstract class Incident : MonoBehaviour {
 
 	protected bool[, ] collisionFlag;
@@ -35,11 +37,13 @@ public abstract class Incident : MonoBehaviour {
 		CollisionAction(collisionFlag[5, 0], collisionFlag[5, 1], collision.gameObject, 5);
 	}
 
-	/// <summary>When Collisions occurs, do action.</summary>
-	/// <param name="myselfFlag">Do gameObject's acition or not</param>
-	/// <param name="userFlag">Do action for user or not</param>
-	/// <param name="collidedObject">Collided object</param>
-	/// <param name="kindOfCollision">Kind of collision</param>
+	/// <summary>
+	/// Collisions the action.
+	/// </summary>
+	/// <param name="myselfFlag">If set to <c>true</c> myself flag.</param>
+	/// <param name="userFlag">If set to <c>true</c> user flag.</param>
+	/// <param name="collidedObject">Collided object.</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected void CollisionAction(bool myselfFlag, bool userFlag, GameObject collidedObject, int kindOfCollision) {
 		if(GameController.instance.HasUserSet(collidedObject.name)) {
 			UserState userState = GameController.instance.GetUserSet(collidedObject.name).UserState;
@@ -55,14 +59,19 @@ public abstract class Incident : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Containeds the check list.</summary>
-	/// <returns><c>true</c>, if check list was containeded, <c>false</c> otherwise</returns>
+	/// <summary>
+	/// Containeds the check list.
+	/// </summary>
+	/// <returns><c>true</c>, if check list was containeded, <c>false</c> otherwise.</returns>
 	protected bool ContainedCheckList() {
 		return gameObject.transform.root.gameObject.name == "CheckList";
 	}
 
-	/// <summary>Saves the screenshot with interval.</summary>
-	/// <param name="playerName">Player name</param>
+	/// <summary>
+	/// Sets the screenshots.
+	/// </summary>
+	/// <returns>The screenshots.</returns>
+	/// <param name="playerName">Player name.</param>
 	protected IEnumerator SetScreenshots(string playerName) {
 		if(!nowTakingScreenshot) {
 			nowTakingScreenshot = true;
@@ -73,19 +82,17 @@ public abstract class Incident : MonoBehaviour {
 		}
 	}
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// Collisions the action for myself.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected abstract void CollisionActionForMyself(int kindOfCollision);
 
-	/// <summary>When collider/collision occurs, do user's action.</summary>
-	/// <param name="userName">The name for user</param>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// Collisions the action for user.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected abstract void CollisionActionForUser(string userName, int kindOfCollision);
 
 }

@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
 
-/// Class for controlling result
+/// <summary>
+/// Result controller.
+/// </summary>
 public class ResultController : MonoBehaviour {
 
 	public static ResultController instance;
@@ -61,13 +63,18 @@ public class ResultController : MonoBehaviour {
 
 	private bool change = false;
 	private float delay = 1f;
-
 	private float interval = 0.5f;
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		instance = this;
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
 		SetGameObjectForInitialization();
 
@@ -100,16 +107,29 @@ public class ResultController : MonoBehaviour {
 		SoundController.instance.StartResultSound();
 	}
 
+	/// <summary>
+	/// Gets the total comment.
+	/// </summary>
+	/// <returns>The total comment.</returns>
 	private string GetTotalComment() {
 		int score = GetTotalScore();
 		int total = checkTextList.Count();
 		return GetPlayerName(player) + "'s Score :" + score.ToString() + "/" + total.ToString();
 	}
 
+	/// <summary>
+	/// Gets the name of the player.
+	/// </summary>
+	/// <returns>The player name.</returns>
+	/// <param name="number">Number.</param>
 	private string GetPlayerName(int number) {
 		return "Player" + number;
 	}
 
+	/// <summary>
+	/// Gets the total score.
+	/// </summary>
+	/// <returns>The total score.</returns>
 	private int GetTotalScore() {
 		int score = 0;
 		foreach(KeyValuePair<string, bool> check in playerStateList [GetPlayerName (player)].CheckList) {
@@ -120,7 +140,10 @@ public class ResultController : MonoBehaviour {
 		return score;
 	}
 
-	private void FixedUpdate() {
+	/// <summary>
+	/// Fixeds the update.
+	/// </summary>
+	void FixedUpdate() {
 		float h;
 		if(keyboardMode) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -132,7 +155,10 @@ public class ResultController : MonoBehaviour {
 		StartCoroutine(ChangeSelectedCheck(h, d, change));
 	}
 
-	void SetGameObjectForInitialization() {
+	/// <summary>
+	/// Sets the game object for initialization.
+	/// </summary>
+	private void SetGameObjectForInitialization() {
 		checkListBoxes = GameObject.FindGameObjectsWithTag("Check").OrderBy(checkListBox => checkListBox.name).ToArray();
 		Transform canvasTransform = GameObject.Find("Canvas").gameObject.transform;
 		pickUp = canvasTransform.FindChild("PickUp").gameObject;
@@ -141,6 +167,11 @@ public class ResultController : MonoBehaviour {
 		total = canvasTransform.FindChild("Total").gameObject;
 	}
 
+	/// <summary>
+	/// Converts the word.
+	/// </summary>
+	/// <returns>The word.</returns>
+	/// <param name="key">Key.</param>
 	private string ConvertWord(string key) {
 		if(key.Contains("kmh")) {
 			return "kmh";
@@ -148,10 +179,13 @@ public class ResultController : MonoBehaviour {
 		return key;
 	}
 
-	/// <summary>Change selected check.</summary>
-	/// <param name="horizontal">The length of the delay</param>
-	/// <param name="decide">Go to the menu scene or not</param>
-	/// <param name="changingNow">Whether changing selection or not</param>
+	/// <summary>
+	/// Changes the selected check.
+	/// </summary>
+	/// <returns>The selected check.</returns>
+	/// <param name="horizontal">Horizontal.</param>
+	/// <param name="decide">If set to <c>true</c> decide.</param>
+	/// <param name="changingNow">If set to <c>true</c> changing now.</param>
 	private IEnumerator ChangeSelectedCheck(float horizontal, bool decide, bool changingNow) {
 		if(!changingNow) {
 			if(decide) {
@@ -197,6 +231,10 @@ public class ResultController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Moves the check boxes.
+	/// </summary>
+	/// <param name="move">Move.</param>
 	private void MoveCheckBoxes(int move) {
 		if(ColorUtility.TryParseHtmlString(colorList["noSelected"], out fontColor)) {
 			ViewerController.instance.ChangeTextContent(checkListBoxes[selectBox % checkListBoxes.Length].GetComponent<Text>(), null, fontColor);
@@ -224,6 +262,9 @@ public class ResultController : MonoBehaviour {
 		PickUpCheckBox();
 	}
 
+	/// <summary>
+	/// Changes the contents of check boxes.
+	/// </summary>
 	private void ChangeContentsOfCheckBoxes() {
 		int count = 0;
 		int value;
@@ -259,6 +300,9 @@ public class ResultController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Picks up check box.
+	/// </summary>
 	private void PickUpCheckBox() {
 		string target = checkTextList[selectBox];
 		if(japaneseMode) {
@@ -272,6 +316,10 @@ public class ResultController : MonoBehaviour {
 		ShowPreview(target);
 	}
 
+	/// <summary>
+	/// Shows the preview.
+	/// </summary>
+	/// <param name="incidentName">Incident name.</param>
 	private void ShowPreview(string incidentName) {
 		string key = CameraController.instance.CreateKeyForScreenshot(GetPlayerName(player), incidentName);
 		if(playerScreenshotList.ContainsKey(key)) {
@@ -288,6 +336,13 @@ public class ResultController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Loops the preview.
+	/// </summary>
+	/// <returns>The preview.</returns>
+	/// <param name="nowSelectBox">Now select box.</param>
+	/// <param name="key">Key.</param>
+	/// <param name="screenshotList">Screenshot list.</param>
 	private IEnumerator LoopPreview(int nowSelectBox, string key, List<Texture2D> screenshotList) {
 		int count = 0;
 		int length = playerScreenshotList.Count;

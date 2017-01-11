@@ -3,13 +3,18 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-/// Class for defined action when collision between user's car and goal
+/// <summary>
+/// Goal.
+/// </summary>
 public class Goal : Incident {
 
 	private Color fontColor = new Color();
 	private Dictionary<string, string> colorList;
 	private Dictionary<string, string> messageList;
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
 			{ false, true }, 		// OnTriggerEnter
@@ -21,25 +26,26 @@ public class Goal : Incident {
 		};
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
 		colorList = GameController.instance.ColorList;
 		messageList = GameController.instance.MessageList;
 	}
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// When collider/collision occurs, do object's action.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForMyself(int kindOfCollision) {
 	}
 
-	/// <summary>When collider/collision occurs, do user's action.</summary>
+	/// <summary>
+	/// When collider/collision occurs, do user's action.
+	/// </summary>
 	/// <param name="userName">The name for user</param>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
@@ -48,9 +54,12 @@ public class Goal : Incident {
 		StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("goal"), userObject.Obj.name));
 	}
 
-	/// <summary>After collider/collision occurs, do action.</summary>
-	/// <param name="delay">How long it occurs</param>
-	/// <param name="userName">The name for user</param>
+	/// <summary>
+	/// Afters the collision action.
+	/// </summary>
+	/// <returns>The collision action.</returns>
+	/// <param name="delay">Delay.</param>
+	/// <param name="userName">User name.</param>
 	private IEnumerator AfterCollisionAction(float delay, string userName) {
 		yield return new WaitForSeconds(delay);
 
@@ -72,9 +81,12 @@ public class Goal : Incident {
 		}
 	}
 
-	/// <summary>Add Character continuosly for the effect of result.</summary>
-	/// <param name="resultText">Text of the result</param>
-	/// <param name="resultTimeTextArray">In array, there is a character for result</param>
+	/// <summary>
+	/// Adds the character continuously for result.
+	/// </summary>
+	/// <returns>The character continuously for result.</returns>
+	/// <param name="resultText">Result text.</param>
+	/// <param name="resultTimeTextArray">Result time text array.</param>
 	private IEnumerator AddCharacterContinuouslyForResult(Text resultText, char[] resultTimeTextArray) {
 		float clipLength = SoundController.instance.GetClipLength("record");
 

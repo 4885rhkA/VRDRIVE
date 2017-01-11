@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-/// Class of the values for oprating parameters.
+/// <summary>
+/// User state.
+/// </summary>
 public class UserState {
 
 	/// <list type="bullet">

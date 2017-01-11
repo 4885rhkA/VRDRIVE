@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/// Class for the creating meteorite continuously
+/// <summary>
+/// Meteorites.
+/// </summary>
 public class Meteorites : MonoBehaviour {
 
 	[SerializeField] private GameObject meteorite;
@@ -9,7 +11,9 @@ public class Meteorites : MonoBehaviour {
 
 	private float[] createMeteoriteZPositions = new float[5] { -18f, -9f, 0f, 9f, 18f };
 
-	/// <summary>Start to create the meteorite on interval.</summary>
+	/// <summary>
+	/// Starts the rock falling.
+	/// </summary>
 	public void StartRockFalling() {
 		if(meteorite != null) {
 			StartCoroutine(CreateMeteorite());
@@ -19,7 +23,10 @@ public class Meteorites : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Create the meteorite on interval.</summary>
+	/// <summary>
+	/// Creates the meteorite.
+	/// </summary>
+	/// <returns>The meteorite.</returns>
 	private IEnumerator CreateMeteorite() {
 		while(true) {
 			yield return new WaitForSeconds(createInterval);

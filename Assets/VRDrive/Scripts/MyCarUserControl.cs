@@ -3,6 +3,9 @@ using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 
+/// <summary>
+/// My car user control.
+/// </summary>
 namespace UnityStandardAssets.Vehicles.Car {
 	[RequireComponent(typeof(MyCarController))]
 	public class MyCarUserControl : MonoBehaviour {
@@ -13,16 +16,25 @@ namespace UnityStandardAssets.Vehicles.Car {
 		private bool push = true;
 		private float delay = 0.2f;
 
+		/// <summary>
+		/// Awake this instance.
+		/// </summary>
 		void Awake() {
 			// get the car controller
 			m_Car = GetComponent<MyCarController>();
 		}
 
+		/// <summary>
+		/// Start this instance.
+		/// </summary>
 		void Start() {
 			keyboardMode = GameController.instance.KeyboardMode;
 		}
 
-		private void FixedUpdate() {
+		/// <summary>
+		/// Fixeds the update.
+		/// </summary>
+		void FixedUpdate() {
 			// LR
 			float h;
 			if(keyboardMode) {
@@ -82,6 +94,10 @@ namespace UnityStandardAssets.Vehicles.Car {
 			}
 		}
 
+		/// <summary>
+		/// Prevents the succession push.
+		/// </summary>
+		/// <returns>The succession push.</returns>
 		private IEnumerator PreventSuccessionPush() {
 			yield return new WaitForSeconds(delay);
 			push = true;

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/// Class for defined action when collision between user's car and meteorite
+/// <summary>
+/// Meteorite.
+/// </summary>
 public class Meteorite : Incident {
 
 	[SerializeField] private int attackPower = 200000;
@@ -17,12 +19,15 @@ public class Meteorite : Incident {
 			{ true, false }, 	// OnTriggerEnter
 			{ true, true }, 	// OnCollisionEnter
 			{ false, false }, 	// OnTriggerStay
-			{ false, false },		// OnCollisionStay
+			{ false, false },	// OnCollisionStay
 			{ false, false }, 	// OnTriggerExit
-			{ false, false }		// OnCollisionExit
+			{ false, false }	// OnCollisionExit
 		};
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
 		audioSources = gameObject.GetComponents<AudioSource>();
 		loopSound = audioSources[0];
@@ -37,11 +42,10 @@ public class Meteorite : Incident {
 		}
 	}
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// Collisions the action for myself.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForMyself(int kindOfCollision) {
 		Detonator detonator = gameObject.GetComponent<Detonator>();
 		float explosionLength = explosionSound.clip.length;
@@ -56,12 +60,11 @@ public class Meteorite : Incident {
 		gameObject.GetComponent<Detonator>().Explode();
 	}
 
-	/// <summary>When collider/collision occurs, do user's action.</summary>
-	/// <param name="userName">The name for user</param>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// Collisions the action for user.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
@@ -82,9 +85,12 @@ public class Meteorite : Incident {
 		}
 	}
 
-	/// <summary>After collider/collision occurs, do action.</summary>
-	/// <param name="delay">How long it occurs</param>
-	/// <param name="userName">User's name</param>
+	/// <summary>
+	/// Afters the collision action.
+	/// </summary>
+	/// <returns>The collision action.</returns>
+	/// <param name="delay">Delay.</param>
+	/// <param name="userName">User name.</param>
 	private IEnumerator AfterCollisionAction(float delay, string userName) {
 		yield return new WaitForSeconds(delay);
 

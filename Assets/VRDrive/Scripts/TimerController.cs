@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System;
 
-/// Control class for the each user's timer
+/// <summary>
+/// Timer controller.
+/// </summary>
 public class TimerController : MonoBehaviour {
 
 	public static TimerController instance;
@@ -15,20 +17,30 @@ public class TimerController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		instance = this;
 	}
 
+	/// <summary>
+	/// Update this instance.
+	/// </summary>
 	void Update() {
 		TimerCount();
 	}
 
-	/// <summary>Reset the starttime. It equals to start timer when starting the game.</summary>
+	/// <summary>
+	/// Resets the start time.
+	/// </summary>
 	public void ResetStartTime() {
 		startTime = DateTime.Now;
 	}
 
-	/// <summary>Count the time.</summary>
+	/// <summary>
+	/// Timers the count.
+	/// </summary>
 	private void TimerCount() {
 		pastTime = DateTime.Now - startTime;
 	}

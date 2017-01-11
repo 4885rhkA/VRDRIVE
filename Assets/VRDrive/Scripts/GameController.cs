@@ -7,7 +7,9 @@ using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.UI;
 using UnityStandardAssets.Vehicles.Car;
 
-/// Control class for the each user's status
+/// <summary>
+/// Game controller.
+/// </summary>
 public class GameController : MonoBehaviour {
 
 	public static GameController instance;
@@ -77,11 +79,17 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		instance = this;
 		userSetList.Clear();
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
 		GameObject[] carObjects = GameObject.FindGameObjectsWithTag("Car");
 		GameObject checkList = GameObject.Find("CheckList");
@@ -127,6 +135,9 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Update this instance.
+	/// </summary>
 	void Update() {
 		UserSet userSet;
 		UserObject userObject;
@@ -161,7 +172,9 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Start preparing playing game after press KeyCode E.</summary>
+	/// <summary>
+	/// Releases the start game.
+	/// </summary>
 	private void ReleaseStartGame() {
 		UserObject userObject;
 		GameObject messageText;
@@ -183,8 +196,11 @@ public class GameController : MonoBehaviour {
 		StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
 	}
 
-	/// <summary>Start the game after finishing the count sound.</summary>
-	/// <param name="clipLength">The length of the count <c>AudioClip</c></param>
+	/// <summary>
+	/// Starts the game.
+	/// </summary>
+	/// <returns>The game.</returns>
+	/// <param name="clipLength">Clip length.</param>
 	private IEnumerator StartGame(float clipLength) {  
 		yield return new WaitForSeconds(clipLength);
 		UserSet userSet;
@@ -216,8 +232,10 @@ public class GameController : MonoBehaviour {
 		StageController.instance.StartGimmick();
 	}
 
-	/// <summary>Call the clear display.</summary>
-	/// <param name="userName">The name for user</param>
+	/// <summary>
+	/// Clears the game.
+	/// </summary>
+	/// <param name="userName">User name.</param>
 	public void ClearGame(string userName) {
 		UserSet userSet = userSetList[userName];
 		UserObject userObject = userSet.UserObject;
@@ -236,8 +254,10 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Call the miss display.</summary>
-	/// <param name="name">The <c>GameObject</c> name </param>
+	/// <summary>
+	/// Misses the game.
+	/// </summary>
+	/// <param name="userName">User name.</param>
 	public void MissGame(string userName) {
 		UserSet userSet = userSetList[userName];
 		UserObject userObject = userSet.UserObject;
@@ -258,7 +278,10 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Go to the other scene. But only player0 can use it</summary>
+	/// <summary>
+	/// Changes the game scene.
+	/// </summary>
+	/// <param name="playerName">Player name.</param>
 	public void ChangeGameScene(string playerName) {
 		UserSet userSet;
 
@@ -289,7 +312,9 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Keep the values for the other scene.</summary>
+	/// <summary>
+	/// Keeps the values to next scene.
+	/// </summary>
 	private void KeepValuesToNextScene() {
 		GameObject newValueKeeper = Instantiate(valueKeeper, transform.position, transform.rotation) as GameObject;
 		newValueKeeper.name = valueKeeper.name;
@@ -303,9 +328,11 @@ public class GameController : MonoBehaviour {
 		DontDestroyOnLoad(newValueKeeper);
 	}
 
-	/// <summary>Update the status.</summary>
-	/// <param name="userName">The name for user</param>
-	/// <param name="status">The status of each user</param>
+	/// <summary>
+	/// Updates the user status.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="status">Status.</param>
 	public void UpdateUserStatus(string userName, int status) {
 		UserSet userSet = userSetList[userName];
 		UserObject userObject = userSet.UserObject;
@@ -331,9 +358,11 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Update the condition.</summary>
-	/// <param name="userName">The name for user</param>
-	/// <param name="condition">The condition of each user</param>
+	/// <summary>
+	/// Updates the user condition.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="condition">Condition.</param>
 	public void UpdateUserCondition(string userName, int condition) {
 		UserSet userSet = userSetList[userName];
 		UserObject userObject = userSet.UserObject;
@@ -350,17 +379,21 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Update the finished time.</summary>
-	/// <param name="userName">The name for user</param>
-	/// <param name="timeSpan">PastTime from the start</param>
+	/// <summary>
+	/// Updates the record.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="timeSpan">Time span.</param>
 	public void UpdateRecord(string userName, TimeSpan timeSpan) {
 		userSetList[userName].UserState.Record = timeSpan;
 	}
 
-	/// <summary>Update the check list.</summary>
-	/// <param name="userName">The name for user</param>
-	/// <param name="checkName">The <c>GameObject</c> name for check</param>
-	/// <param name="value">Keep the traffic rules or not</param>
+	/// <summary>
+	/// Updates the check list.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="checkName">Check name.</param>
+	/// <param name="value">If set to <c>true</c> value.</param>
 	public void UpdateCheckList(string userName, string checkName, bool value) {
 		UserState userState = userSetList[userName].UserState;
 		if(userState.CheckList.ContainsKey(checkName)) {
@@ -368,9 +401,11 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Have UserSet or not.</summary>
-	/// <param name="name">The <c>GameObject</c> name</param>
-	/// <returns>Has UserSet or not</returns>
+	/// <summary>
+	/// Determines whether this instance has user set the specified name.
+	/// </summary>
+	/// <returns><c>true</c> if this instance has user set the specified name; otherwise, <c>false</c>.</returns>
+	/// <param name="name">Name.</param>
 	public bool HasUserSet(string name) {
 		if(userSetList.ContainsKey(name)) {
 			return true;
@@ -378,9 +413,11 @@ public class GameController : MonoBehaviour {
 		return false;
 	}
 
-	/// <summary>Get UserSet.</summary>
-	/// <param name="name">The <c>GameObject</c> name</param>
-	/// <returns>Found UserSet</returns>
+	/// <summary>
+	/// Gets the user set.
+	/// </summary>
+	/// <returns>The user set.</returns>
+	/// <param name="name">Name.</param>
 	public UserSet GetUserSet(string name) {
 		if(HasUserSet(name)) {
 			return userSetList[name];
@@ -388,9 +425,11 @@ public class GameController : MonoBehaviour {
 		return new UserSet(new UserObject(), new UserState());
 	}
 
-	/// <summary>Have UserSet or not.</summary>
-	/// <param name="name">The <c>GameObject</c> name</param>
-	/// <returns>Name is play or not</returns>
+	/// <summary>
+	/// Determines whether this instance is player the specified name.
+	/// </summary>
+	/// <returns><c>true</c> if this instance is player the specified name; otherwise, <c>false</c>.</returns>
+	/// <param name="name">Name.</param>
 	public bool IsPlayer(string name) {
 		if(HasUserSet(name) && name.Contains("Player")) {
 			return true;

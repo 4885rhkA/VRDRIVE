@@ -1,37 +1,50 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/// Control class for the each user's rigidbody
+/// <summary>
+/// User controller.
+/// </summary>
 public class UserController : MonoBehaviour {
 
 	public static UserController instance;
 
 	[SerializeField] private Vector3 localGravity;
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		instance = this;
 	}
 
-	/// <summary>Remove the setting of default gravity.</summary>
-	/// <param name="rigid">The target's <c>Rigidbody</c> Component</param>
+	/// <summary>
+	/// Removes the default gravity.
+	/// </summary>
+	/// <param name="rigid">Rigid.</param>
 	public void RemoveDefaultGravity(Rigidbody rigid) {
 		rigid.useGravity = false;
 	}
 
-	/// <summary>Add force.</summary>
-	/// <param name="rigid">The target's <c>Rigidbody</c> Component</param>
+	/// <summary>
+	/// Adds the local gravity.
+	/// </summary>
+	/// <param name="rigid">Rigid.</param>
 	public void AddLocalGravity(Rigidbody rigid) {
 		rigid.AddForce(localGravity, ForceMode.Acceleration);
 	}
 
-	/// <summary>Release freezing position.</summary>
-	/// <param name="rigid">The target's <c>Rigidbody</c> Component</param>
+	/// <summary>
+	/// Releases the freezing position.
+	/// </summary>
+	/// <param name="rigid">Rigid.</param>
 	public void ReleaseFreezingPosition(Rigidbody rigid) {
 		rigid.constraints = RigidbodyConstraints.None;
 	}
 
-	/// <summary>Freeze position for the time before starting.</summary>
-	/// <param name="rigid">The target's <c>Rigidbody</c> Component</param>
+	/// <summary>
+	/// Sets the freezing position.
+	/// </summary>
+	/// <param name="rigid">Rigid.</param>
 	public void SetFreezingPosition(Rigidbody rigid) {
 		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
 	}

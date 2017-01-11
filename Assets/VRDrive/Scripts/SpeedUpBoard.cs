@@ -2,7 +2,9 @@
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
-/// Class for defined action when collision between user's car and <c>SpeedUpBoard</c>
+/// <summary>
+/// Speed up board.
+/// </summary>
 public class SpeedUpBoard : Incident {
 
 	private float pushPower = 100;
@@ -11,12 +13,12 @@ public class SpeedUpBoard : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{ false, true }, 		// OnTriggerEnter
+			{ false, true }, 	// OnTriggerEnter
 			{ false, false }, 	// OnCollisionEnter
 			{ false, false }, 	// OnTriggerStay
-			{ false, false },		// OnCollisionStay
+			{ false, false },	// OnCollisionStay
 			{ false, false }, 	// OnTriggerExit
-			{ false, false }		// OnCollisionExit
+			{ false, false }	// OnCollisionExit
 		};
 	}
 
@@ -24,20 +26,18 @@ public class SpeedUpBoard : Incident {
 		iTween.RotateTo(gameObject.transform.FindChild("SpeedUpBoardMessage/SpeedUpBoardTriangle").gameObject, iTween.Hash("y", 360, "time", 0.5, "islocal", true, "loopType", "loop", "easeType", "linear"));
 	}
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// Collisions the action for myself.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForMyself(int kindOfCollision) {
 	}
 
-	/// <summary>When collider/collision occurs, do user's action.</summary>
-	/// <param name="userName">The name for user</param>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// Collisions the action for user.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
@@ -57,9 +57,12 @@ public class SpeedUpBoard : Incident {
 		}
 	}
 
-	/// <summary>After collider/collision occurs, do action.</summary>
-	/// <param name="delay">How long it occurs</param>
-	/// <param name="userSet">User's State and Object</param>
+	/// <summary>
+	/// Afters the collision action.
+	/// </summary>
+	/// <returns>The collision action.</returns>
+	/// <param name="delay">Delay.</param>
+	/// <param name="userSet">User set.</param>
 	private IEnumerator AfterCollisionAction(float delay, UserSet userSet) {
 		yield return new WaitForSeconds(delay);
 

@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Car drive type.
+/// </summary>
 namespace UnityStandardAssets.Vehicles.Car {
 	internal enum CarDriveType {
 		FrontWheelDrive,

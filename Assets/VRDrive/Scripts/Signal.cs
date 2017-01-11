@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/// Class for turning signal on interval
+/// <summary>
+/// Signal.
+/// </summary>
 public class Signal : MonoBehaviour {
 
 	[SerializeField] private bool startRedColorFlag = false;
@@ -31,6 +33,9 @@ public class Signal : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
 		greenRenderer = gameObject.transform.FindChild("Green").gameObject.GetComponent<MeshRenderer>();
 		yellowRenderer = gameObject.transform.FindChild("Yellow").gameObject.GetComponent<MeshRenderer>();
@@ -44,7 +49,10 @@ public class Signal : MonoBehaviour {
 		StartCoroutine(TurnSignal());
 	}
 
-	/// <summary>Turn the signal on interval.</summary>
+	/// <summary>
+	/// Turns the signal.
+	/// </summary>
+	/// <returns>The signal.</returns>
 	private IEnumerator TurnSignal() {
 		while(true) {
 			int waitTime = DEFAULTSTOPTIME;

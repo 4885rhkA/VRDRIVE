@@ -2,48 +2,53 @@
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
-/// Class for defined action when collision between user's car and trigger of Signal
+/// <summary>
+/// Signal trigger.
+/// </summary>
 public class SignalTrigger : Incident {
 
 	private Signal signal;
 	private int brakePowerGivenByAI = 5;
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{ false, false }, 		// OnTriggerEnter
+			{ false, false }, 	// OnTriggerEnter
 			{ false, false }, 	// OnCollisionEnter
-			{ false, true }, 		// OnTriggerStay
-			{ false, false },		// OnCollisionStay
-			{ false, true }, 		// OnTriggerExit
-			{ false, false }		// OnCollisionExit
+			{ false, true }, 	// OnTriggerStay
+			{ false, false },	// OnCollisionStay
+			{ false, true }, 	// OnTriggerExit
+			{ false, false }	// OnCollisionExit
 		};
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
 		GameObject parentObj = gameObject.transform.parent.gameObject;
 		signal = parentObj.GetComponent<Signal>();
 		parentName = parentObj.name;
 	}
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// Collisions the action for myself.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForMyself(int kindOfCollision) {
 	}
 
-	/// <summary>When collider/collision occurs, do user's action.</summary>
-	/// <param name="userName">The name for user</param>
-	/// <param name="kindOfCollision">
-	/// 	The kind of collision
-	/// 	<value>0:OnTriggerEnter / 1:OnCollisionEnter / 2:OnTriggerStay / 3:OnCollisionStay / 4:OnTriggerExit / 5:OnCollisionExit</value>
-	/// </param>
+	/// <summary>
+	/// Collisions the action for user.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
 	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
 		UserSet userSet = GameController.instance.GetUserSet(userName);
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
-
 
 		if(kindOfCollision == 2) {
 			if(signal.Status == 2 && !GameController.instance.IsPlayer(userObject.Obj.name)) {

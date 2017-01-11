@@ -6,7 +6,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
-/// Class for controlling menu
+/// <summary>
+/// Menu controller.
+/// </summary>
 public class MenuController : MonoBehaviour {
 
 	public static MenuController instance;
@@ -25,10 +27,16 @@ public class MenuController : MonoBehaviour {
 	private bool flag = false;
 	private float delay = 1f;
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		instance = this;
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
 		sceneObjects = GameObject.FindGameObjectsWithTag("Scene");
 
@@ -41,7 +49,10 @@ public class MenuController : MonoBehaviour {
 		SoundController.instance.StartMenuSound();
 	}
 
-	private void FixedUpdate() {
+	/// <summary>
+	/// Fixeds the update.
+	/// </summary>
+	void FixedUpdate() {
 		float h;
 		if(keyboardMode) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -53,10 +64,13 @@ public class MenuController : MonoBehaviour {
 		StartCoroutine(ChangeSelectedScene(h, d, flag));
 	}
 
-	/// <summary>Change selected scene.</summary>
-	/// <param name="horizontal">The length of the delay</param>
-	/// <param name="decide">Go to the selected scene or not</param>
-	/// <param name="changingNow">Whether already selected the scene or not</param>
+	/// <summary>
+	/// Changes the selected scene.
+	/// </summary>
+	/// <returns>The selected scene.</returns>
+	/// <param name="horizontal">Horizontal.</param>
+	/// <param name="decide">If set to <c>true</c> decide.</param>
+	/// <param name="changingNow">If set to <c>true</c> changing now.</param>
 	private IEnumerator ChangeSelectedScene(float horizontal, bool decide, bool changingNow) {
 		if(!changingNow) {
 			if(decide) {
@@ -84,8 +98,10 @@ public class MenuController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Moves the selection.</summary>
-	/// <param name="move">Param for move up or down</param>
+	/// <summary>
+	/// Moves the selection.
+	/// </summary>
+	/// <param name="move">Move.</param>
 	private void MoveSelection(int move) {
 		if(ColorUtility.TryParseHtmlString(colorList["noSelected"], out fontColor)) {
 			ViewerController.instance.ChangeTextContent(sceneObjects[sceneNo].transform.FindChild(sceneObjects[sceneNo].name + "Text").GetComponent<Text>(), null, fontColor);
