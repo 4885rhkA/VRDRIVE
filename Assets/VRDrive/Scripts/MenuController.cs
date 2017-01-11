@@ -21,7 +21,7 @@ public class MenuController : MonoBehaviour {
 	};
 
 	private bool flag = false;
-	private float delay = 0.1f;
+	private float delay = 0.2f;
 
 	void Awake() {
 		instance = this;
@@ -44,7 +44,7 @@ public class MenuController : MonoBehaviour {
 		if (h == 0) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
-		bool d = CrossPlatformInputManager.GetButtonDown("Decide");
+		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
 		StartCoroutine(ChangeSelectedScene(h, d, flag));
 	}
 

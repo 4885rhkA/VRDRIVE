@@ -12,17 +12,8 @@ namespace UnityStandardAssets.Vehicles.Car
 		[SerializeField] private bool isKeyboardMode = false;
 
 		private MyCarController m_Car;
-		private bool enableToPush = true;
-		private float timeForPermitPush = 1f;
-
-		private bool EnableToPush {
-			get {
-				return enableToPush;
-			}
-			set {
-				enableToPush = value;
-			}
-		}
+		private bool push = true;
+		private float delay = 0.2f;
 
 		private void Awake()
 		{
@@ -61,7 +52,7 @@ namespace UnityStandardAssets.Vehicles.Car
 			float b = Input.GetAxis("BackTrigger");
 
 			// decide
-			bool d = CrossPlatformInputManager.GetButtonDown("Decide");
+			bool d = CrossPlatformInputManager.GetButtonUp("Decide");
 
 			if(s > 0) {
 				m_Car.Move(h, 0, 0, s); // stop
@@ -78,16 +69,16 @@ namespace UnityStandardAssets.Vehicles.Car
 				}
 			}
 
-			if (d && EnableToPush) {
-				EnableToPush = false;
+			if (d && push) {
+				push = false;
 				GameController.instance.ChangeGameScene ();
 				StartCoroutine(PreventSuccessionPush ());
 			}
 		}
 
 		private IEnumerator PreventSuccessionPush() {
-			yield return new WaitForSeconds(timeForPermitPush);
-			EnableToPush = true;
+			yield return new WaitForSeconds(delay);
+			push = true;
 		}
 	}
 }

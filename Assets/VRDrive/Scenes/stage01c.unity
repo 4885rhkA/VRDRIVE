@@ -42,7 +42,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 7
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -71,7 +71,7 @@ LightmapSettings:
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
-  m_LightingDataAsset: {fileID: 112000001, guid: 19af63ecb1bf8470fae2cf0b1eaf510b,
+  m_LightingDataAsset: {fileID: 112000001, guid: 2f45f7b582284df4793e77139f091281,
     type: 2}
   m_RuntimeCPUUsage: 25
 --- !u!196 &4

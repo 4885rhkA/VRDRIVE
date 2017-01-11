@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour {
 
 	[SerializeField] private bool oneKillMode = true;
 	[SerializeField] private bool takeScreenshotsForChecklist = true;
-	[SerializeField] private GameObject valueKeeper;
+	[SerializeField] private GameObject valueKeeper = null;
 
 	private Dictionary<string, UserSet> userSetList = new Dictionary<string, UserSet>();
 
@@ -238,7 +238,7 @@ public class GameController : MonoBehaviour {
 		UpdateUserStatus(userObject.Obj.name, 2);
 		UpdateRecord (userObject.Obj.name, TimerController.instance.PastTime);
 
-		if (IsPlayer (name)) {
+		if (IsPlayer (userObject.Obj.name)) {
 			Text resultText = userObject.Result.transform.FindChild("ResultText").GetComponent<Text>();
 
 			// Set View and Sound for Miss

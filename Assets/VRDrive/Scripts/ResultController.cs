@@ -12,8 +12,8 @@ public class ResultController : MonoBehaviour {
 
 	public static ResultController instance;
 
-	[SerializeField] private Texture2D successTexture;
-	[SerializeField] private Texture2D noPreviewTexture;
+	[SerializeField] private Texture2D successTexture = null;
+	[SerializeField] private Texture2D noPreviewTexture = null;
 
 	private Dictionary<string, UserState> playerStateList = new Dictionary<string, UserState>();
 	private Dictionary<string, List<Texture2D>> playerScreenshotList;
@@ -51,7 +51,7 @@ public class ResultController : MonoBehaviour {
 	};
 
 	private bool change = false;
-	private float delay = 0.1f;
+	private float delay = 0.2f;
 
 	private float interval = 0.5f;
 
@@ -94,7 +94,7 @@ public class ResultController : MonoBehaviour {
 		if (h == 0) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
-		bool d = CrossPlatformInputManager.GetButtonDown("Decide");
+		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
 		StartCoroutine(ChangeSelectedCheck(h, d, change));
 	}
 
