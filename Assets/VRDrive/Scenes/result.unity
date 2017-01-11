@@ -833,7 +833,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e73824386e7e4d18b883d5221db16a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isKeyboardMode: 0
+  keyboardMode: 1
+  japaneseMode: 1
   successTexture: {fileID: 2800000, guid: 3217ec6e9baf44197b44b8e8f909d9f8, type: 3}
   noPreviewTexture: {fileID: 2800000, guid: b841b50b27794432788113f1ca9d8ec5, type: 3}
 --- !u!114 &644766878

@@ -9,22 +9,26 @@ namespace UnityStandardAssets.Vehicles.Car
 	public class MyCarUserControl : MonoBehaviour
 	{
 
-		[SerializeField] private bool isKeyboardMode = false;
+		private bool keyboardMode = false;
 
 		private MyCarController m_Car;
 		private bool push = true;
 		private float delay = 0.2f;
 
-		private void Awake()
+		void Awake()
 		{
 			// get the car controller
 			m_Car = GetComponent<MyCarController>();
 		}
 
+		void Start() {
+			keyboardMode = GameController.instance.KeyboardMode;
+		}
+
 		private void FixedUpdate() {
 			// LR
 			float h;
-			if (isKeyboardMode) {
+			if (keyboardMode) {
 				h = CrossPlatformInputManager.GetAxis ("Horizontal");
 			} else {
 				h = Input.GetAxis("Handle");
@@ -32,7 +36,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
 			// Straight
 			float v;
-			if (isKeyboardMode) {
+			if (keyboardMode) {
 				v = CrossPlatformInputManager.GetAxis ("Vertical");
 			} else {
 				v = Input.GetAxis("Accel") * (-1f);
@@ -41,7 +45,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
 			// Brake
 			float s;
-			if (isKeyboardMode) {
+			if (keyboardMode) {
 				s = CrossPlatformInputManager.GetAxis("Space");
 			} else {
 				s = Input.GetAxis("Brake") * (-1f);
@@ -71,7 +75,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
 			if (d && push) {
 				push = false;
-				GameController.instance.ChangeGameScene ();
+				GameController.instance.ChangeGameScene (gameObject.name);
 				StartCoroutine(PreventSuccessionPush ());
 			}
 		}

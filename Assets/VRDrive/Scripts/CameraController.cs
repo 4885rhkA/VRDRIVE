@@ -8,18 +8,11 @@ public class CameraController : MonoBehaviour {
 	public static CameraController instance;
 
 	[SerializeField] private float interval = 0f;
-	[SerializeField] private float delayForCaptureAfterTriggerExit = 2f;
 	private Dictionary<string, List<Texture2D>> playerScreenshotList = new Dictionary<string, List<Texture2D>>();
 
 	public float Intereval {
 		get {
 			return interval;
-		}
-	}
-
-	public float DelayForCaptureAfterTriggerExit {
-		get {
-			return delayForCaptureAfterTriggerExit;
 		}
 	}
 

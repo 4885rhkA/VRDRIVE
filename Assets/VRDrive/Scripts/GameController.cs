@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour {
 	public static GameController instance;
 
 	[SerializeField] private bool oneKillMode = true;
+	[SerializeField] private bool keyboardMode = false;
+	[SerializeField] private bool evaluationMode = false;
 	[SerializeField] private bool takeScreenshotsForChecklist = true;
 	[SerializeField] private GameObject valueKeeper = null;
 
@@ -48,6 +50,12 @@ public class GameController : MonoBehaviour {
 	public bool OneKillMode {
 		get {
 			return oneKillMode;
+		}
+	}
+
+	public bool KeyboardMode {
+		get {
+			return keyboardMode;
 		}
 	}
 
@@ -100,7 +108,6 @@ public class GameController : MonoBehaviour {
 				// Initialize CheckList
 				if (checkList != null) {
 					foreach (Transform check in checkList.transform) {
-						// TODO find the way how to set
 						if (check.name != "Stop") {
 							userState.CheckList.Add (check.name, true);
 						}
@@ -143,7 +150,7 @@ public class GameController : MonoBehaviour {
 					speed = userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed();
 
 					if (ColorUtility.TryParseHtmlString (colorList["speedMeter"], out fontColor)) {
-						ViewerController.instance.ChangeTextMeshContent(userObject.SpeedMeter.GetComponent<TextMesh>(), speed.ToString("f1"), fontColor);
+						ViewerController.instance.ChangeTextMeshContent(userObject.SpeedMeter.GetComponent<TextMesh>(), speed.ToString("f0"), fontColor);
 					}
 				}
 			}
@@ -251,8 +258,8 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>Go to the other scene.</summary>
-	public void ChangeGameScene() {
+	/// <summary>Go to the other scene. But only player0 can use it</summary>
+	public void ChangeGameScene(string playerName) {
 		UserSet userSet;
 
 		if(!startGameFlag) {
@@ -261,17 +268,23 @@ public class GameController : MonoBehaviour {
 		}
 
 		if (!exitGameFlag) {
-			if(remainingInGame == 0 && finishGameFlag) {
+			if (finishGameFlag) {
 				exitGameFlag = true;
-				KeepValuesToNextScene ();
-				SceneManager.LoadScene("result");
+				if(evaluationMode) {
+					KeepValuesToNextScene ();
+					SceneManager.LoadScene ("result");
+				}
+				else {
+					SceneManager.LoadScene ("menu");
+				}
 			}
-		}
-
-		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
-			userSet = eachUserSet.Value;
-			if(userSet.UserState.Status == 0) {
-				MissGame(userSet.UserObject.Obj.name);
+			else if(playerName.Contains("0")) {
+				foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
+					userSet = eachUserSet.Value;
+					if(userSet.UserState.Status == 0) {
+						MissGame(userSet.UserObject.Obj.name);
+					}
+				}
 			}
 		}
 	}
@@ -354,13 +367,6 @@ public class GameController : MonoBehaviour {
 		UserState userState = userSetList [userName].UserState;
 		if(userState.CheckList.ContainsKey(checkName)) {
 			userState.CheckList [checkName] = value;
-		}
-
-		// TODO Remove Debug
-		if(IsPlayer(userName)) {
-			foreach(KeyValuePair<string, bool> check in userState.CheckList) {
-				Debug.Log (Time.time + " / " + check.Key + " : " + check.Value);
-			}
 		}
 	}
 

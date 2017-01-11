@@ -19613,7 +19613,7 @@ MonoBehaviour:
   m_Downforce: 700
   m_SpeedType: 1
   m_RevRangeBoundary: 1
-  m_Maxspeed: 120
+  m_Maxspeed: 60
   m_SlipLimit: 1
   m_BrakeTorque: 20000
   m_MaxHandleRotation: 90
@@ -19684,7 +19684,7 @@ MonoBehaviour:
   lowPitchMin: 1
   lowPitchMax: 5
   highPitchMultiplier: 0.25
-  maxRolloffDistance: 500
+  maxRolloffDistance: 10
   dopplerLevel: 1
   useDoppler: 1
 --- !u!65 &1432469489
@@ -26945,7 +26945,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b528849966d4bc3ae9d98a49cf7e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isKeyboardMode: 0
 --- !u!114 &1929576175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28092,7 +28091,7 @@ MonoBehaviour:
   lowPitchMin: 1
   lowPitchMax: 5
   highPitchMultiplier: 0.25
-  maxRolloffDistance: 500
+  maxRolloffDistance: 10
   dopplerLevel: 1
   useDoppler: 1
 --- !u!65 &2028443396
@@ -29604,6 +29603,14 @@ Prefab:
       propertyPath: valueKeeper
       value: 
       objectReference: {fileID: 198210, guid: 2d04266fe2bb54960b48b7bffbf9a4e0, type: 2}
+    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: keyboardMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: evaluationMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
   m_IsPrefabParent: 0
