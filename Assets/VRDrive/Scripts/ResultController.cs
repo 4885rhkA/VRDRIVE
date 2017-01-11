@@ -130,8 +130,23 @@ public class ResultController : MonoBehaviour {
 				SoundController.instance.ShotClipSound("decide");
 				yield return new WaitForSeconds(SoundController.instance.GetClipLength("decide"));
 
-				// TODO if multiple user and if push decode, change the user 
-				SceneManager.LoadScene("menu");
+				player++;
+				if (player < playerStateList.Count) {
+					page = -1;
+					if(ColorUtility.TryParseHtmlString(colorList["noSelected"], out fontColor)) {
+						ViewerController.instance.ChangeTextContent(
+							checkListBoxes[selectBox % checkListBoxes.Length].GetComponent<Text>(), null, fontColor
+						);
+					}
+					selectBox = 0;
+					MoveCheckBoxes (0);
+
+					yield return new WaitForSeconds(delay);
+					change = false;
+				}
+				else {
+					SceneManager.LoadScene("menu");
+				}
 			}
 			else if(Mathf.Abs(horizontal) > 0.5) {
 				change = true;
