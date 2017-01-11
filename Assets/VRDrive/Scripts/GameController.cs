@@ -279,7 +279,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Changes the game scene.
+	/// Changes the game scene. Moreover only player0 can use this function.
 	/// </summary>
 	/// <param name="playerName">Player name.</param>
 	public void ChangeGameScene(string playerName) {

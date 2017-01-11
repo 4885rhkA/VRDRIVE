@@ -12,12 +12,12 @@ public class CarTrigger : Incident {
 	/// </summary>
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{ false, true }, 		// OnTriggerEnter
-			{ false, false }, 		// OnCollisionEnter
-			{ false, true }, 		// OnTriggerStay
-			{ false, false },		// OnCollisionStay
-			{ false, false }, 		// OnTriggerExit
-			{ false, false }		// OnCollisionExit
+			{ false, true }, 	// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, true }, 	// OnTriggerStay
+			{ false, false },	// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }	// OnCollisionExit
 		};
 	}
 
