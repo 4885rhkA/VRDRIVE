@@ -12,6 +12,7 @@ public class ResultController : MonoBehaviour {
 
 	public static ResultController instance;
 
+	[SerializeField] private bool isKeyboardMode = false;
 	[SerializeField] private Texture2D successTexture = null;
 	[SerializeField] private Texture2D noPreviewTexture = null;
 
@@ -51,7 +52,7 @@ public class ResultController : MonoBehaviour {
 	};
 
 	private bool change = false;
-	private float delay = 0.2f;
+	private float delay = 1f;
 
 	private float interval = 0.5f;
 
@@ -90,9 +91,12 @@ public class ResultController : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		float h = Input.GetAxis("Handle");
-		if (h == 0) {
-			h = CrossPlatformInputManager.GetAxis("Horizontal");
+		float h;
+		if (isKeyboardMode) {
+			h = CrossPlatformInputManager.GetAxis ("Horizontal");
+		}
+		else {
+			h = Input.GetAxis("Handle");
 		}
 		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
 		StartCoroutine(ChangeSelectedCheck(h, d, change));
@@ -141,7 +145,6 @@ public class ResultController : MonoBehaviour {
 				}
 
 				MoveCheckBoxes (move);
-				SoundController.instance.ShotClipSound("select");
 
 				yield return new WaitForSeconds(delay);
 				change = false;
@@ -160,6 +163,9 @@ public class ResultController : MonoBehaviour {
 
 		if (selectBox < 0 || selectBox > checkTextList.Count - 1) {
 			selectBox -= move;
+		}
+		else {
+			SoundController.instance.ShotClipSound("select");
 		}
 
 		int newPage = Mathf.FloorToInt((float)selectBox / (float)checkListBoxes.Length);

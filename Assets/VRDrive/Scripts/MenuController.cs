@@ -11,6 +11,8 @@ public class MenuController : MonoBehaviour {
 
 	public static MenuController instance;
 
+	[SerializeField] private bool isKeyboardMode = false;
+
 	private GameObject[] sceneObjects;
 	private int sceneNo = 0;
 
@@ -21,7 +23,7 @@ public class MenuController : MonoBehaviour {
 	};
 
 	private bool flag = false;
-	private float delay = 0.2f;
+	private float delay = 1f;
 
 	void Awake() {
 		instance = this;
@@ -40,9 +42,12 @@ public class MenuController : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		float h = Input.GetAxis("Handle");
-		if (h == 0) {
-			h = CrossPlatformInputManager.GetAxis("Horizontal");
+		float h;
+		if (isKeyboardMode) {
+			h = CrossPlatformInputManager.GetAxis ("Horizontal");
+		}
+		else {
+			h = Input.GetAxis("Handle");
 		}
 		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
 		StartCoroutine(ChangeSelectedScene(h, d, flag));
@@ -72,7 +77,6 @@ public class MenuController : MonoBehaviour {
 				}
 
 				MoveSelection (move);
-				SoundController.instance.ShotClipSound("select");
 
 				yield return new WaitForSeconds(delay);
 				flag = false;
@@ -94,6 +98,9 @@ public class MenuController : MonoBehaviour {
 
 		if (sceneNo < 0 || sceneNo > sceneObjects.Length - 1) {
 			sceneNo -= move;
+		}
+		else {
+			SoundController.instance.ShotClipSound("select");
 		}
 
 		if(ColorUtility.TryParseHtmlString(colorList["selected"], out fontColor)) {
