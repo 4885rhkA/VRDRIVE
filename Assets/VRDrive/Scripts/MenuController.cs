@@ -11,7 +11,7 @@ public class MenuController : MonoBehaviour {
 
 	public static MenuController instance;
 
-	[SerializeField] private bool isKeyboardMode = false;
+	[SerializeField] private bool keyboardMode = false;
 
 	private GameObject[] sceneObjects;
 	private int sceneNo = 0;
@@ -43,7 +43,7 @@ public class MenuController : MonoBehaviour {
 
 	private void FixedUpdate() {
 		float h;
-		if (isKeyboardMode) {
+		if (keyboardMode) {
 			h = CrossPlatformInputManager.GetAxis ("Horizontal");
 		}
 		else {

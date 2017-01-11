@@ -148,7 +148,7 @@ public class GameController : MonoBehaviour {
 				}
 			}
 
-			//Keep adding gravity
+			// Keep adding gravity
 			UserController.instance.AddLocalGravity(userObject.Obj.GetComponent<Rigidbody>());
 
 		}

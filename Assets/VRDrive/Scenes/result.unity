@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: AAAAAAA
+  m_Text: 
 --- !u!222 &38014946
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -365,7 +365,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: AAAAAAA
+  m_Text: 
 --- !u!222 &176398294
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -707,7 +707,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HOW TO PLAY
+  m_Text: 
 --- !u!222 &507467521
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -783,7 +783,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: AAAAAAA
+  m_Text: 
 --- !u!222 &642940483
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -833,8 +833,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e73824386e7e4d18b883d5221db16a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successTexture: {fileID: 2800000, guid: 68bb2dcb4fcee459e817e6669813ec5c, type: 3}
-  noPreviewTexture: {fileID: 2800000, guid: 9cf2667d349844ae1b4d9718e7556e04, type: 3}
+  isKeyboardMode: 0
+  successTexture: {fileID: 2800000, guid: 3217ec6e9baf44197b44b8e8f909d9f8, type: 3}
+  noPreviewTexture: {fileID: 2800000, guid: b841b50b27794432788113f1ca9d8ec5, type: 3}
 --- !u!114 &644766878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,7 +1078,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: AAAAAAA
+  m_Text: 
 --- !u!222 &991256774
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1387,7 +1388,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: AAAAAAA
+  m_Text: 
 --- !u!222 &1152840680
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1595,7 +1596,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HOW TO PLAY
+  m_Text: 
 --- !u!222 &1261791818
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1946,7 +1947,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: AAAAAAA
+  m_Text: 
 --- !u!222 &1669547106
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2287,7 +2288,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HOW TO PLAY
+  m_Text: 
 --- !u!222 &2091123200
 CanvasRenderer:
   m_ObjectHideFlags: 0

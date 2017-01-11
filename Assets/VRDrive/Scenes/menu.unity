@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -197,6 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7481f9d174aae4cceb35db3eb910b05b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKeyboardMode: 0
 --- !u!114 &644766878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +315,7 @@ GameObject:
   - component: {fileID: 646008353}
   - component: {fileID: 646008352}
   m_Layer: 5
-  m_Name: 3-stage01c
+  m_Name: 3-learn03
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -358,7 +359,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 072f8495fdeda43e3842aa7a627ccf86, type: 3}
+  m_Texture: {fileID: 2800000, guid: 5f4a414758a134323934ac047ec71ae6, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -382,7 +383,7 @@ GameObject:
   - component: {fileID: 684612935}
   - component: {fileID: 684612934}
   m_Layer: 5
-  m_Name: 1-stage01a
+  m_Name: 1-learn01
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -426,7 +427,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 68bb2dcb4fcee459e817e6669813ec5c, type: 3}
+  m_Texture: {fileID: 2800000, guid: 5f4a414758a134323934ac047ec71ae6, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -450,7 +451,7 @@ GameObject:
   - component: {fileID: 728074974}
   - component: {fileID: 728074973}
   m_Layer: 5
-  m_Name: 0-3d10
+  m_Name: 0-learn00
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -494,7 +495,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: e37bc51dc6dd54598b599e7f6899a2c8, type: 3}
+  m_Texture: {fileID: 2800000, guid: 5f4a414758a134323934ac047ec71ae6, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -562,7 +563,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 5f4a414758a134323934ac047ec71ae6, type: 3}
+  m_Texture: {fileID: 2800000, guid: 072f8495fdeda43e3842aa7a627ccf86, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -660,7 +661,7 @@ GameObject:
   - component: {fileID: 965112379}
   - component: {fileID: 965112378}
   m_Layer: 5
-  m_Name: 1-stage01aText
+  m_Name: 1-learn01Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -716,7 +717,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: STAGE 01 - A
+  m_Text: LEARN 01
 --- !u!222 &965112379
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -975,7 +976,7 @@ GameObject:
   - component: {fileID: 1584589997}
   - component: {fileID: 1584589996}
   m_Layer: 5
-  m_Name: 2-stage01bText
+  m_Name: 2-learn02Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1031,7 +1032,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: STAGE 01 - B
+  m_Text: LEARN 02
 --- !u!222 &1584589997
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1203,7 +1204,7 @@ GameObject:
   - component: {fileID: 1842883113}
   - component: {fileID: 1842883112}
   m_Layer: 5
-  m_Name: 3-stage01cText
+  m_Name: 3-learn03Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1259,7 +1260,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: STAGE 01 -C
+  m_Text: LEARN 03
 --- !u!222 &1842883113
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1277,7 +1278,7 @@ GameObject:
   - component: {fileID: 1968705402}
   - component: {fileID: 1968705401}
   m_Layer: 5
-  m_Name: 2-stage01b
+  m_Name: 2-learn02
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1321,7 +1322,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 9cf2667d349844ae1b4d9718e7556e04, type: 3}
+  m_Texture: {fileID: 2800000, guid: 5f4a414758a134323934ac047ec71ae6, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -1345,7 +1346,7 @@ GameObject:
   - component: {fileID: 2064504858}
   - component: {fileID: 2064504857}
   m_Layer: 5
-  m_Name: 0-3d10Text
+  m_Name: 0-learn00Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1401,7 +1402,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HOW TO PLAY
+  m_Text: LEARN 00
 --- !u!222 &2064504858
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -12,7 +12,8 @@ public class ResultController : MonoBehaviour {
 
 	public static ResultController instance;
 
-	[SerializeField] private bool isKeyboardMode = false;
+	[SerializeField] private bool keyboardMode = false;
+	[SerializeField] private bool japaneseMode = true;
 	[SerializeField] private Texture2D successTexture = null;
 	[SerializeField] private Texture2D noPreviewTexture = null;
 
@@ -25,17 +26,24 @@ public class ResultController : MonoBehaviour {
 	private GameObject preview;
 	private GameObject total;
 
-	private List<string> checkTextList = new List<string>();
-
 	private int selectBox = 0;
 	private int page = -1;
 	private int player = 0;
+
+	private List<string> checkTextList = new List<string>();
 
 	private Dictionary<string, string> checkTextJPWordList = new Dictionary<string, string>() {
 		{"AI", "他車"},
 		{"Stop", "止まれ"},
 		{"Signal", "信号処理"},
 		{"kmh", "速度制限"}
+	};
+
+	private Dictionary<string, string> checkTextEvaluationList = new Dictionary<string, string>() {
+		{"AI", "Take care of other car"},
+		{"Stop", "Don't go through"},
+		{"Signal", "Look at the signal"},
+		{"kmh", "Don't drive too fast"}
 	};
 
 	private Dictionary<string, string> checkTextJPEvaluationList = new Dictionary<string, string>() {
@@ -84,15 +92,37 @@ public class ResultController : MonoBehaviour {
 
 			Destroy (valueKeeperObject);
 
-			MoveCheckBoxes(0);
+			total.GetComponent<Text> ().text = GetTotalComment ();
+
+			MoveCheckBoxes(-1);
 		}
 
 		SoundController.instance.StartResultSound();
 	}
 
+	private string GetTotalComment() {
+		int score = GetTotalScore ();
+		int total = checkTextList.Count ();
+		return GetPlayerName (player) + "'s Score :" + score.ToString() + "/" + total.ToString();
+	}
+
+	private string GetPlayerName(int number) {
+		return "Player" + number;
+	}
+
+	private int GetTotalScore() {
+		int score = 0;
+		foreach (KeyValuePair<string, bool> check in playerStateList [GetPlayerName (player)].CheckList) {
+			if (check.Value) {
+				score++;
+			}
+		}
+		return score;
+	}
+
 	private void FixedUpdate() {
 		float h;
-		if (isKeyboardMode) {
+		if (keyboardMode) {
 			h = CrossPlatformInputManager.GetAxis ("Horizontal");
 		}
 		else {
@@ -111,7 +141,7 @@ public class ResultController : MonoBehaviour {
 		total = canvasTransform.FindChild ("Total").gameObject;
 	}
 
-	private string ConvertWordForJPWordList(string key) {
+	private string ConvertWord(string key) {
 		if(key.Contains("kmh")) {
 			return "kmh";
 		}
@@ -126,20 +156,23 @@ public class ResultController : MonoBehaviour {
 		if(!changingNow) {
 			if(decide) {
 				change = true;
-
 				SoundController.instance.ShotClipSound("decide");
 				yield return new WaitForSeconds(SoundController.instance.GetClipLength("decide"));
 
 				player++;
+				// If multiple user, show the result
 				if (player < playerStateList.Count) {
-					page = -1;
 					if(ColorUtility.TryParseHtmlString(colorList["noSelected"], out fontColor)) {
 						ViewerController.instance.ChangeTextContent(
 							checkListBoxes[selectBox % checkListBoxes.Length].GetComponent<Text>(), null, fontColor
 						);
 					}
+
+					page = -1;
 					selectBox = 0;
-					MoveCheckBoxes (0);
+
+					MoveCheckBoxes (-1);
+					total.GetComponent<Text> ().text = GetTotalComment ();
 
 					yield return new WaitForSeconds(delay);
 					change = false;
@@ -150,7 +183,6 @@ public class ResultController : MonoBehaviour {
 			}
 			else if(Mathf.Abs(horizontal) > 0.5) {
 				change = true;
-
 				int move = 0;
 				if(horizontal > 0) {
 					move = 1;
@@ -198,17 +230,58 @@ public class ResultController : MonoBehaviour {
 		PickUpCheckBox ();
 	}
 
+	private void ChangeContentsOfCheckBoxes() {
+		int count = 0;
+		int value;
+		RawImage ImageOk;
+		RawImage ImageNg;
+		foreach (GameObject checkListBox in checkListBoxes) {
+			value = page * checkListBoxes.Length + count;
+			ImageOk = checkListBox.transform.FindChild ("Ok").gameObject.GetComponent<RawImage> ();
+			ImageNg = checkListBox.transform.FindChild ("Ng").gameObject.GetComponent<RawImage> ();
+			if (value < checkTextList.Count) {
+				if (japaneseMode) {
+					checkListBox.GetComponent<Text> ().text = checkTextJPWordList[ConvertWord(checkTextList [value])];
+				}
+				else {
+					checkListBox.GetComponent<Text> ().text = checkTextList [value];
+				}
+
+				if (playerStateList [GetPlayerName(player)].CheckList [checkTextList [value]]) {
+					ViewerController.instance.ChangeRawImageState (ImageOk, true);
+					ViewerController.instance.ChangeRawImageState (ImageNg, false);
+				}
+				else {
+					ViewerController.instance.ChangeRawImageState (ImageOk, false);
+					ViewerController.instance.ChangeRawImageState (ImageNg, true);
+				}
+			}
+			else {
+				checkListBox.GetComponent<Text> ().text = "";
+				ViewerController.instance.ChangeRawImageState (ImageOk, false);
+				ViewerController.instance.ChangeRawImageState (ImageNg, false);
+			}
+			count++;
+		}
+	}
+
 	private void PickUpCheckBox() {
-		string target = ConvertWordForJPWordList(checkTextList [selectBox]);
-		pickUp.GetComponent<Text> ().text = checkTextJPWordList[target];
-		evaluation.GetComponent<Text> ().text = checkTextJPEvaluationList[target];
-		ShowPreview(checkTextList [selectBox]);
+		string target = checkTextList [selectBox];
+		if (japaneseMode) {
+			pickUp.GetComponent<Text> ().text = checkTextJPWordList[ConvertWord(target)];
+			evaluation.GetComponent<Text> ().text = checkTextJPEvaluationList[ConvertWord(target)];
+		}
+		else {
+			pickUp.GetComponent<Text> ().text = target;
+			evaluation.GetComponent<Text> ().text = checkTextEvaluationList[ConvertWord(target)];
+		}
+		ShowPreview(target);
 	}
 
 	private void ShowPreview(string incidentName) {
-		string key = CameraController.instance.CreateKeyForScreenshot ("Player" + player, incidentName);
+		string key = CameraController.instance.CreateKeyForScreenshot (GetPlayerName(player), incidentName);
 		if (playerScreenshotList.ContainsKey (key)) {
-			if (playerStateList ["Player" + player].CheckList [checkTextList [selectBox]]) {
+			if (playerStateList [GetPlayerName(player)].CheckList [checkTextList [selectBox]]) {
 				preview.GetComponent<RawImage> ().texture = successTexture;
 			}
 			else {
@@ -219,7 +292,6 @@ public class ResultController : MonoBehaviour {
 		else {
 			preview.GetComponent<RawImage> ().texture = noPreviewTexture;
 		}
-
 	}
 
 	private IEnumerator LoopPreview(int nowSelectBox, string key, List<Texture2D> screenshotList) {
@@ -232,33 +304,6 @@ public class ResultController : MonoBehaviour {
 				count = 0;
 			}
 			yield return new WaitForSeconds(interval);
-		}
-	}
-
-	private void ChangeContentsOfCheckBoxes() {
-		int count = 0;
-		int value;
-		RawImage ImageOk;
-		RawImage ImageNg;
-		foreach (GameObject checkListBox in checkListBoxes) {
-			value = page * checkListBoxes.Length + count;
-			ImageOk = checkListBox.transform.FindChild ("Ok").gameObject.GetComponent<RawImage> ();
-			ImageNg = checkListBox.transform.FindChild ("Ng").gameObject.GetComponent<RawImage> ();
-			if (value < checkTextList.Count) {
-				checkListBox.GetComponent<Text> ().text = checkTextJPWordList [ConvertWordForJPWordList (checkTextList [value])];
-				if (playerStateList ["Player" + player].CheckList [checkTextList [value]]) {
-					ViewerController.instance.ChangeRawImageState (ImageOk, true);
-					ViewerController.instance.ChangeRawImageState (ImageNg, false);
-				} else {
-					ViewerController.instance.ChangeRawImageState (ImageOk, false);
-					ViewerController.instance.ChangeRawImageState (ImageNg, true);
-				}
-			} else {
-				checkListBox.GetComponent<Text> ().text = "";
-				ViewerController.instance.ChangeRawImageState (ImageOk, false);
-				ViewerController.instance.ChangeRawImageState (ImageNg, false);
-			}
-			count++;
 		}
 	}
 
