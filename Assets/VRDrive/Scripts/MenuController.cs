@@ -3,102 +3,124 @@ using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 using System.Linq;
 
-/// Class for controlling menu
+/// <summary>
+/// Menu controller.
+/// </summary>
 public class MenuController : MonoBehaviour {
 
 	public static MenuController instance;
 
-	private GameObject[] stageObjects;
-	private int selectStageNo = 0;
+	[SerializeField] private bool keyboardMode = false;
+
+	private GameObject[] sceneObjects;
+	private int sceneNo = 0;
 
 	private Color fontColor = new Color();
-	private string colorSelected = "#FFFFFFFF";
-	private string colorNoSelected = "#646464FF";
+	private Dictionary<string, string> colorList = new Dictionary<string, string>() {
+		{ "selected", "#FFFFFFFF" },
+		{ "noSelected", "#646464FF" }
+	};
 
-	private bool changingSelectionFlag = false;
-	private float timeForChangingSelection = 0.25f;
+	private bool flag = false;
+	private float delay = 1f;
 
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		instance = this;
 	}
 
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start() {
-		stageObjects = GameObject.FindGameObjectsWithTag("StageName");
-		if(stageObjects != null) {
-			stageObjects = stageObjects.OrderBy(stageObject => stageObject.name).ToArray();
+		sceneObjects = GameObject.FindGameObjectsWithTag("Scene");
+
+		if(sceneObjects != null) {
+			sceneObjects = sceneObjects.OrderBy(sceneObject => sceneObject.name).ToArray();
 		}
-		if(ColorUtility.TryParseHtmlString(colorSelected, out fontColor)) {
-			ViewerController.instance.ChangeTextContent(
-				stageObjects[0].transform.FindChild(stageObjects[0].name + "Text").GetComponent<Text>(), null, fontColor
-			);
-		}
-		else {
-			Debug.LogWarning("The color" + colorSelected + "cannnot convert into Color class.");
-		}
-		ViewerController.instance.ChangeRawImageState(stageObjects[0].GetComponent<RawImage>(), true);
+
+		MoveSelection(0);
+
 		SoundController.instance.StartMenuSound();
 	}
 
-	private void FixedUpdate() {
-		float h = Input.GetAxis("Handle");
-		if (h == 0) {
+	/// <summary>
+	/// Fixeds the update.
+	/// </summary>
+	void FixedUpdate() {
+		float h;
+		if(keyboardMode) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
-		bool b = CrossPlatformInputManager.GetButtonUp("Decide");
-		StartCoroutine(ChangeSelectedStage(h, b, changingSelectionFlag));
+		else {
+			h = Input.GetAxis("Handle");
+		}
+		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
+		StartCoroutine(ChangeSelectedScene(h, d, flag));
 	}
 
-	/// <summary>Change selected stage.</summary>
-	/// <param name="horizontal">The length of the delay</param>
-	/// <param name="decideStage">Go to the selected stage or not</param>
-	/// <param name="isSelectionChanging">Whether already selected the stage or not</param>
-	private IEnumerator ChangeSelectedStage(float horizontal, bool decideStage, bool isSelectionChanging) {
-		if(!isSelectionChanging) {
-			if(decideStage) {
-				changingSelectionFlag = true;
+	/// <summary>
+	/// Changes the selected scene.
+	/// </summary>
+	/// <returns>The selected scene.</returns>
+	/// <param name="horizontal">Horizontal.</param>
+	/// <param name="decide">If set to <c>true</c> decide.</param>
+	/// <param name="changingNow">If set to <c>true</c> changing now.</param>
+	private IEnumerator ChangeSelectedScene(float horizontal, bool decide, bool changingNow) {
+		if(!changingNow) {
+			if(decide) {
+				flag = true;
 				SoundController.instance.ShotClipSound("decide");
 				yield return new WaitForSeconds(SoundController.instance.GetClipLength("decide"));
-				SceneManager.LoadScene(stageObjects[selectStageNo].name.Substring(2));
+				SceneManager.LoadScene(sceneObjects[sceneNo].name.Substring(2));
 			}
 			else if(Mathf.Abs(horizontal) > 0.5) {
-				changingSelectionFlag = true;
-				stageObjects[selectStageNo].GetComponent<RawImage>().enabled = false;
-				if(ColorUtility.TryParseHtmlString(colorNoSelected, out fontColor)) {
-					GameObject stageObject = stageObjects[selectStageNo];
-					stageObject.transform.FindChild(stageObject.name + "Text").GetComponent<Text>().color = fontColor;
-				}
-				else {
-					Debug.LogWarning("The color" + colorSelected + "cannnot convert into Color class.");
-				}
+				flag = true;
 
+				int move = 0;
 				if(horizontal > 0) {
-					selectStageNo++;
+					move = 1;
 				}
 				else {
-					selectStageNo--;
-				}
-				if(selectStageNo > stageObjects.Length - 1 || selectStageNo < 0) {
-					selectStageNo = stageObjects.Length - Mathf.Abs(selectStageNo);
+					move = -1;
 				}
 
-				if(ColorUtility.TryParseHtmlString(colorSelected, out fontColor)) {
-					GameObject stageObject = stageObjects[selectStageNo];
-					ViewerController.instance.ChangeTextContent(
-						stageObject.transform.FindChild(stageObject.name + "Text").GetComponent<Text>(), null, fontColor
-					);
-				}
-				else {
-					Debug.LogWarning("The color" + colorSelected + "cannnot convert into Color class.");
-				}
-				ViewerController.instance.ChangeRawImageState(stageObjects[selectStageNo].GetComponent<RawImage>(), true);
-				SoundController.instance.ShotClipSound("select");
-				yield return new WaitForSeconds(timeForChangingSelection);
-				changingSelectionFlag = false;
+				MoveSelection(move);
+
+				yield return new WaitForSeconds(delay);
+				flag = false;
 			}
 		}
+	}
+
+	/// <summary>
+	/// Moves the selection.
+	/// </summary>
+	/// <param name="move">Move.</param>
+	private void MoveSelection(int move) {
+		if(ColorUtility.TryParseHtmlString(colorList["noSelected"], out fontColor)) {
+			ViewerController.instance.ChangeTextContent(sceneObjects[sceneNo].transform.FindChild(sceneObjects[sceneNo].name + "Text").GetComponent<Text>(), null, fontColor);
+		}
+		ViewerController.instance.ChangeRawImageState(sceneObjects[sceneNo].GetComponent<RawImage>(), false);
+
+		sceneNo += move;
+
+		if(sceneNo < 0 || sceneNo > sceneObjects.Length - 1) {
+			sceneNo -= move;
+		}
+		else {
+			SoundController.instance.ShotClipSound("select");
+		}
+
+		if(ColorUtility.TryParseHtmlString(colorList["selected"], out fontColor)) {
+			ViewerController.instance.ChangeTextContent(sceneObjects[sceneNo].transform.FindChild(sceneObjects[sceneNo].name + "Text").GetComponent<Text>(), null, fontColor);
+		}
+		ViewerController.instance.ChangeRawImageState(sceneObjects[sceneNo].GetComponent<RawImage>(), true);
 	}
 
 }
