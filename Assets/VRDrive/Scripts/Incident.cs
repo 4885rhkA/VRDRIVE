@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
 /// The Class for defined action when collision between user's car and gimmick
 public abstract class Incident : MonoBehaviour {
@@ -8,16 +9,7 @@ public abstract class Incident : MonoBehaviour {
 	protected bool[, ] collisionFlag;
 	protected string parentName;
 
-	protected bool isSituationForSaveScreenshot = true;
-
-	public bool IsSituationForSaveScreenshot {
-		get {
-			return isSituationForSaveScreenshot;
-		}
-		set {
-			isSituationForSaveScreenshot = value;
-		}
-	}
+	protected bool nowTakingScreenshot = false;
 
 	void OnTriggerEnter(Collider collider) {
 		CollisionAction (collisionFlag[0, 0], collisionFlag[0, 1], collider.gameObject, 0);
@@ -69,30 +61,15 @@ public abstract class Incident : MonoBehaviour {
 		return gameObject.transform.root.gameObject.name == "CheckList";
 	}
 
-	/// <summary>Determines whether this instance is situation for save screenshot with delay the specified value.</summary>
-	/// <returns><c>true</c> if this instance is situation for save screenshot with delay the specified value; otherwise, <c>false</c></returns>
-	/// <param name="value">If set to <c>true</c> value</param>
-	protected IEnumerator IsSituationForSaveScreenshotWithDelay(bool value) {
-		yield return new WaitForSeconds(CameraController.instance.DelayForCaptureAfterTriggerExit);
-		IsSituationForSaveScreenshot = value;
-	}
-
 	/// <summary>Saves the screenshot with interval.</summary>
-	/// <returns>The screenshot with interval</returns>
-	/// <param name="userName">User name</param>
-	protected IEnumerator SaveScreenshotWithInterval(string userName) {
-		int count = 0;
-		CameraController cameraController = CameraController.instance;
-		string directoryForScreenshot = cameraController.DirectoryForScreenshot;
-		float intervalForCapture = cameraController.IntervalForCapture;
-		string path = directoryForScreenshot + "/" + parentName;
-		Directory.CreateDirectory(Application.dataPath + "/" + path);
-
-		path = "Assets/" + path;
-		while (isSituationForSaveScreenshot && GameController.instance.TakeScreenshotsForChecklist) {
-			Application.CaptureScreenshot (path + "/" + userName + "-" + count.ToString().PadLeft(4, '0') +".png");
-			count++;
-			yield return new WaitForSeconds(intervalForCapture);
+	/// <param name="playerName">Player name</param>
+	protected IEnumerator SetScreenshots(string playerName) {
+		if (!nowTakingScreenshot) {
+			nowTakingScreenshot = true;
+			string key = CameraController.instance.CreateKeyForScreenshot(playerName, parentName);
+			yield return StartCoroutine (CameraController.instance.CaptureAndSaveScreenshots (key));
+			yield return new WaitForSeconds(CameraController.instance.Intereval);
+			nowTakingScreenshot = false;
 		}
 	}
 

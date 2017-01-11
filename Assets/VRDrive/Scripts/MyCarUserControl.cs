@@ -11,7 +11,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
 		[SerializeField] private bool isKeyboardMode = false;
 
-		private MyCarController m_Car; // the car controller we want to use
+		private MyCarController m_Car;
 		private bool enableToPush = true;
 		private float timeForPermitPush = 1f;
 
@@ -61,7 +61,7 @@ namespace UnityStandardAssets.Vehicles.Car
 			float b = Input.GetAxis("BackTrigger");
 
 			// decide
-			bool d = CrossPlatformInputManager.GetButtonUp("Decide");
+			bool d = CrossPlatformInputManager.GetButtonDown("Decide");
 
 			if(s > 0) {
 				m_Car.Move(h, 0, 0, s); // stop

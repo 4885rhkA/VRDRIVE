@@ -44,7 +44,7 @@ public class MenuController : MonoBehaviour {
 		if (h == 0) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
-		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
+		bool d = CrossPlatformInputManager.GetButtonDown("Decide");
 		StartCoroutine(ChangeSelectedScene(h, d, flag));
 	}
 

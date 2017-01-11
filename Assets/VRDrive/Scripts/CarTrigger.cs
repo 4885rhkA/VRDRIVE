@@ -9,9 +9,9 @@ public class CarTrigger : Incident {
 		collisionFlag = new bool[6, 2] {
 			{false, true}, 		// OnTriggerEnter
 			{false, false}, 	// OnCollisionEnter
-			{false, false}, 	// OnTriggerStay
+			{false, true}, 		// OnTriggerStay
 			{false, false},		// OnCollisionStay
-			{false, true}, 		// OnTriggerExit
+			{false, false}, 		// OnTriggerExit
 			{false, false}		// OnCollisionExit
 		};
 	}
@@ -43,14 +43,11 @@ public class CarTrigger : Incident {
 
 		if (ContainedCheckList ()) {
 			if (kindOfCollision == 0) {
-				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
-					StartCoroutine (SaveScreenshotWithInterval (userObject.Obj.name));
-				}
 				GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
 			}
-			if (kindOfCollision == 4) {
+			if (kindOfCollision == 2) {
 				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
-					StartCoroutine (IsSituationForSaveScreenshotWithDelay (false));
+					StartCoroutine (SetScreenshots (userObject.Obj.name));
 				}
 			}
 		}

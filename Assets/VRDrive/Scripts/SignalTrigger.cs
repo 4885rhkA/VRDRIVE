@@ -10,7 +10,7 @@ public class SignalTrigger : Incident {
 
 	void Awake() {
 		collisionFlag = new bool[6, 2] {
-			{false, true}, 		// OnTriggerEnter
+			{false, false}, 		// OnTriggerEnter
 			{false, false}, 	// OnCollisionEnter
 			{false, true}, 		// OnTriggerStay
 			{false, false},		// OnCollisionStay
@@ -57,17 +57,14 @@ public class SignalTrigger : Incident {
 			}
 		}
 		if (ContainedCheckList ()) {
-			if (kindOfCollision == 0) {
+			if (kindOfCollision == 2) {
 				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
-					StartCoroutine (SaveScreenshotWithInterval (userObject.Obj.name));
+					StartCoroutine (SetScreenshots (userObject.Obj.name));
 				}
 			}
 			if (kindOfCollision == 4) {
 				if (signal.Status == 2 && userState.CheckList [parentName]) {
 					GameController.instance.UpdateCheckList (userObject.Obj.name, parentName, false);
-				}
-				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
-					StartCoroutine (IsSituationForSaveScreenshotWithDelay (false));
 				}
 			}
 		}

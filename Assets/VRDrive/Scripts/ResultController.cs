@@ -12,7 +12,11 @@ public class ResultController : MonoBehaviour {
 
 	public static ResultController instance;
 
+	[SerializeField] private Texture2D successTexture;
+	[SerializeField] private Texture2D noPreviewTexture;
+
 	private Dictionary<string, UserState> playerStateList = new Dictionary<string, UserState>();
+	private Dictionary<string, List<Texture2D>> playerScreenshotList;
 
 	private GameObject[] checkListBoxes;
 	private GameObject pickUp;
@@ -23,7 +27,7 @@ public class ResultController : MonoBehaviour {
 	private List<string> checkTextList = new List<string>();
 
 	private int selectBox = 0;
-	private int page = 0;
+	private int page = -1;
 	private int player = 0;
 
 	private Dictionary<string, string> checkTextJPWordList = new Dictionary<string, string>() {
@@ -46,7 +50,7 @@ public class ResultController : MonoBehaviour {
 		{"noSelected", "#646464FF"}
 	};
 
-	private bool flag = false;
+	private bool change = false;
 	private float delay = 0.1f;
 
 	private float interval = 0.5f;
@@ -59,14 +63,16 @@ public class ResultController : MonoBehaviour {
 		SetGameObjectForInitialization ();
 
 		if (GameObject.Find ("ValueKeeper")) {
-			GameObject valueKeeper = GameObject.Find ("ValueKeeper").gameObject;
-			Dictionary<string, UserState> userStateList = valueKeeper.GetComponent<ValueKeeper> ().UserStateList;
+			GameObject valueKeeperObject = GameObject.Find ("ValueKeeper").gameObject;
+			ValueKeeper valueKeeper = valueKeeperObject.GetComponent<ValueKeeper> ();
 
+			Dictionary<string, UserState> userStateList = valueKeeper.UserStateList;
 			foreach (KeyValuePair<string, UserState> eachUserState in userStateList) {
 				if (eachUserState.Key.Contains ("Player")) {
 					playerStateList.Add (eachUserState.Key, eachUserState.Value);
 				}
 			}
+			playerScreenshotList = valueKeeper.PlayerScreenshotList;
 
 			if (playerStateList.Count > 0) {
 				Dictionary<string, bool> checks = playerStateList.First().Value.CheckList;
@@ -74,10 +80,10 @@ public class ResultController : MonoBehaviour {
 					checkTextList.Add (check);
 				}
 			}
-			Destroy (valueKeeper);
 
-			PickUpCheckBox ();
-			ChangeContentsOfCheckBoxes ();
+			Destroy (valueKeeperObject);
+
+			MoveCheckBoxes(0);
 		}
 
 		SoundController.instance.StartResultSound();
@@ -88,8 +94,8 @@ public class ResultController : MonoBehaviour {
 		if (h == 0) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
-		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
-		StartCoroutine(ChangeSelectedCheck(h, d, flag));
+		bool d = CrossPlatformInputManager.GetButtonDown("Decide");
+		StartCoroutine(ChangeSelectedCheck(h, d, change));
 	}
 
 	void SetGameObjectForInitialization() {
@@ -111,11 +117,11 @@ public class ResultController : MonoBehaviour {
 	/// <summary>Change selected check.</summary>
 	/// <param name="horizontal">The length of the delay</param>
 	/// <param name="decide">Go to the menu scene or not</param>
-	/// <param name="changingNow">Whether already selected the check or not</param>
+	/// <param name="changingNow">Whether changing selection or not</param>
 	private IEnumerator ChangeSelectedCheck(float horizontal, bool decide, bool changingNow) {
 		if(!changingNow) {
 			if(decide) {
-				flag = true;
+				change = true;
 
 				SoundController.instance.ShotClipSound("decide");
 				yield return new WaitForSeconds(SoundController.instance.GetClipLength("decide"));
@@ -124,19 +130,21 @@ public class ResultController : MonoBehaviour {
 				SceneManager.LoadScene("menu");
 			}
 			else if(Mathf.Abs(horizontal) > 0.5) {
-				flag = true;
+				change = true;
 
 				int move = 0;
 				if(horizontal > 0) {
 					move = 1;
 				}
-				else {
+				else if(horizontal < 0) {
 					move = -1;
 				}
+
 				MoveCheckBoxes (move);
+				SoundController.instance.ShotClipSound("select");
 
 				yield return new WaitForSeconds(delay);
-				flag = false;
+				change = false;
 			}
 		}
 	}
@@ -167,30 +175,41 @@ public class ResultController : MonoBehaviour {
 		}
 
 		PickUpCheckBox ();
-		SoundController.instance.ShotClipSound("select");
 	}
 
 	private void PickUpCheckBox() {
 		string target = ConvertWordForJPWordList(checkTextList [selectBox]);
 		pickUp.GetComponent<Text> ().text = checkTextJPWordList[target];
 		evaluation.GetComponent<Text> ().text = checkTextJPEvaluationList[target];
-		// ShowPreview();
+		ShowPreview(checkTextList [selectBox]);
 	}
 
-	private IEnumerator ShowPreview() {
-		int nowSelectBox = selectBox;
-		// summary : checktextlist[selectBox]フォルダにあるPlayerNo-****の画像を連番で呼び出す
-
-		if (playerStateList ["Player" + player].CheckList [checkTextList [nowSelectBox]]) {
-			// clearしてるので画像は一つだけ
-			// falseならmissしてる = summary : checktextlist[selectBox]フォルダにあるPlayer*-****の画像を連番で呼び出す
+	private void ShowPreview(string incidentName) {
+		string key = CameraController.instance.CreateKeyForScreenshot ("Player" + player, incidentName);
+		if (playerScreenshotList.ContainsKey (key)) {
+			if (playerStateList ["Player" + player].CheckList [checkTextList [selectBox]]) {
+				preview.GetComponent<RawImage> ().texture = successTexture;
+			}
+			else {
+				List<Texture2D> screenshotList = playerScreenshotList[key];
+				StartCoroutine (LoopPreview (selectBox, key, screenshotList));
+			}
 		}
 		else {
-			// clearしてるので画像は一つだけ
-			// falseならmissしてる = summary : checktextlist[selectBox]フォルダにあるPlayer*-****の画像を連番で呼び出す
+			preview.GetComponent<RawImage> ().texture = noPreviewTexture;
 		}
 
+	}
+
+	private IEnumerator LoopPreview(int nowSelectBox, string key, List<Texture2D> screenshotList) {
+		int count = 0;
+		int length = playerScreenshotList.Count;
 		while (nowSelectBox == selectBox) {
+			preview.GetComponent<RawImage> ().texture = screenshotList [count];
+			count++;
+			if (count > length - 1) {
+				count = 0;
+			}
 			yield return new WaitForSeconds(interval);
 		}
 	}

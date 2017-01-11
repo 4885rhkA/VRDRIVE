@@ -288,6 +288,7 @@ public class GameController : MonoBehaviour {
 			userStateList.Add (eachUserSet.Key, eachUserSet.Value.UserState);
 		}
 		newValueKeeper.GetComponent<ValueKeeper> ().UserStateList = userStateList;
+		newValueKeeper.GetComponent<ValueKeeper> ().PlayerScreenshotList = CameraController.instance.PlayerScreenshotList;
 		DontDestroyOnLoad (newValueKeeper);
 	}
 
