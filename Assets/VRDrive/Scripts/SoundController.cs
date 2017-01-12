@@ -76,9 +76,9 @@ public class SoundController : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Starts the result sound.
+	/// Starts the evaluation sound.
 	/// </summary>
-	public void StartResultSound() {
+	public void StartEvaluationSound() {
 		source.clip = audioClips["scene"];
 		source.loop = true;
 		source.Play();

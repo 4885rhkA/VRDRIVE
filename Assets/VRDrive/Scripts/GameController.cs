@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField] private bool oneKillMode = true;
 	[SerializeField] private bool keyboardMode = false;
 	[SerializeField] private bool evaluationMode = false;
+	[SerializeField] private string sceneAfterEvaluation = "menu";
 	[SerializeField] private bool takeScreenshotsForChecklist = true;
 	[SerializeField] private GameObject valueKeeper = null;
 
@@ -295,7 +296,7 @@ public class GameController : MonoBehaviour {
 				exitGameFlag = true;
 				if(evaluationMode) {
 					KeepValuesToNextScene();
-					SceneManager.LoadScene("result");
+					SceneManager.LoadScene("evaluation");
 				}
 				else {
 					SceneManager.LoadScene("menu");
@@ -323,8 +324,10 @@ public class GameController : MonoBehaviour {
 		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
 			userStateList.Add(eachUserSet.Key, eachUserSet.Value.UserState);
 		}
+
 		newValueKeeper.GetComponent<ValueKeeper>().UserStateList = userStateList;
 		newValueKeeper.GetComponent<ValueKeeper>().PlayerScreenshotList = CameraController.instance.PlayerScreenshotList;
+		newValueKeeper.GetComponent<ValueKeeper>().SceneAfterEvaluation = sceneAfterEvaluation;
 		DontDestroyOnLoad(newValueKeeper);
 	}
 

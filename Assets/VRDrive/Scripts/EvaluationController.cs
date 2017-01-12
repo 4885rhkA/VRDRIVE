@@ -8,11 +8,11 @@ using System.Linq;
 using System;
 
 /// <summary>
-/// Result controller.
+/// Evaluation controller.
 /// </summary>
-public class ResultController : MonoBehaviour {
+public class EvaluationController : MonoBehaviour {
 
-	public static ResultController instance;
+	public static EvaluationController instance;
 
 	[SerializeField] private bool keyboardMode = false;
 	[SerializeField] private bool japaneseMode = true;
@@ -65,6 +65,8 @@ public class ResultController : MonoBehaviour {
 	private float delay = 1f;
 	private float interval = 0.5f;
 
+	private string nextScene = "menu";
+
 	/// <summary>
 	/// Awake this instance.
 	/// </summary>
@@ -97,6 +99,8 @@ public class ResultController : MonoBehaviour {
 				}
 			}
 
+			nextScene = valueKeeper.SceneAfterEvaluation;
+
 			Destroy(valueKeeperObject);
 
 			total.GetComponent<Text>().text = GetTotalComment();
@@ -104,7 +108,22 @@ public class ResultController : MonoBehaviour {
 			MoveCheckBoxes(-1);
 		}
 
-		SoundController.instance.StartResultSound();
+		SoundController.instance.StartEvaluationSound();
+	}
+
+	/// <summary>
+	/// Fixeds the update.
+	/// </summary>
+	void FixedUpdate() {
+		float h;
+		if(keyboardMode) {
+			h = CrossPlatformInputManager.GetAxis("Horizontal");
+		}
+		else {
+			h = Input.GetAxis("Handle");
+		}
+		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
+		StartCoroutine(ChangeSelectedCheck(h, d, change));
 	}
 
 	/// <summary>
@@ -138,21 +157,6 @@ public class ResultController : MonoBehaviour {
 			}
 		}
 		return score;
-	}
-
-	/// <summary>
-	/// Fixeds the update.
-	/// </summary>
-	void FixedUpdate() {
-		float h;
-		if(keyboardMode) {
-			h = CrossPlatformInputManager.GetAxis("Horizontal");
-		}
-		else {
-			h = Input.GetAxis("Handle");
-		}
-		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
-		StartCoroutine(ChangeSelectedCheck(h, d, change));
 	}
 
 	/// <summary>
@@ -194,7 +198,7 @@ public class ResultController : MonoBehaviour {
 				yield return new WaitForSeconds(SoundController.instance.GetClipLength("decide"));
 
 				player++;
-				// If multiple user, show the result
+				// If multiple user, show the rvaluation
 				if(player < playerStateList.Count) {
 					if(ColorUtility.TryParseHtmlString(colorList["noSelected"], out fontColor)) {
 						ViewerController.instance.ChangeTextContent(checkListBoxes[selectBox % checkListBoxes.Length].GetComponent<Text>(), null, fontColor);
@@ -210,7 +214,7 @@ public class ResultController : MonoBehaviour {
 					change = false;
 				}
 				else {
-					SceneManager.LoadScene("menu");
+					SceneManager.LoadScene(nextScene);
 				}
 			}
 			else if(Mathf.Abs(horizontal) > 0.5) {

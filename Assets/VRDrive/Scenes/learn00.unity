@@ -29810,6 +29810,10 @@ Prefab:
       propertyPath: sppedUpBoards
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: sceneAfterEvaluation
+      value: menu
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
   m_IsPrefabParent: 0
