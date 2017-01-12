@@ -71,7 +71,7 @@ LightmapSettings:
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
-  m_LightingDataAsset: {fileID: 112000001, guid: 2f45f7b582284df4793e77139f091281,
+  m_LightingDataAsset: {fileID: 112000001, guid: 1a8fd4339a1a3c24592ebf12834cfd82,
     type: 2}
   m_RuntimeCPUUsage: 25
 --- !u!196 &4
@@ -122,6 +122,7 @@ Transform:
   - {fileID: 847913145}
   - {fileID: 1835911477}
   - {fileID: 1784127572}
+  - {fileID: 113738849}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1340,6 +1341,72 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 104569150}
   m_Mesh: {fileID: 4300062, guid: 722bd2aae6347403297c3343492e3b53, type: 3}
+--- !u!1001 &113738848
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 18431577}
+    m_Modifications:
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1000.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 34.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 132.25482
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 146.79326
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 161.67116
+      objectReference: {fileID: 0}
+    - target: {fileID: 154810, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_Name
+      value: Tunnel
+      objectReference: {fileID: 0}
+    - target: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &113738849 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
+  m_PrefabInternal: {fileID: 113738848}
 --- !u!1 &122433142
 GameObject:
   m_ObjectHideFlags: 0
@@ -16145,6 +16212,7 @@ Transform:
   - {fileID: 668857043}
   - {fileID: 757290936}
   - {fileID: 2014843705}
+  - {fileID: 1706607426}
   m_Father: {fileID: 122433143}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22345,6 +22413,77 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1691595601}
   m_Mesh: {fileID: 4300026, guid: 722bd2aae6347403297c3343492e3b53, type: 3}
+--- !u!1 &1706607423
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1706607426}
+  - component: {fileID: 1706607425}
+  - component: {fileID: 1706607424}
+  m_Layer: 0
+  m_Name: Terrain
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!154 &1706607424
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1706607423}
+  m_Material: {fileID: 0}
+  m_Enabled: 0
+  m_TerrainData: {fileID: 15600000, guid: 7511f2ab15791194e994c1564f7748bf, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &1706607425
+Terrain:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1706607423}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_TerrainData: {fileID: 15600000, guid: 7511f2ab15791194e994c1564f7748bf, type: 2}
+  m_TreeDistance: 2000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMaximumLOD: 0
+  m_CastShadows: 1
+  m_DrawHeightmap: 1
+  m_DrawTreesAndFoliage: 1
+  m_ReflectionProbeUsage: 1
+  m_MaterialType: 0
+  m_LegacySpecular:
+    serializedVersion: 2
+    rgba: 4286545791
+  m_LegacyShininess: 0.078125
+  m_MaterialTemplate: {fileID: 0}
+  m_BakeLightProbesForTrees: 1
+  m_ScaleInLightmap: 0.0512
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+--- !u!4 &1706607426
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1706607423}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1086, y: -0.15, z: -358}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1123395712}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1726529459
 GameObject:
   m_ObjectHideFlags: 0
@@ -22543,7 +22682,7 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -22623,7 +22762,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 0
+  randomSeed: -877377144
   InitialModule:
     serializedVersion: 3
     enabled: 1
