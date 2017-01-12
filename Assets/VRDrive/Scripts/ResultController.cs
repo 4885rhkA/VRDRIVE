@@ -345,7 +345,7 @@ public class ResultController : MonoBehaviour {
 	/// <param name="screenshotList">Screenshot list.</param>
 	private IEnumerator LoopPreview(int nowSelectBox, string key, List<Texture2D> screenshotList) {
 		int count = 0;
-		int length = playerScreenshotList.Count;
+		int length = screenshotList.Count;
 		while(nowSelectBox == selectBox) {
 			preview.GetComponent<RawImage>().texture = screenshotList[count];
 			count++;

@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour {
 
 	public static CameraController instance;
 
-	[SerializeField] private float interval = 0f;
+	[SerializeField] private float interval = 0.5f;
 	private Dictionary<string, List<Texture2D>> playerScreenshotList = new Dictionary<string, List<Texture2D>>();
 
 	public float Intereval {
@@ -59,6 +59,7 @@ public class CameraController : MonoBehaviour {
 		texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, true);
 		texture.Apply();
 		playerScreenshotList[key].Add(texture);
+		yield return new WaitForSeconds(interval);
 	}
 
 }
