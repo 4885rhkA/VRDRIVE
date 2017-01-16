@@ -2,7 +2,8 @@
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
-/[Bb]uilds/
+/Server/node_modules
+/Server/node_modules/*
 /Assets/*
 !/Assets/VRDrive
 !/Assets/VRDrive/*
