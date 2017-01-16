@@ -16,9 +16,11 @@ public class GameController : MonoBehaviour {
 
 	[SerializeField] private bool oneKillMode = true;
 	[SerializeField] private bool keyboardMode = false;
+	[SerializeField] private bool handleMode = true;
+	[SerializeField] private bool pedalMode = true;
+	[SerializeField, TooltipAttribute("If enabled, you need to read README")] private bool pseudoPedalMode = false;
 	[SerializeField] private bool evaluationMode = false;
-	[SerializeField] private string sceneAfterEvaluation = "menu";
-	[SerializeField] private bool takeScreenshotsForChecklist = true;
+	[SerializeField] private string afterScene = "menu";
 	[SerializeField] private GameObject valueKeeper = null;
 
 	private Dictionary<string, UserSet> userSetList = new Dictionary<string, UserSet>();
@@ -48,11 +50,18 @@ public class GameController : MonoBehaviour {
 	private bool exitGameFlag = false;
 
 	private int remainingInGame = 0;
+
 	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
 
 	public bool OneKillMode {
 		get {
 			return oneKillMode;
+		}
+	}
+
+	public bool HandleMode {
+		get {
+			return handleMode;
 		}
 	}
 
@@ -62,9 +71,15 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	public bool TakeScreenshotsForChecklist {
+	public bool PedalMode {
 		get {
-			return takeScreenshotsForChecklist;
+			return pedalMode;
+		}
+	}
+
+	public bool PseudoPedalMode {
+		get {
+			return pseudoPedalMode;
 		}
 	}
 
@@ -244,7 +259,7 @@ public class GameController : MonoBehaviour {
 		UpdateUserStatus(userObject.Obj.name, 1);
 		UpdateRecord(userObject.Obj.name, TimerController.instance.PastTime);
 
-		if(GameController.instance.IsPlayer(userObject.Obj.name)) {
+		if(IsPlayer(userObject.Obj.name)) {
 			Text messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
 			if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
 				ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
@@ -299,7 +314,7 @@ public class GameController : MonoBehaviour {
 					SceneManager.LoadScene("evaluation");
 				}
 				else {
-					SceneManager.LoadScene("menu");
+					SceneManager.LoadScene(afterScene);
 				}
 			}
 			else if(playerName.Contains("0")) {
@@ -327,7 +342,7 @@ public class GameController : MonoBehaviour {
 
 		newValueKeeper.GetComponent<ValueKeeper>().UserStateList = userStateList;
 		newValueKeeper.GetComponent<ValueKeeper>().PlayerScreenshotList = CameraController.instance.PlayerScreenshotList;
-		newValueKeeper.GetComponent<ValueKeeper>().SceneAfterEvaluation = sceneAfterEvaluation;
+		newValueKeeper.GetComponent<ValueKeeper>().SceneAfterEvaluation = afterScene;
 		DontDestroyOnLoad(newValueKeeper);
 	}
 

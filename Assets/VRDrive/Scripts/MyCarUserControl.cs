@@ -11,6 +11,9 @@ namespace UnityStandardAssets.Vehicles.Car {
 	public class MyCarUserControl : MonoBehaviour {
 
 		private bool keyboardMode = false;
+		private bool handleMode = true;
+		private bool pedalMode = true;
+		private bool pseudoPedalMode = false;
 
 		private MyCarController m_Car;
 		private bool push = true;
@@ -29,6 +32,9 @@ namespace UnityStandardAssets.Vehicles.Car {
 		/// </summary>
 		void Start() {
 			keyboardMode = GameController.instance.KeyboardMode;
+			handleMode = GameController.instance.HandleMode;
+			pedalMode = GameController.instance.PedalMode;
+			pseudoPedalMode = GameController.instance.PseudoPedalMode;
 		}
 
 		/// <summary>
@@ -36,36 +42,42 @@ namespace UnityStandardAssets.Vehicles.Car {
 		/// </summary>
 		void FixedUpdate() {
 			// LR
-			float h;
+			float h = 0;
 			if(keyboardMode) {
 				h = CrossPlatformInputManager.GetAxis("Horizontal");
 			}
-			else {
+			else if(handleMode) {
 				h = Input.GetAxis("Handle");
 			}
 
 			// Straight
-			float v;
+			float v = 0;
 			if(keyboardMode) {
 				v = CrossPlatformInputManager.GetAxis("Vertical");
 			}
-			else {
+			else if(pedalMode) {
 				v = Input.GetAxis("Accel") * (-1f);
 				v = (v + 1f) * 0.5f;
 			}
+			else if(pseudoPedalMode) {
+				
+			}
 
 			// Brake
-			float s;
+			float s = 0;
 			if(keyboardMode) {
 				s = CrossPlatformInputManager.GetAxis("Space");
 			}
-			else {
+			else if(pedalMode) {
 				s = Input.GetAxis("Brake") * (-1f);
 				s = (s + 1f) * 0.5f;
 			}
+			else if(pseudoPedalMode) {
+
+			}
 
 			// Back = backtrigger + straight
-			float b = Input.GetAxis("BackTrigger");
+			bool b = CrossPlatformInputManager.GetButton("BackTrigger");
 
 			// Decide
 			bool d = CrossPlatformInputManager.GetButtonUp("Decide");
@@ -78,7 +90,7 @@ namespace UnityStandardAssets.Vehicles.Car {
 					m_Car.Move(h, 0, 0, 0); // Do nothing
 				}
 				else {
-					if(b == 0) {
+					if(b) {
 						m_Car.Move(h, v, 0, 0); // Go
 					}
 					else {

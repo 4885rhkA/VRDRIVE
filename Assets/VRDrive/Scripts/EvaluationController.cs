@@ -15,7 +15,10 @@ public class EvaluationController : MonoBehaviour {
 	public static EvaluationController instance;
 
 	[SerializeField] private bool keyboardMode = false;
+	[SerializeField] private bool handleMode = true;
+
 	[SerializeField] private bool japaneseMode = true;
+
 	[SerializeField] private Texture2D successTexture = null;
 	[SerializeField] private Texture2D noPreviewTexture = null;
 
@@ -115,11 +118,11 @@ public class EvaluationController : MonoBehaviour {
 	/// Fixeds the update.
 	/// </summary>
 	void FixedUpdate() {
-		float h;
+		float h = 0;
 		if(keyboardMode) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
-		else {
+		else if(handleMode) {
 			h = Input.GetAxis("Handle");
 		}
 		bool d = CrossPlatformInputManager.GetButtonUp("Decide");

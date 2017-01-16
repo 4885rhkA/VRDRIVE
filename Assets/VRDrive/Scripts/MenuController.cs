@@ -14,6 +14,7 @@ public class MenuController : MonoBehaviour {
 	public static MenuController instance;
 
 	[SerializeField] private bool keyboardMode = false;
+	[SerializeField] private bool handleMode = true;
 
 	private GameObject[] sceneObjects;
 	private int sceneNo = 0;
@@ -53,11 +54,11 @@ public class MenuController : MonoBehaviour {
 	/// Fixeds the update.
 	/// </summary>
 	void FixedUpdate() {
-		float h;
+		float h = 0;
 		if(keyboardMode) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
 		}
-		else {
+		else if(handleMode) {
 			h = Input.GetAxis("Handle");
 		}
 		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
