@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using UnityEngine.VR;
 
 /// <summary>
 /// Menu controller.
@@ -62,7 +63,11 @@ public class MenuController : MonoBehaviour {
 			h = Input.GetAxis("Handle");
 		}
 		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
-		StartCoroutine(ChangeSelectedScene(h, d, flag));
+        if (CrossPlatformInputManager.GetButton("Reset"))
+        {
+            InputTracking.Recenter();
+        }
+        StartCoroutine(ChangeSelectedScene(h, d, flag));
 	}
 
 	/// <summary>

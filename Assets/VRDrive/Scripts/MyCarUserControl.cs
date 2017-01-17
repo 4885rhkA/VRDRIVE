@@ -88,7 +88,7 @@ namespace UnityStandardAssets.Vehicles.Car {
 			bool d = CrossPlatformInputManager.GetButtonUp("Decide");
 
             // Reset Orientation
-            if (Input.GetKeyDown(KeyCode.R))
+            if (CrossPlatformInputManager.GetButton("Reset"))
             {
                 InputTracking.Recenter();
             }

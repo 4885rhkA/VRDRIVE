@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
+using UnityEngine.VR;
 
 /// <summary>
 /// Evaluation controller.
@@ -126,7 +127,11 @@ public class EvaluationController : MonoBehaviour {
 			h = Input.GetAxis("Handle");
 		}
 		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
-		StartCoroutine(ChangeSelectedCheck(h, d, change));
+        if (CrossPlatformInputManager.GetButton("Reset"))
+        {
+            InputTracking.Recenter();
+        }
+        StartCoroutine(ChangeSelectedCheck(h, d, change));
 	}
 
 	/// <summary>
