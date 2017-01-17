@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField] private bool pedalMode = true;
 	[SerializeField, TooltipAttribute("If enabled, you need to read README")] private bool pseudoPedalMode = false;
 	[SerializeField] private bool evaluationMode = false;
+	[SerializeField] private bool timeAttackMode = true;
 	[SerializeField] private string afterScene = "menu";
 	[SerializeField] private GameObject valueKeeper = null;
 
@@ -167,9 +168,11 @@ public class GameController : MonoBehaviour {
 
 			if(IsPlayer(eachUserSet.Key)) {
 				// Update timer
-				timerText = userObject.Timer.transform.FindChild("TimerText").gameObject.GetComponent<Text>();
-				if(ColorUtility.TryParseHtmlString(colorList["timer"], out fontColor)) {
-					ViewerController.instance.ChangeTextContent(timerText, ViewerController.instance.GetTimerText(timeSpan), fontColor);
+				if(timeAttackMode) {
+					timerText = userObject.Timer.transform.FindChild("TimerText").gameObject.GetComponent<Text>();
+					if(ColorUtility.TryParseHtmlString(colorList["timer"], out fontColor)) {
+						ViewerController.instance.ChangeTextContent(timerText, ViewerController.instance.GetTimerText(timeSpan), fontColor);
+					}
 				}
 
 				// Update Speed Meter 
@@ -230,12 +233,13 @@ public class GameController : MonoBehaviour {
 			UpdateUserStatus(userObject.Obj.name, 0);
 
 			if(IsPlayer(eachUserSet.Key)) {
-				messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
-				timerText = userObject.Timer.transform.FindChild("TimerText").GetComponent<Text>();
-
 				// Start Game
-				ViewerController.instance.ChangeRawImageState(userObject.Timer.GetComponent<RawImage>(), true);
-				StartCoroutine(ViewerController.instance.ChangeTextState(0, timerText, true));
+				if(timeAttackMode) {
+					timerText = userObject.Timer.transform.FindChild("TimerText").GetComponent<Text>();
+					ViewerController.instance.ChangeRawImageState(userObject.Timer.GetComponent<RawImage>(), true);
+					StartCoroutine(ViewerController.instance.ChangeTextState(0, timerText, true));
+				}
+				messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
 				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), false);
 				if(ColorUtility.TryParseHtmlString(colorList["go"], out fontColor)) {
 					ViewerController.instance.ChangeTextContent(messageText, messageList["go"], fontColor);

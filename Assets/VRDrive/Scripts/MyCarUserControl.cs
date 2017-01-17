@@ -44,20 +44,17 @@ namespace UnityStandardAssets.Vehicles.Car {
 		void FixedUpdate() {
 			// LR
 			float h = 0;
-			if(keyboardMode) {
-				h = CrossPlatformInputManager.GetAxis("Horizontal");
-			}
-			else if(handleMode) {
+			if(handleMode) {
 				h = Input.GetAxis("Handle");
+			}
+			else if(keyboardMode) {
+				h = CrossPlatformInputManager.GetAxis("Horizontal");
 			}
 
 			// Straight
 			float v = 0;
-			if(keyboardMode) {
-				v = CrossPlatformInputManager.GetAxis("Vertical");
-			}
-			else if(pedalMode) {
-				if (pseudoPedalMode &&  Input.GetAxis("Accel") != 0) {
+			if(pedalMode) {
+				if(pseudoPedalMode && Input.GetAxis("Accel") != 0) {
 					v = 1f;
 				}
 				else {
@@ -65,14 +62,15 @@ namespace UnityStandardAssets.Vehicles.Car {
 					v = (v + 1f) * 0.5f;
 				}
 			}
+			else if(keyboardMode) {
+				v = CrossPlatformInputManager.GetAxis("Vertical");
+			}
+
 
 			// Brake
 			float s = 0;
-			if(keyboardMode) {
-				s = CrossPlatformInputManager.GetAxis("Space");
-			}
-			else if(pedalMode) {
-				if (pseudoPedalMode && Input.GetAxis ("Brake") != 0) {
+			if(pedalMode) {
+				if(pseudoPedalMode && Input.GetAxis("Brake") != 0) {
 					s = 1f;
 				}
 				else {
@@ -80,6 +78,10 @@ namespace UnityStandardAssets.Vehicles.Car {
 					s = (s + 1f) * 0.5f;
 				}
 			}
+			else if(keyboardMode) {
+				s = CrossPlatformInputManager.GetAxis("Space");
+			}
+
 
 			// Back = backtrigger + straight
 			bool b = CrossPlatformInputManager.GetButton("BackTrigger");
@@ -87,13 +89,12 @@ namespace UnityStandardAssets.Vehicles.Car {
 			// Decide
 			bool d = CrossPlatformInputManager.GetButtonUp("Decide");
 
-            // Reset Orientation
-            if (CrossPlatformInputManager.GetButton("Reset"))
-            {
-                InputTracking.Recenter();
-            }
+			// Reset Orientation
+			if(CrossPlatformInputManager.GetButton("Reset")) {
+				InputTracking.Recenter();
+			}
 
-            if (s > 0) {
+			if(s > 0) {
 				m_Car.Move(h, 0, 0, s); // Stop
 			}
 			else {

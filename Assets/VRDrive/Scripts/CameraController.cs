@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour {
 
 	public static CameraController instance;
 
-	[SerializeField] private float interval = 0.5f;
+	[SerializeField] private float interval = 0.1f;
 	private Dictionary<string, List<Texture2D>> playerScreenshotList = new Dictionary<string, List<Texture2D>>();
 
 	public float Intereval {
