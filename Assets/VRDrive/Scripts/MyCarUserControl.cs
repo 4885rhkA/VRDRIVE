@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.VR;
 
 /// <summary>
 /// My car user control.
@@ -56,11 +57,13 @@ namespace UnityStandardAssets.Vehicles.Car {
 				v = CrossPlatformInputManager.GetAxis("Vertical");
 			}
 			else if(pedalMode) {
-				v = Input.GetAxis("Accel") * (-1f);
-				v = (v + 1f) * 0.5f;
-			}
-			else if(pseudoPedalMode) {
-				
+				if (pseudoPedalMode &&  Input.GetAxis("Accel") != 0) {
+					v = 1f;
+				}
+				else {
+					v = Input.GetAxis("Accel") * (-1f);
+					v = (v + 1f) * 0.5f;
+				}
 			}
 
 			// Brake
@@ -69,11 +72,13 @@ namespace UnityStandardAssets.Vehicles.Car {
 				s = CrossPlatformInputManager.GetAxis("Space");
 			}
 			else if(pedalMode) {
-				s = Input.GetAxis("Brake") * (-1f);
-				s = (s + 1f) * 0.5f;
-			}
-			else if(pseudoPedalMode) {
-
+				if (pseudoPedalMode && Input.GetAxis ("Brake") != 0) {
+					s = 1f;
+				}
+				else {
+					s = Input.GetAxis("Brake") * (-1f);
+					s = (s + 1f) * 0.5f;
+				}
 			}
 
 			// Back = backtrigger + straight
@@ -82,7 +87,13 @@ namespace UnityStandardAssets.Vehicles.Car {
 			// Decide
 			bool d = CrossPlatformInputManager.GetButtonUp("Decide");
 
-			if(s > 0) {
+            // Reset Orientation
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                InputTracking.Recenter();
+            }
+
+            if (s > 0) {
 				m_Car.Move(h, 0, 0, s); // Stop
 			}
 			else {
@@ -90,7 +101,7 @@ namespace UnityStandardAssets.Vehicles.Car {
 					m_Car.Move(h, 0, 0, 0); // Do nothing
 				}
 				else {
-					if(b) {
+					if(!b) {
 						m_Car.Move(h, v, 0, 0); // Go
 					}
 					else {

@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 567462897}
-  m_IndirectSpecularColor: {r: 0.8107935, g: 0.85152173, b: 0.9839403, a: 1}
+  m_IndirectSpecularColor: {r: 0.8104361, g: 0.85152054, b: 0.9843851, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -501,7 +501,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 414198, guid: 3dd59a7a9abe04e25a0e001da54a4895, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -678.38
+      value: -959.88
       objectReference: {fileID: 0}
     - target: {fileID: 414198, guid: 3dd59a7a9abe04e25a0e001da54a4895, type: 2}
       propertyPath: m_LocalPosition.y
@@ -509,7 +509,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 414198, guid: 3dd59a7a9abe04e25a0e001da54a4895, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 26.1
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 414198, guid: 3dd59a7a9abe04e25a0e001da54a4895, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4586,7 +4586,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 680024285}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: -342, y: 0, z: 15}
+  m_LocalPosition: {x: -297, y: 0, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1909092256}
@@ -22007,7 +22007,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2037868303}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: -857, y: 0, z: 15}
+  m_LocalPosition: {x: -814.2, y: 0, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2101126997}
@@ -22822,7 +22822,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 765692229}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -390, y: 0, z: 27}
+  m_LocalPosition: {x: -882.2, y: 0, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1138962589}
@@ -23231,6 +23231,10 @@ Prefab:
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: sceneAfterEvaluation
       value: menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: handleMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}

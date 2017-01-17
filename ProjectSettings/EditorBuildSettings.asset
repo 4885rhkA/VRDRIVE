@@ -25,3 +25,5 @@ EditorBuildSettings:
     path: Assets/VRDrive/Scenes/operation.unity
   - enabled: 1
     path: Assets/VRDrive/Scenes/training.unity
+  - enabled: 1
+    path: Assets/VRDrive/Scenes/evaluation.unity
