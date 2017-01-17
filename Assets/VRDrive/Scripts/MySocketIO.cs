@@ -12,10 +12,7 @@ public class MySocketIO : MonoBehaviour {
 		socket.On("open", OpenSocketIO);
 		socket.On("error", ErrorSocketIO);
 		socket.On("close", CloseSocketIO);
-
 		socket.On("padstate", PadState);
-
-		StartCoroutine("BeepBoop");
 	}
 
 	private void PadState(SocketIOEvent e) {
