@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyboardMode: 1
+  handleMode: 1
 --- !u!114 &644766878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,7 +316,7 @@ GameObject:
   - component: {fileID: 646008353}
   - component: {fileID: 646008352}
   m_Layer: 5
-  m_Name: 3-learn03
+  m_Name: 3-3d10
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -359,7 +360,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 5f4a414758a134323934ac047ec71ae6, type: 3}
+  m_Texture: {fileID: 2800000, guid: 072f8495fdeda43e3842aa7a627ccf86, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -383,7 +384,7 @@ GameObject:
   - component: {fileID: 684612935}
   - component: {fileID: 684612934}
   m_Layer: 5
-  m_Name: 1-learn01
+  m_Name: 1-training
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -451,7 +452,7 @@ GameObject:
   - component: {fileID: 728074974}
   - component: {fileID: 728074973}
   m_Layer: 5
-  m_Name: 0-learn00
+  m_Name: 0-operation
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,7 +520,7 @@ GameObject:
   - component: {fileID: 836230295}
   - component: {fileID: 836230294}
   m_Layer: 5
-  m_Name: 4-vr10
+  m_Name: 4-3d31
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -587,7 +588,7 @@ GameObject:
   - component: {fileID: 925805806}
   - component: {fileID: 925805805}
   m_Layer: 5
-  m_Name: 4-vr10Text
+  m_Name: 4-3d31Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -643,7 +644,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SPECIAL STAGE
+  m_Text: SPECIAL (NO VR / FP)
 --- !u!222 &925805806
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -661,7 +662,7 @@ GameObject:
   - component: {fileID: 965112379}
   - component: {fileID: 965112378}
   m_Layer: 5
-  m_Name: 1-learn01Text
+  m_Name: 1-trainingText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -717,7 +718,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LEARN 01
+  m_Text: TRAINING
 --- !u!222 &965112379
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -976,7 +977,7 @@ GameObject:
   - component: {fileID: 1584589997}
   - component: {fileID: 1584589996}
   m_Layer: 5
-  m_Name: 2-learn02Text
+  m_Name: 2-vr10Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1032,7 +1033,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LEARN 02
+  m_Text: SPECIAL
 --- !u!222 &1584589997
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1204,7 +1205,7 @@ GameObject:
   - component: {fileID: 1842883113}
   - component: {fileID: 1842883112}
   m_Layer: 5
-  m_Name: 3-learn03Text
+  m_Name: 3-3d10Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1260,7 +1261,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LEARN 03
+  m_Text: SPECIAL (NO VR / TP)
 --- !u!222 &1842883113
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1278,7 +1279,7 @@ GameObject:
   - component: {fileID: 1968705402}
   - component: {fileID: 1968705401}
   m_Layer: 5
-  m_Name: 2-learn02
+  m_Name: 2-vr10
   m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1346,7 +1347,7 @@ GameObject:
   - component: {fileID: 2064504858}
   - component: {fileID: 2064504857}
   m_Layer: 5
-  m_Name: 0-learn00Text
+  m_Name: 0-operationText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1402,7 +1403,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LEARN 00
+  m_Text: OPERATION CHECK
 --- !u!222 &2064504858
 CanvasRenderer:
   m_ObjectHideFlags: 0
