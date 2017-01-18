@@ -492,6 +492,11 @@ public class GameController : MonoBehaviour {
 		ViewerController.instance.ChangeImageContent(userObject.Image.GetComponent<RawImage>(), "Images/Game/Warnings/" + checkName);
 		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), true);
 
+		userObject.Obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		userObject.Obj.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+		userObject.Obj.GetComponent<MyCarController>().MaxSpeed /= 100; 
+		userObject.Obj.GetComponent<MyCarUserControl>().enabled = false;
+
 		RawImage replayImage = userObject.Obj.transform.FindChild("Canvas/ReplayImage").gameObject.GetComponent<RawImage>();
 		ShowPreview(playerName, checkName, replayImage);
 		StartCoroutine(CloseWarning(playerName, replayImage, 3f));
@@ -504,6 +509,7 @@ public class GameController : MonoBehaviour {
 
 		string key = CameraController.instance.CreateKeyForScreenshot(playerName, checkName);
 		List<Texture2D> screenshotList = CameraController.instance.PlayerScreenshotList[key];
+
 		StartCoroutine(LoopPreview(replayImage, screenshotList));
 	}
 
@@ -527,6 +533,8 @@ public class GameController : MonoBehaviour {
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
+		userObject.Obj.GetComponent<MyCarController>().MaxSpeed *= 100; 
+		userObject.Obj.GetComponent<MyCarUserControl>().enabled = true;
 		ViewerController.instance.ChangeRawImageState(replayImage, false);
 		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), false);
 	}
