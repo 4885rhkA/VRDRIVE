@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField] private bool pedalMode = true;
 	[SerializeField] private bool pedalTwoMode = true;
 	[SerializeField] private bool warningMode = false;
+	[SerializeField] private bool warningWithPreviewMode = false;
 	[SerializeField] private bool evaluationMode = false;
 	[SerializeField] private bool timeAttackMode = true;
 	[SerializeField] private string afterScene = "menu";
@@ -61,6 +62,7 @@ public class GameController : MonoBehaviour {
 	private bool startGameFlag = false;
 	private bool finishGameFlag = false;
 	private bool exitGameFlag = false;
+	private bool replayFlag = false;
 
 	private int remainingInGame = 0;
 
@@ -492,14 +494,9 @@ public class GameController : MonoBehaviour {
 		ViewerController.instance.ChangeImageContent(userObject.Image.GetComponent<RawImage>(), "Images/Game/Warnings/" + checkName);
 		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), true);
 
-		userObject.Obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
-		userObject.Obj.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-		userObject.Obj.GetComponent<MyCarController>().MaxSpeed /= 100; 
-		userObject.Obj.GetComponent<MyCarUserControl>().enabled = false;
-
 		RawImage replayImage = userObject.Obj.transform.FindChild("Canvas/ReplayImage").gameObject.GetComponent<RawImage>();
 		ShowPreview(playerName, checkName, replayImage);
-		StartCoroutine(CloseWarning(playerName, replayImage, 3f));
+		StartCoroutine(CloseWarning(playerName, replayImage, 100f));
 	}
 
 	private void ShowPreview(string playerName, string checkName, RawImage replayImage) {
@@ -509,20 +506,27 @@ public class GameController : MonoBehaviour {
 
 		string key = CameraController.instance.CreateKeyForScreenshot(playerName, checkName);
 		List<Texture2D> screenshotList = CameraController.instance.PlayerScreenshotList[key];
+		replayFlag = true;
 
-		StartCoroutine(LoopPreview(replayImage, screenshotList));
+		StartCoroutine(LoopAction(replayImage, screenshotList, userObject.Obj.GetComponent<Rigidbody>()));
+
 	}
 
-	private IEnumerator LoopPreview(RawImage replayImage, List<Texture2D> screenshotList) {
+	private IEnumerator LoopAction(RawImage replayImage, List<Texture2D> screenshotList, Rigidbody rigid) {
 		int count = 0;
 		int length = screenshotList.Count;
 		ViewerController.instance.ChangeRawImageState(replayImage, true);
-		while(true) {
-			replayImage.texture = screenshotList[count];
-			count++;
-			if(count > length - 1) {
-				count = 0;
+		while(replayFlag) {
+			// show preview
+			if(warningWithPreviewMode) {
+				replayImage.texture = screenshotList[count];
+				count++;
+				if(count > length - 1) {
+					count = 0;
+				}
 			}
+			rigid.velocity = Vector3.zero;
+			rigid.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; 
 			yield return new WaitForSeconds(0.1f);
 		}
 	}
@@ -533,10 +537,10 @@ public class GameController : MonoBehaviour {
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
 
-		userObject.Obj.GetComponent<MyCarController>().MaxSpeed *= 100; 
-		userObject.Obj.GetComponent<MyCarUserControl>().enabled = true;
 		ViewerController.instance.ChangeRawImageState(replayImage, false);
 		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), false);
+
+		replayFlag = false;
 	}
 
 
