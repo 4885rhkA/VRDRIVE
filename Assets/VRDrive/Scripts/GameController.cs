@@ -508,8 +508,7 @@ public class GameController : MonoBehaviour {
 		List<Texture2D> screenshotList = CameraController.instance.PlayerScreenshotList[key];
 		replayFlag = true;
 
-		StartCoroutine(LoopAction(replayImage, screenshotList, userObject.Obj.GetComponent<Rigidbody>()));
-
+		StartCoroutine(LoopAction(replayImage, screenshotList, userObject.Obj.GetComponent<Rigidbody>())); 
 	}
 
 	private IEnumerator LoopAction(RawImage replayImage, List<Texture2D> screenshotList, Rigidbody rigid) {
