@@ -1,25 +1,65 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-/// Control class for the each user's camera
+/// <summary>
+/// Camera controller.
+/// </summary>
 public class CameraController : MonoBehaviour {
 
 	public static CameraController instance;
 
-	[SerializeField] public float cameraDistanceY;
-	[SerializeField] public float cameraDistanceZ;
-	[SerializeField] public float cameraRotationUpDown;
+	[SerializeField] private float interval = 0.1f;
+	private Dictionary<string, List<Texture2D>> playerScreenshotList = new Dictionary<string, List<Texture2D>>();
 
+	public float Intereval {
+		get {
+			return interval;
+		}
+	}
+
+	public Dictionary<string, List<Texture2D>> PlayerScreenshotList {
+		get {
+			return playerScreenshotList;
+		}
+		set {
+			playerScreenshotList = value;
+		}
+	}
+
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
 	void Awake() {
 		instance = this;
 	}
 
-    /// <summary>Set each user's camera parameter for 3D.</summary>
-    /// <param name="carCameraTransform">The <c>Transform</c> of the user's camera/param>
-    /// <param name="carTransform">The <c>Transform</c> of the user's car</param>
-    public void SetCameraPositionAndRotation3D(Transform carCameraTransform, Transform carTransform) {
-		carCameraTransform.position = carTransform.position + carTransform.forward * cameraDistanceZ + Vector3.up * cameraDistanceY;
-		carCameraTransform.LookAt(carTransform.position + Vector3.up * cameraRotationUpDown);
+	/// <summary>
+	/// Creates the key for screenshot.
+	/// </summary>
+	/// <returns>The key for screenshot.</returns>
+	/// <param name="playerName">Player name.</param>
+	/// <param name="incidentName">Incident name.</param>
+	public string CreateKeyForScreenshot(string playerName, string incidentName) {
+		return playerName + "-" + incidentName;
+	}
+
+	/// <summary>
+	/// Captures the and save screenshots.
+	/// </summary>
+	/// <returns>The and save screenshots.</returns>
+	/// <param name="key">Key.</param>
+	public IEnumerator CaptureAndSaveScreenshots(string key) {
+		if(!playerScreenshotList.ContainsKey(key)) {
+			playerScreenshotList.Add(key, new List<Texture2D>());
+		}
+
+		Texture2D texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, true);
+		yield return new WaitForEndOfFrame();
+		texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, true);
+		texture.Apply();
+		playerScreenshotList[key].Add(texture);
+		yield return new WaitForSeconds(interval);
 	}
 
 }

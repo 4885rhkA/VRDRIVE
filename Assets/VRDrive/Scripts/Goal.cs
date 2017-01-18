@@ -1,61 +1,104 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
-/// Class for defined action when collision between user's car and goal
+/// <summary>
+/// Goal.
+/// </summary>
 public class Goal : Incident {
 
 	private Color fontColor = new Color();
-	private string colorGoal = "#BC151CFF";
-	private string colorRecord = "#FFFFFFFF";
+	private Dictionary<string, string> colorList;
+	private Dictionary<string, string> messageList;
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollidedActionForMyself() {}
-
-	/// <summary>When collider occurs, do user's action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void ColliderActionForUser(Collider collider) {
-		UserState userState = GameController.cars[collider.gameObject.name];
-		GameObject carMessage = userState.message;
-		Text carMessageText = carMessage.transform.FindChild("MessageText").GetComponent<Text>();
-		userState.record = TimerController.instance.pastTime;
-		if(ColorUtility.TryParseHtmlString(colorGoal, out fontColor)) {
-			ViewerController.instance.ChangeTextContent(carMessageText, "GOAL!", fontColor);
-		}
-		else {
-			Debug.LogWarning("The color" + colorGoal + "cannnot convert into Color class.");
-		}
-		ViewerController.instance.ChangeRawImageState(carMessage.GetComponent<RawImage>(), true);
-		ViewerController.instance.ChangeTextState(carMessageText, true);
-		SoundController.instance.ShotClipSound("goal");
-		StartCoroutine(AfterTriggerEnter(SoundController.instance.GetClipLength("goal"), userState.obj.name, 1, collider));
+	/// <summary>
+	/// Awake this instance.
+	/// </summary>
+	void Awake() {
+		collisionFlag = new bool[6, 2] {
+			{ false, true }, 		// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, false }, 	// OnTriggerStay
+			{ false, false },		// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }		// OnCollisionExit
+		};
 	}
 
-	/// <summary>After collider occurs, do action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void AfterTriggerEnterAction(Collider collider) {
-		UserState userState = GameController.cars[collider.gameObject.name];
-		GameObject carResult = userState.result;
-		Text carResultText = carResult.transform.FindChild("ResultText").GetComponent<Text>();
-		string resultTimeText = ViewerController.instance.GetTimerText(userState.record);
-		if(ColorUtility.TryParseHtmlString(colorRecord, out fontColor)) {
-			ViewerController.instance.ChangeTextContent(carResultText, "TIME ", fontColor);
-		}
-		else {
-			Debug.LogWarning("The color" + colorRecord + "cannnot convert into Color class.");
-		}
-		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
-		ViewerController.instance.ChangeTextState(carResultText, true);
-		SoundController.instance.ShotClipSound("record");
-		StartCoroutine(GameController.instance.AddCharacterContinuouslyForResult(carResultText, resultTimeText.ToCharArray()));
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
+	void Start() {
+		colorList = GameController.instance.ColorList;
+		messageList = GameController.instance.MessageList;
 	}
 
-	/// <summary>When collision occurs, do user's action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void CollisionActionForUser(Collision collision) {}
+	/// <summary>
+	/// When collider/collision occurs, do object's action.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
+	protected override void CollisionActionForMyself(int kindOfCollision) {
+	}
 
-	/// <summary>After collision occurs, do action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void AfterCollisionEnterAction(Collision collision) {}
+	/// <summary>
+	/// When collider/collision occurs, do user's action.
+	/// </summary>
+	/// <param name="userName">The name for user</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
+	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
+		UserSet userSet = GameController.instance.GetUserSet(userName);
+		UserObject userObject = userSet.UserObject;
+
+		GameController.instance.ClearGame(userObject.Obj.name);
+		StartCoroutine(AfterCollisionAction(SoundController.instance.GetClipLength("goal"), userObject.Obj.name));
+	}
+
+	/// <summary>
+	/// Afters the collision action.
+	/// </summary>
+	/// <returns>The collision action.</returns>
+	/// <param name="delay">Delay.</param>
+	/// <param name="userName">User name.</param>
+	private IEnumerator AfterCollisionAction(float delay, string userName) {
+		yield return new WaitForSeconds(delay);
+
+		UserSet userSet = GameController.instance.GetUserSet(userName);
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		if(GameController.instance.IsPlayer(userObject.Obj.name)) {
+			GameObject result = userObject.Result;
+			Text resultText = result.transform.FindChild("ResultText").GetComponent<Text>();
+			string resultTimeText = ViewerController.instance.GetTimerText(userState.Record);
+			if(ColorUtility.TryParseHtmlString(colorList["record"], out fontColor)) {
+				ViewerController.instance.ChangeTextContent(resultText, messageList["time"], fontColor);
+			}
+			ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
+			StartCoroutine(ViewerController.instance.ChangeTextState(resultText, true));
+			SoundController.instance.ShotClipSound("record");
+			StartCoroutine(AddCharacterContinuouslyForResult(resultText, resultTimeText.ToCharArray()));
+		}
+	}
+
+	/// <summary>
+	/// Adds the character continuously for result.
+	/// </summary>
+	/// <returns>The character continuously for result.</returns>
+	/// <param name="resultText">Result text.</param>
+	/// <param name="resultTimeTextArray">Result time text array.</param>
+	private IEnumerator AddCharacterContinuouslyForResult(Text resultText, char[] resultTimeTextArray) {
+		float clipLength = SoundController.instance.GetClipLength("record");
+
+		foreach(char resultTimeText in resultTimeTextArray) {
+			yield return new WaitForSeconds(clipLength);
+			string newResultTimeText = resultText.text + resultTimeText;
+
+			if(ColorUtility.TryParseHtmlString(colorList["result"], out fontColor)) {
+				ViewerController.instance.ChangeTextContent(resultText, newResultTimeText, fontColor);
+			}
+			SoundController.instance.ShotClipSound("record");
+		}
+	}
 
 }

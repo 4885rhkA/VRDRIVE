@@ -2,32 +2,39 @@
 using System.Collections;
 using UnityEngine.UI;
 
-/// Class for the dropping the stage
+/// <summary>
+/// Under ground.
+/// </summary>
 public class UnderGround : Incident {
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollidedActionForMyself() {}
-
-	/// <summary>When collider occurs, do user's action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void ColliderActionForUser(Collider collider) {
-		UserState userState = GameController.cars[collider.gameObject.name];
-		userState.record = TimerController.instance.pastTime;
-		StartCoroutine(AfterTriggerEnter(0, userState.obj.name, 2, collider));
+	void Awake() {
+		collisionFlag = new bool[6, 2] {
+			{ false, true }, 	// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, false }, 	// OnTriggerStay
+			{ false, false },	// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }	// OnCollisionExit
+		};
 	}
 
-	/// <summary>After collider occurs, do action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void AfterTriggerEnterAction(Collider collider) {
-		GameController.instance.MissGame(collider.gameObject.name);
+	/// <summary>
+	/// Collisions the action for myself.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
+	protected override void CollisionActionForMyself(int kindOfCollision) {
 	}
 
-	/// <summary>When collision occurs, do user's action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void CollisionActionForUser(Collision collision) {}
+	/// <summary>
+	/// Collisions the action for user.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
+	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
+		UserSet userSet = GameController.instance.GetUserSet(userName);
+		UserObject userObject = userSet.UserObject;
 
-	/// <summary>After collision occurs, do action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void AfterCollisionEnterAction(Collision collision) {}
+		GameController.instance.MissGame(userObject.Obj.name);
+	}
 
 }
