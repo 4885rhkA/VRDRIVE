@@ -515,6 +515,7 @@ public class GameController : MonoBehaviour {
 		int count = 0;
 		int length = screenshotList.Count;
 		ViewerController.instance.ChangeRawImageState(replayImage, true);
+		SoundController.instance.ShotClipSound("pinpon");
 		while(replayFlag) {
 			// show preview
 			if(warningWithPreviewMode) {

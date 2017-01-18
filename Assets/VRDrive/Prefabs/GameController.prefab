@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd6b32f019fc04678afd76417154206f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interval: 0.5
+  interval: 0.1
 --- !u!114 &11416244
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -165,8 +165,9 @@ MonoBehaviour:
   keyboardMode: 0
   handleMode: 1
   pedalMode: 1
-  pseudoPedalMode: 0
+  pedalTwoMode: 1
   warningMode: 0
+  warningWithPreviewMode: 0
   evaluationMode: 0
   timeAttackMode: 1
   afterScene: menu
@@ -190,6 +191,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 92335b2eb0aae437fbed1f1c61db6169, type: 3}
   - {fileID: 8300000, guid: bb00e914b946441ad9810ad39c4256c6, type: 3}
   - {fileID: 8300000, guid: bb7af9f53904b475bb7d8e44eaa586d2, type: 3}
+  - {fileID: 8300000, guid: b058fc4ab21d4438490f91e9c94a9958, type: 3}
 --- !u!114 &11486542
 MonoBehaviour:
   m_ObjectHideFlags: 1

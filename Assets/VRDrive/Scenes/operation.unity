@@ -10311,6 +10311,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11482568, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: clips.Array.size
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 422360, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10357,7 +10361,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: evaluationMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11486542, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: meteorites
@@ -10386,6 +10390,18 @@ Prefab:
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: pseudoPedalMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11482568, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: clips.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: b058fc4ab21d4438490f91e9c94a9958, type: 3}
+    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: warningMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: warningWithPreviewMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
