@@ -53,6 +53,7 @@ namespace UnityStandardAssets.Vehicles.Car {
 			float v = 0;
 			if(pedalMode) {
 				v = Input.GetAxis("Accel") * (-1f);
+				v = (v + 1) * 0.5f;
 			}
 			else if(keyboardMode) {
 				v = CrossPlatformInputManager.GetAxis("Vertical");
