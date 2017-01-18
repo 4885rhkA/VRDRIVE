@@ -1,23 +1,34 @@
 ﻿using UnityEngine;
 
-/// Class for the Start line
+/// <summary>
+/// Start.
+/// </summary>
 public class Start : Incident {
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected override void CollidedActionForMyself() {}
+	void Awake() {
+		collisionFlag = new bool[6, 2] {
+			{ false, false }, 	// OnTriggerEnter
+			{ false, false }, 	// OnCollisionEnter
+			{ false, false }, 	// OnTriggerStay
+			{ false, false },	// OnCollisionStay
+			{ false, false }, 	// OnTriggerExit
+			{ false, false }	// OnCollisionExit
+		};
+	}
 
-	/// <summary>When collider occurs, do user's action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected override void ColliderActionForUser(Collider collider) {}
+	/// <summary>
+	/// Collisions the action for myself.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
+	protected override void CollisionActionForMyself(int kindOfCollision) {
+	}
 
-	/// <summary>After collider occurs, do action.</summary>
-	protected override void AfterTriggerEnterAction(Collider collider) {}
-
-	/// <summary>When collision occurs, do user's action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected override void CollisionActionForUser(Collision collision) {}
-
-	/// <summary>After collision occurs, do action.</summary>
-	protected override void AfterCollisionEnterAction(Collision collision) {}
+	/// <summary>
+	/// Collisions the action for user.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
+	protected override void CollisionActionForUser(string userName, int kindOfCollision) {
+	}
 
 }

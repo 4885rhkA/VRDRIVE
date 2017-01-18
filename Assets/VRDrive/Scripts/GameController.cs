@@ -5,283 +5,469 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.UI;
+using UnityStandardAssets.Vehicles.Car;
 
-/// Control class for the each user's status
+/// <summary>
+/// Game controller.
+/// </summary>
 public class GameController : MonoBehaviour {
 
 	public static GameController instance;
 
-	[SerializeField] public bool oneKillMode = true;
-	[SerializeField] public bool trackCarWithoutChildObjectMode = false;
+	[SerializeField] private bool oneKillMode = true;
+	[SerializeField] private bool keyboardMode = false;
+	[SerializeField] private bool handleMode = true;
+	[SerializeField] private bool pedalMode = true;
+	[SerializeField] private bool evaluationMode = false;
+	[SerializeField] private bool timeAttackMode = true;
+	[SerializeField] private string afterScene = "menu";
+	[SerializeField] private GameObject valueKeeper = null;
+	private Dictionary<string, UserSet> userSetList = new Dictionary<string, UserSet>();
 
-	private GameObject[] carObjects;
-	public static Dictionary<string, UserState> cars = new Dictionary<string, UserState>();
-
-	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
 	private Color fontColor = new Color();
-	private string colorReady = "#272629FF";
-	private string colorGo = "#FFFFFFFF";
-	private string colorMiss = "#FFFFFFFF";
+	private Dictionary<string, string> colorList = new Dictionary<string, string>() {
+		{ "ready", "#272629FF" },
+		{ "go", "#FFFFFFFF" },
+		{ "miss", "#FFFFFFFF" },
+		{ "timer", "#FFFFFFFF" },
+		{ "speedMeter", "#272629FF" },
+		{ "goal", "#272629FF" },
+		{ "record", "#FFFFFFFF" },
+		{ "result", "#FFFFFFFF" }
+	};
 
-   	private bool startGameAtTheSameTimeFlag = false;
+	private Dictionary<string, string> messageList = new Dictionary<string, string>() {
+		{ "ready", "READY..." },
+		{ "go", "GO!" },
+		{ "miss", "MISS..." },
+		{ "goal", "GOAL!" },
+		{ "time", "TIME " },
+	};
+
+	private bool startGameFlag = false;
+	private bool finishGameFlag = false;
+	private bool exitGameFlag = false;
+
 	private int remainingInGame = 0;
 
-	void Awake() {
-		instance = this;
-		cars.Clear();
-	}
+	private TimeSpan timeSpan = new TimeSpan(0, 0, 0);
 
-	void Start() {
-		carObjects = GameObject.FindGameObjectsWithTag("Car");
-		if(carObjects != null) {
-			foreach(GameObject carObject in carObjects) {
-				cars.Add(carObject.name, new UserState(carObject));
-			}
-			remainingInGame = carObjects.Length;
-			carObjects = null;
-
-			UserState carValue;
-			foreach(KeyValuePair<string, UserState> car in cars) {
-				carValue = car.Value;
-                ViewerController.instance.ChangeRawImageState(carValue.obj.transform.FindChild("Canvas/HowTo").gameObject.GetComponent<RawImage>(), true);
-				UserController.instance.RemoveDefaultGravity(carValue.rigid);
-				if(trackCarWithoutChildObjectMode) {
-					CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
-				}
-				UpdateUserStatus(carValue.obj.name, -1);
-			}
+	public bool OneKillMode {
+		get {
+			return oneKillMode;
 		}
 	}
 
-	void Update() {
-		timeSpan = TimerController.instance.pastTime;
-		UserState carValue;
-		if(CrossPlatformInputManager.GetButtonUp("Decide")) {
-			if(!startGameAtTheSameTimeFlag) {
-				startGameAtTheSameTimeFlag = true;
-				ReleaseStartGame();
-			}
-			if(remainingInGame == 0) {
-				SceneManager.LoadScene("menu");
-			}
-			foreach(KeyValuePair<string, UserState> car in cars) {
-				if(car.Value.status == 0) {
-					MissGameQuickly(car.Value.obj.name);
-				}
-			}
-		}
-		foreach(KeyValuePair<string, UserState> car in cars) {
-			carValue = car.Value;
-			carValue.timer.transform.FindChild("TimerText").GetComponent<Text>().text = ViewerController.instance.GetTimerText(timeSpan);
-			UserController.instance.AddLocalGravity(carValue.rigid);
-			if(carValue.status == 0 && IsMissGameSituation(carValue.obj, carValue.rigid)) {
-				MissGameQuickly(carValue.obj.name);
-			}
-			if(trackCarWithoutChildObjectMode) {
-				CameraController.instance.SetCameraPositionAndRotation3D(carValue.camera.transform, carValue.obj.transform);
-			}
+	public bool HandleMode {
+		get {
+			return handleMode;
 		}
 	}
 
-	/// <summary>Start preparing playing game after press KeyCode E.</summary>
-	private void ReleaseStartGame() {
-		UserState carValue;
-		foreach(KeyValuePair<string, UserState> car in cars) {
-			carValue = car.Value;
-            ViewerController.instance.ChangeRawImageState(carValue.obj.transform.FindChild("Canvas/HowTo").gameObject.GetComponent<RawImage>(), false);
-            ViewerController.instance.ChangeRawImageState(carValue.message.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), true);
-			if(ColorUtility.TryParseHtmlString(colorReady, out fontColor)) {
-				ViewerController.instance.ChangeTextContent(carValue.message.transform.FindChild("MessageText").GetComponent<Text>(), "READY...", fontColor);
-			}
-			else {
-				Debug.LogWarning("The color" + colorReady + "cannnot convert into Color class.");
-			}
+	public bool KeyboardMode {
+		get {
+			return keyboardMode;
 		}
-        SoundController.instance.ShotClipSound("count");
-        StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
 	}
 
-	/// <summary>Start the game after finishing the count sound.</summary>
-	/// <param name="clipLength">The length of the count <c>AudioClip</c></param>
-	private IEnumerator StartGame(float clipLength) {  
-		yield return new WaitForSeconds(clipLength);
-		UserState carValue;
-		GameObject carMessage;
-		Text carMessageText;
-		foreach(KeyValuePair<string, UserState> car in cars){
-			carValue = car.Value;
-			carMessage = carValue.message;
-			carMessageText = carMessage.transform.FindChild("MessageText").GetComponent<Text>();
-			UpdateUserStatus(carValue.obj.name, 0);
-			ViewerController.instance.ChangeRawImageState(carValue.timer.GetComponent<RawImage>(), true);
-			ViewerController.instance.ChangeTextState(carValue.timer.transform.FindChild("TimerText").GetComponent<Text>(), true);
-			ViewerController.instance.ChangeRawImageState(carMessage.GetComponent<RawImage>(), false);
-			if(ColorUtility.TryParseHtmlString(colorGo, out fontColor)) {
-				ViewerController.instance.ChangeTextContent(carMessageText, "GO!", fontColor);
-			}
-			else {
-				Debug.LogWarning("The color" + colorGo + "cannnot convert into Color class.");
-			}
-			StartCoroutine(ChangeTextStateWithDelay(SoundController.instance.GetClipLength("go"), carMessageText, false));
+	public bool PedalMode {
+		get {
+			return pedalMode;
 		}
-		TimerController.instance.ResetStartTime();
-		SoundController.instance.StartStageSound();
-		GameObject.Find("Sun").GetComponent<Sun>().StartRockFalling();
 	}
 
-	/// <summary>Execute viewerController.ChangeTextState with delay.</summary>
-	/// <param name="delayLength">The length of the delay</param>
-	/// <param name="carMessageText">The target <c>Text</c> component</param>
-	/// <param name="carState">The trigger for showing text or not</param>
-	private IEnumerator ChangeTextStateWithDelay(float delayLength, Text carMessageText, bool carState) {  
-		yield return new WaitForSeconds(delayLength);
-		ViewerController.instance.ChangeTextState(carMessageText, carState);
+	public Dictionary<string, string> ColorList {
+		get {
+			return colorList;
+		}
 	}
 
-	/// <summary>Update the status.</summary>
-	/// <param name="carName">The name for user</param>
-	/// <param name="carStatus">The status of each user</param>
-	public void UpdateUserStatus(string carName, int carStatus) {
-		if(cars.ContainsKey(carName)) {
-			if(cars[carName].status < 1) {
-				cars[carName].status = carStatus;
-				if(cars[carName].status > 0) {
-					remainingInGame--;
-				}
-			}
-			switch(carStatus) {
-				case -1:
-					UserController.instance.SetFreezingPosition(cars[carName].rigid);
-					break;
-				case 0:
-					UserController.instance.ReleaseFreezingPosition(cars[carName].rigid);
-					break;
-				default:
-					break;
-			}
-		}
-		else {
-			Debug.LogWarning("The system cannot find the target:" + carName);
+	public Dictionary<string, string> MessageList {
+		get {
+			return messageList;
 		}
 	}
 
 	/// <summary>
-	/// Update the status for user. 
-	/// Moreover, the target of Tag for collision are Car/Gimmick.
+	/// Awake this instance.
 	/// </summary>
-	/// <param name="incidentObject">The <c>GameObject</c> occurs incident</param>
-	/// <param name="targetObject">The <c>GameObject</c> suffered the incident</param>
-	/// <returns>
-	///  	1:Change the status of user /
-	///  	0:Collision both incident with the same tag or user is still in incident, Each incident must do only each defined action /
-	/// 	-1:Collision both incident with the different tag, No incident occurs
-	/// </returns>
-	public int UpdateGameState(GameObject incidentObject, GameObject targetObject) {
-		if(targetObject.tag == "Car") {
-			string targetObjectName = targetObject.name;
-			if(cars.ContainsKey(targetObjectName)) {
-				if(cars[targetObjectName].status == 0) {
-					if(incidentObject.name == "Goal" || incidentObject.name == "UnderGround") {
-						return 1;
-					}
-					else if(incidentObject.name == "Start") {
-						return -1;
-					}
-					else {
-						int userCondition = 1;
-						if(cars[targetObjectName].condition == 0) {
-							if(incidentObject.name == "SpeedUpBoards") {
-								userCondition = 2;
-							}
-							UpdateUserCondition(targetObjectName, userCondition);
-							return 1;
+	void Awake() {
+		instance = this;
+		userSetList.Clear();
+	}
+
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
+	void Start() {
+		GameObject[] carObjects = GameObject.FindGameObjectsWithTag("Car");
+		GameObject checkList = GameObject.Find("CheckList");
+		UserSet userSet;
+		UserObject userObject;
+		UserState userState;
+
+		StageController.instance.SetCondition();
+
+		if(carObjects != null) {
+			// Insert data about User's operating Car
+			foreach(GameObject carObject in carObjects) {
+				userSetList.Add(carObject.name, new UserSet(new UserObject(carObject), new UserState()));
+				if(IsPlayer(carObject.name)) {
+					remainingInGame++;
+				}
+			}
+
+			foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
+				userSet = eachUserSet.Value;
+				userObject = userSet.UserObject;
+				userState = userSet.UserState;
+
+				// Initialize CheckList
+				if(checkList != null) {
+					foreach(Transform check in checkList.transform) {
+						if(check.name != "Stop") {
+							userState.CheckList.Add(check.name, true);
 						}
-						else if(cars[targetObjectName].condition == 2) {
-							if(incidentObject.name == "SpeedUpBoards") {
-								return -1;
-							}
-							UpdateUserCondition(targetObjectName, userCondition);
-							return 1;
+						else {
+							userState.CheckList.Add(check.name, false);
 						}
 					}
 				}
-				return 0;
-			}
-			else {
-				Debug.LogWarning("The system cannot find the target:" + targetObjectName);
+
+				// Set standby position
+				if(IsPlayer(eachUserSet.Key)) {
+					RawImage image = userObject.Image.GetComponent<RawImage>();
+					ViewerController.instance.ChangeImageContent(image, "Images/Game/Attentions/press");
+					ViewerController.instance.ChangeRawImageState(image, true);
+				}
+				UserController.instance.RemoveDefaultGravity(userObject.Obj.GetComponent<Rigidbody>());
+				UpdateUserStatus(userObject.Obj.name, -1);
 			}
 		}
-		else if(incidentObject.tag == targetObject.tag) {
-			return 0;
-		}
-		return -1;
 	}
 
-	/// <summary>Update the condition.</summary>
-	/// <param name="carName">The name for user</param>
-	/// <param name="carCondition">The condition of each user</param>
-	public void UpdateUserCondition(string carName, int carCondition) {
-		if(cars.ContainsKey(carName)) {
-			cars[carName].condition = carCondition;
-			switch(carCondition) {
-				case 1:
-					StartCoroutine(ViewerController.instance.ChangeDamageView(cars[carName].camera));
-					break;
-				default:
-					break;
+	/// <summary>
+	/// Update this instance.
+	/// </summary>
+	void Update() {
+		UserSet userSet;
+		UserObject userObject;
+		Text timerText;
+		float speed;
+		timeSpan = TimerController.instance.PastTime;
+
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
+			userSet = eachUserSet.Value;
+			userObject = userSet.UserObject;
+
+			if(IsPlayer(eachUserSet.Key)) {
+				// Update timer
+				if(timeAttackMode) {
+					timerText = userObject.Timer.transform.FindChild("TimerText").gameObject.GetComponent<Text>();
+					if(ColorUtility.TryParseHtmlString(colorList["timer"], out fontColor)) {
+						ViewerController.instance.ChangeTextContent(timerText, ViewerController.instance.GetTimerText(timeSpan), fontColor);
+					}
+				}
+
+				// Update Speed Meter 
+				if(userObject.SpeedMeter != null) {
+					speed = userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed();
+
+					if(ColorUtility.TryParseHtmlString(colorList["speedMeter"], out fontColor)) {
+						ViewerController.instance.ChangeTextMeshContent(userObject.SpeedMeter.GetComponent<TextMesh>(), speed.ToString("f0"), fontColor);
+					}
+				}
 			}
+
+			// Keep adding gravity
+			UserController.instance.AddLocalGravity(userObject.Obj.GetComponent<Rigidbody>());
+
+		}
+	}
+
+	/// <summary>
+	/// Releases the start game.
+	/// </summary>
+	private void ReleaseStartGame() {
+		UserObject userObject;
+		GameObject messageText;
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
+			userObject = eachUserSet.Value.UserObject;
+
+			if(IsPlayer(eachUserSet.Key)) {
+				// Standby for starting
+				messageText = userObject.Message.transform.FindChild("MessageText").gameObject;
+				ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), false);
+				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
+				StartCoroutine(ViewerController.instance.ChangeTextState(messageText.GetComponent<Text>(), true));
+				if(ColorUtility.TryParseHtmlString(colorList["ready"], out fontColor)) {
+					ViewerController.instance.ChangeTextContent(messageText.GetComponent<Text>(), messageList["ready"], fontColor);
+				}
+			}
+		}
+		SoundController.instance.ShotClipSound("count");
+		StartCoroutine(StartGame(SoundController.instance.GetClipLength("count")));
+	}
+
+	/// <summary>
+	/// Starts the game.
+	/// </summary>
+	/// <returns>The game.</returns>
+	/// <param name="clipLength">Clip length.</param>
+	private IEnumerator StartGame(float clipLength) {  
+		yield return new WaitForSeconds(clipLength);
+		UserSet userSet;
+		UserObject userObject;
+		Text messageText;
+		Text timerText;
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
+			userSet = eachUserSet.Value;
+			userObject = userSet.UserObject;
+
+			UpdateUserStatus(userObject.Obj.name, 0);
+
+			if(IsPlayer(eachUserSet.Key)) {
+				// Start Game
+				if(timeAttackMode) {
+					timerText = userObject.Timer.transform.FindChild("TimerText").GetComponent<Text>();
+					ViewerController.instance.ChangeRawImageState(userObject.Timer.GetComponent<RawImage>(), true);
+					StartCoroutine(ViewerController.instance.ChangeTextState(timerText, true));
+				}
+				messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
+				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), false);
+				if(ColorUtility.TryParseHtmlString(colorList["go"], out fontColor)) {
+					ViewerController.instance.ChangeTextContent(messageText, messageList["go"], fontColor);
+				}
+				StartCoroutine(ViewerController.instance.ChangeTextState(messageText, false, SoundController.instance.GetClipLength("go")));
+			}
+		}
+		TimerController.instance.ResetStartTime();
+		SoundController.instance.StartGameSound();
+		StageController.instance.StartGimmick();
+	}
+
+	/// <summary>
+	/// Clears the game.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	public void ClearGame(string userName) {
+		UserSet userSet = userSetList[userName];
+		UserObject userObject = userSet.UserObject;
+
+		UpdateUserStatus(userObject.Obj.name, 1);
+		UpdateRecord(userObject.Obj.name, TimerController.instance.PastTime);
+
+		if(IsPlayer(userObject.Obj.name)) {
+			Text messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
+			if(ColorUtility.TryParseHtmlString(colorList["goal"], out fontColor)) {
+				ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
+			}
+			ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
+			StartCoroutine(ViewerController.instance.ChangeTextState(messageText, true));
+			SoundController.instance.ShotClipSound("goal");
+		}
+	}
+
+	/// <summary>
+	/// Misses the game.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	public void MissGame(string userName) {
+		UserSet userSet = userSetList[userName];
+		UserObject userObject = userSet.UserObject;
+
+		UpdateUserStatus(userObject.Obj.name, 2);
+		UpdateRecord(userObject.Obj.name, TimerController.instance.PastTime);
+
+		if(IsPlayer(userObject.Obj.name)) {
+			Text resultText = userObject.Result.transform.FindChild("ResultText").GetComponent<Text>();
+
+			// Set View and Sound for Miss
+			if(ColorUtility.TryParseHtmlString(colorList["miss"], out fontColor)) {
+				ViewerController.instance.ChangeTextContent(resultText, messageList["miss"], fontColor);
+			}
+			ViewerController.instance.ChangeRawImageState(userObject.Result.GetComponent<RawImage>(), true);
+			StartCoroutine(ViewerController.instance.ChangeTextState(resultText, true));
+			SoundController.instance.ShotClipSound("miss");
+		}
+	}
+
+	/// <summary>
+	/// Changes the game scene. Moreover only player0 can use this function.
+	/// </summary>
+	/// <param name="playerName">Player name.</param>
+	public void ChangeGameScene(string playerName) {
+		UserSet userSet;
+
+		if(!startGameFlag) {
+			startGameFlag = true;
+			ReleaseStartGame();
+		}
+
+		if(!exitGameFlag) {
+			if(finishGameFlag) {
+				exitGameFlag = true;
+				if(evaluationMode) {
+					KeepValuesToNextScene();
+					SceneManager.LoadScene("evaluation");
+				}
+				else {
+					SceneManager.LoadScene(afterScene);
+				}
+			}
+			else if(playerName.Contains("0")) {
+				foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
+					userSet = eachUserSet.Value;
+					if(userSet.UserState.Status == 0) {
+						MissGame(userSet.UserObject.Obj.name);
+					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Keeps the values to next scene.
+	/// </summary>
+	private void KeepValuesToNextScene() {
+		GameObject newValueKeeper = Instantiate(valueKeeper, transform.position, transform.rotation) as GameObject;
+		newValueKeeper.name = valueKeeper.name;
+
+		Dictionary<string, UserState> userStateList = new Dictionary<string, UserState>();
+		foreach(KeyValuePair<string, UserSet> eachUserSet in userSetList) {
+			userStateList.Add(eachUserSet.Key, eachUserSet.Value.UserState);
+		}
+
+		newValueKeeper.GetComponent<ValueKeeper>().UserStateList = userStateList;
+		newValueKeeper.GetComponent<ValueKeeper>().PlayerScreenshotList = CameraController.instance.PlayerScreenshotList;
+		newValueKeeper.GetComponent<ValueKeeper>().SceneAfterEvaluation = afterScene;
+		DontDestroyOnLoad(newValueKeeper);
+	}
+
+	/// <summary>
+	/// Updates the user status.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="status">Status.</param>
+	public void UpdateUserStatus(string userName, int status) {
+		UserSet userSet = userSetList[userName];
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		userState.Status = status;
+
+		if(IsPlayer(userObject.Obj.name) && userState.Status > 0) {
+			remainingInGame--;
+			if(remainingInGame == 0) {
+				finishGameFlag = true;
+			}
+		}
+		switch(userState.Status) {
+			case -1:
+				UserController.instance.SetFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
+				break;
+			case 0:
+				UserController.instance.ReleaseFreezingPosition(userObject.Obj.GetComponent<Rigidbody>());
+				break;
+			default:
+				break;
+		}
+	}
+
+	/// <summary>
+	/// Updates the user condition.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="condition">Condition.</param>
+	public void UpdateUserCondition(string userName, int condition) {
+		UserSet userSet = userSetList[userName];
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		userState.Condition = condition;
+
+		switch(condition) {
+			case 1:
+				StartCoroutine(ViewerController.instance.ChangeDamageView(userObject.MainCamera));
+				break;
+			default:
+				break;
+		}
+	}
+
+	/// <summary>
+	/// Updates the record.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="timeSpan">Time span.</param>
+	public void UpdateRecord(string userName, TimeSpan timeSpan) {
+		userSetList[userName].UserState.Record = timeSpan;
+	}
+
+	/// <summary>
+	/// Updates the check list.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="checkName">Check name.</param>
+	/// <param name="value">If set to <c>true</c> value.</param>
+	public void UpdateCheckList(string userName, string checkName, bool value) {
+		UserState userState = userSetList[userName].UserState;
+		if(userState.CheckList.ContainsKey(checkName)) {
+			userState.CheckList[checkName] = value;
+		}
+	}
+
+	/// <summary>
+	/// Gets the check.
+	/// </summary>
+	/// <returns><c>true</c>, if check was gotten, <c>false</c> otherwise.</returns>
+	/// <param name="userName">User name.</param>
+	/// <param name="checkName">Check name.</param>
+	public bool GetCheck(string userName, string checkName) {
+		UserState userState = userSetList[userName].UserState;
+		if(userState.CheckList.ContainsKey(checkName)) {
+			return userState.CheckList[checkName];
 		}
 		else {
-			Debug.LogWarning("The system cannot find the target:" + carName);
+			Debug.LogWarning(checkName + " is not contained in " + userName);
+			return false;
 		}
 	}
 
-	/// <summary>Call the miss display.</summary>
-	/// <param name="carName">The name for user</param>
-	public void MissGame(string carName) {
-		GameObject carResult = cars[carName].result;
-		Text carResultText = carResult.transform.FindChild("ResultText").GetComponent<Text>();
-		if(ColorUtility.TryParseHtmlString(colorMiss, out fontColor)) {
-			ViewerController.instance.ChangeTextContent(carResultText, "MISS......", fontColor);
-		}
-		else {
-			Debug.LogWarning("The color" + colorMiss + "cannnot convert into Color class.");
-		}
-		ViewerController.instance.ChangeRawImageState(carResult.GetComponent<RawImage>(), true);
-		ViewerController.instance.ChangeTextState(carResultText, true);
-		SoundController.instance.ShotClipSound("miss");
-	}
-
-	/// <summary>Call the miss display quickly.</summary>
-	/// <param name="carName">The name for user</param>
-	private void MissGameQuickly(string carName) {
-		UserState carValue = cars[carName];
-		carValue.record = TimerController.instance.pastTime;
-		UpdateUserStatus(carValue.obj.name, 2);
-		MissGame(carValue.obj.name);
-	}
-
-	/// <summary>Judge whether missing situation or not.</summary>
-	/// <param name="carObject">The <c>GameObject</c> for user</param>
-	/// <param name="carRigid">The <c>Rigidbody</c> for user</param>
-	private bool IsMissGameSituation(GameObject carObject, Rigidbody carRigid) {
-		if(carObject.transform.up.y < -0.75 && carRigid.velocity.magnitude < 0.1) {
+	/// <summary>
+	/// Determines whether this instance has user set the specified name.
+	/// </summary>
+	/// <returns><c>true</c> if this instance has user set the specified name; otherwise, <c>false</c>.</returns>
+	/// <param name="name">Name.</param>
+	public bool HasUserSet(string name) {
+		if(userSetList.ContainsKey(name)) {
 			return true;
 		}
 		return false;
 	}
 
-	/// <summary>Change the vignette in view.</summary>
-	/// <param name="camera">User's car camera</param>
-	public IEnumerator AddCharacterContinuouslyForResult(Text carResultText, char[] resultTimeTextArray) {
-		float clipLength = SoundController.instance.GetClipLength("record");
-		foreach(char resultTimeText in resultTimeTextArray) {
-			yield return new WaitForSeconds(clipLength);
-			string newResultTimeText = carResultText.text + resultTimeText;
-			ViewerController.instance.ChangeTextContent(carResultText, newResultTimeText, fontColor);
-			SoundController.instance.ShotClipSound("record");
+	/// <summary>
+	/// Gets the user set.
+	/// </summary>
+	/// <returns>The user set.</returns>
+	/// <param name="name">Name.</param>
+	public UserSet GetUserSet(string name) {
+		if(HasUserSet(name)) {
+			return userSetList[name];
 		}
+		return new UserSet(new UserObject(), new UserState());
+	}
+
+	/// <summary>
+	/// Determines whether this instance is player the specified name.
+	/// </summary>
+	/// <returns><c>true</c> if this instance is player the specified name; otherwise, <c>false</c>.</returns>
+	/// <param name="name">Name.</param>
+	public bool IsPlayer(string name) {
+		if(HasUserSet(name) && name.Contains("Player")) {
+			return true;
+		}
+		return false;
 	}
 
 }

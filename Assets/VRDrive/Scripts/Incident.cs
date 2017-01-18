@@ -1,68 +1,98 @@
 ﻿using UnityEngine;
+using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
-/// The Class for defined action when collision between user's car and gimmick
+/// <summary>
+/// Incident.
+/// </summary>
 public abstract class Incident : MonoBehaviour {
 
+	protected bool[, ] collisionFlag;
+	protected string parentName;
+
+	protected bool nowTakingScreenshot = false;
+
 	void OnTriggerEnter(Collider collider) {
-		int result = GameController.instance.UpdateGameState(gameObject.transform.root.gameObject, collider.gameObject.transform.root.gameObject);
-		if(result > -1) {
-			CollidedActionForMyself();
-		}
-		if(result > 0) {
-			ColliderActionForUser(collider);
-		}
+		CollisionAction(collisionFlag[0, 0], collisionFlag[0, 1], collider.gameObject, 0);
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		int result = GameController.instance.UpdateGameState(gameObject.transform.root.gameObject, collision.gameObject.transform.root.gameObject);
-		if(result > -1) {
-			CollidedActionForMyself();
+		CollisionAction(collisionFlag[1, 0], collisionFlag[1, 1], collision.gameObject, 1);
+	}
+
+	void OnTriggerStay(Collider collider) {
+		CollisionAction(collisionFlag[2, 0], collisionFlag[2, 1], collider.gameObject, 2);
+	}
+
+	void OnCollisionStay(Collision collision) {
+		CollisionAction(collisionFlag[3, 0], collisionFlag[3, 1], collision.gameObject, 3);
+	}
+
+	void OnTriggerExit(Collider collider) {
+		CollisionAction(collisionFlag[4, 0], collisionFlag[4, 1], collider.gameObject, 4);
+	}
+
+	void OnCollisionExit(Collision collision) {
+		CollisionAction(collisionFlag[5, 0], collisionFlag[5, 1], collision.gameObject, 5);
+	}
+
+	/// <summary>
+	/// Collisions the action.
+	/// </summary>
+	/// <param name="myselfFlag">If set to <c>true</c> myself flag.</param>
+	/// <param name="userFlag">If set to <c>true</c> user flag.</param>
+	/// <param name="collidedObject">Collided object.</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
+	protected void CollisionAction(bool myselfFlag, bool userFlag, GameObject collidedObject, int kindOfCollision) {
+		if(GameController.instance.HasUserSet(collidedObject.name)) {
+			UserState userState = GameController.instance.GetUserSet(collidedObject.name).UserState;
+			if(myselfFlag) {
+				CollisionActionForMyself(kindOfCollision);
+			}
+			if(userFlag && userState.Status < 1) {
+				CollisionActionForUser(collidedObject.name, kindOfCollision);
+			}
 		}
-		if(result > 0) {
-			CollisionActionForUser(collision);
+		else if(collidedObject.tag != "Untagged" && gameObject.tag == collidedObject.tag) {
+			CollisionActionForMyself(kindOfCollision);
 		}
 	}
 
-	/// <summary>After collider occurs, do object's action.</summary>
-	/// <param name="delayLength">The delay how long this function will execute</param>
-	/// <param name="carName">User's car name</param>
-	/// <param name="carStatus">User's car status</param>
-	/// <param name="collider">Collided object</param>
-	protected IEnumerator AfterTriggerEnter(float delayLength, string carName, int carStatus, Collider collider) {  
-		GameController.instance.UpdateUserStatus(carName, carStatus);
-		yield return new WaitForSeconds(delayLength);
-		AfterTriggerEnterAction(collider);
+	/// <summary>
+	/// Containeds the check list.
+	/// </summary>
+	/// <returns><c>true</c>, if check list was containeded, <c>false</c> otherwise.</returns>
+	protected bool ContainedCheckList() {
+		return gameObject.transform.root.gameObject.name == "CheckList";
 	}
 
-	/// <summary>åfter collision occurs, do object's action.</summary>
-	/// <param name="delayLength">The delay how long this function will execute</param>
-	/// <param name="carName">User's car name</param>
-	/// <param name="carStatus">User's car status</param>
-	/// <param name="collision">collided object</param>
-	protected IEnumerator AfterCollisionEnter(float delayLength, string carName, int carStatus, Collision collision) {  
-		GameController.instance.UpdateUserStatus(carName, carStatus);
-		yield return new WaitForSeconds(delayLength);
-		AfterCollisionEnterAction(collision);
+	/// <summary>
+	/// Sets the screenshots.
+	/// </summary>
+	/// <returns>The screenshots.</returns>
+	/// <param name="playerName">Player name.</param>
+	protected IEnumerator SetScreenshots(string playerName) {
+		if(!nowTakingScreenshot) {
+			nowTakingScreenshot = true;
+			string key = CameraController.instance.CreateKeyForScreenshot(playerName, parentName);
+			yield return StartCoroutine(CameraController.instance.CaptureAndSaveScreenshots(key));
+			yield return new WaitForSeconds(CameraController.instance.Intereval);
+			nowTakingScreenshot = false;
+		}
 	}
 
-	/// <summary>When collider/collision occurs, do object's action.</summary>
-	protected abstract void CollidedActionForMyself();
+	/// <summary>
+	/// Collisions the action for myself.
+	/// </summary>
+	/// <param name="kindOfCollision">Kind of collision.</param>
+	protected abstract void CollisionActionForMyself(int kindOfCollision);
 
-	/// <summary>When collider occurs, do user's action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected abstract void ColliderActionForUser(Collider collider);
-
-	/// <summary>After collider occurs, do action.</summary>
-	/// <param name="collider">User's collider</param>
-	protected abstract void AfterTriggerEnterAction(Collider collider);
-
-	/// <summary>When collision occurs, do user's action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected abstract void CollisionActionForUser(Collision collision);
-
-	/// <summary>After collision occurs, do action.</summary>
-	/// <param name="collision">User's collision</param>
-	protected abstract void AfterCollisionEnterAction(Collision collision);
+	/// <summary>
+	/// Collisions the action for user.
+	/// </summary>
+	/// <param name="userName">User name.</param>
+	/// <param name="kindOfCollision">Kind of collision.</param>
+	protected abstract void CollisionActionForUser(string userName, int kindOfCollision);
 
 }
