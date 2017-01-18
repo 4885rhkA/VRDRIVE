@@ -37,5 +37,7 @@
     * Decide the stage(when in menu)
     * Game Start(when shown with How to use)
     * Go Menu(After shown result)
+  * Key R
+    * Reset orientation for Oculus Rift
 
 ---

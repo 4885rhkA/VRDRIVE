@@ -16,7 +16,7 @@ public class CarTrigger : Incident {
 			{ false, false }, 	// OnCollisionEnter
 			{ false, true }, 	// OnTriggerStay
 			{ false, false },	// OnCollisionStay
-			{ false, true }, 	// OnTriggerExit
+			{ false, false }, 	// OnTriggerExit
 			{ false, false }	// OnCollisionExit
 		};
 	}
@@ -54,11 +54,6 @@ public class CarTrigger : Incident {
 			if(kindOfCollision == 2) {
 				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 					StartCoroutine(SetScreenshots(userObject.Obj.name));
-				}
-			}
-			if(kindOfCollision == 4) {
-				if(GameController.instance.IsPlayer(userObject.Obj.name) && !GameController.instance.GetCheck(userObject.Obj.name, parentName)) {
-					GameController.instance.ShowWarningSuddenly(userObject.Obj.name, parentName);
 				}
 			}
 		}

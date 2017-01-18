@@ -18,8 +18,6 @@ public class GameController : MonoBehaviour {
 	[SerializeField] private bool keyboardMode = false;
 	[SerializeField] private bool handleMode = true;
 	[SerializeField] private bool pedalMode = true;
-	[SerializeField, TooltipAttribute("If enabled, you need to read README")] private bool pseudoPedalMode = false;
-	[SerializeField] private bool warningMode = false;
 	[SerializeField] private bool evaluationMode = false;
 	[SerializeField] private bool timeAttackMode = true;
 	[SerializeField] private string afterScene = "menu";
@@ -75,12 +73,6 @@ public class GameController : MonoBehaviour {
 	public bool PedalMode {
 		get {
 			return pedalMode;
-		}
-	}
-
-	public bool PseudoPedalMode {
-		get {
-			return pseudoPedalMode;
 		}
 	}
 
@@ -145,7 +137,7 @@ public class GameController : MonoBehaviour {
 				// Set standby position
 				if(IsPlayer(eachUserSet.Key)) {
 					RawImage image = userObject.Image.GetComponent<RawImage>();
-					ViewerController.instance.ChangeImageContent(image, "Images/Game/Attentions/howto");
+					ViewerController.instance.ChangeImageContent(image, "Images/Game/Attentions/press");
 					ViewerController.instance.ChangeRawImageState(image, true);
 				}
 				UserController.instance.RemoveDefaultGravity(userObject.Obj.GetComponent<Rigidbody>());
@@ -476,37 +468,6 @@ public class GameController : MonoBehaviour {
 			return true;
 		}
 		return false;
-	}
-
-	/// <summary>
-	/// Shows the warning suddenly.
-	/// </summary>
-	/// <param name="playerName">Player name.</param>
-	/// <param name="checkName">Check name.</param>
-	public void ShowWarningSuddenly(string playerName, string checkName) {
-		UserSet userSet = userSetList[playerName];
-		UserObject userObject = userSet.UserObject;
-		UserState userState = userSet.UserState;
-
-		if(warningMode && userState.CheckList.ContainsKey(checkName)) {
-
-			// Stop to move
-
-			// Change the image
-			RawImage image = userObject.Image.GetComponent<RawImage>();
-			ViewerController.instance.ChangeImageContent(image, "Images/Game/Warnings/" + checkName);
-			ViewerController.instance.ChangeRawImageState(image, true);
-			StartCoroutine(CloseWarning(playerName, 3f));
-		}
-	}
-
-	private IEnumerator CloseWarning(string playerName, float delay) {
-		yield return new WaitForSeconds(delay);
-		UserObject userObject = userSetList[playerName].UserObject;
-		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), false);
-
-		// enable to move
-
 	}
 
 }

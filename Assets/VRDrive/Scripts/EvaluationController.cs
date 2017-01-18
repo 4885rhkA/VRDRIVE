@@ -53,10 +53,10 @@ public class EvaluationController : MonoBehaviour {
 	};
 
 	private Dictionary<string, string> checkTextJPEvaluationList = new Dictionary<string, string>() {
-		{ "AI", "他の車に注意しながら走行しましょう" },
-		{ "Stop", "止まれの標識を見逃さないようにしましょう" },
-		{ "Signal", "信号に注意して走行しましょう" },
-		{ "kmh", "速度を守りましょう" }
+		{ "AI", "他の車に注意しよう" },
+		{ "Stop", "標識を見逃さないように" },
+		{ "Signal", "信号に注意して走行しよう" },
+		{ "kmh", "速度を守ろう" }
 	};
 
 	private Color fontColor = new Color();
@@ -76,6 +76,8 @@ public class EvaluationController : MonoBehaviour {
 	/// </summary>
 	void Awake() {
 		instance = this;
+		successTexture = Resources.Load("Images/Evaluation/success") as Texture2D;
+		noPreviewTexture = Resources.Load("Images/Evaluation/nopreview") as Texture2D;
 	}
 
 	/// <summary>
@@ -112,17 +114,13 @@ public class EvaluationController : MonoBehaviour {
 			MoveCheckBoxes(-1);
 		}
 
-
-		successTexture = Resources.Load("Images/Evaluation/success") as Texture2D;
-		noPreviewTexture = Resources.Load("Images/Evaluation/nopreview") as Texture2D;
-
 		SoundController.instance.StartEvaluationSound();
 	}
 
 	/// <summary>
-	/// Fixeds the update.
+	/// Update.
 	/// </summary>
-	void FixedUpdate() {
+	void Update() {
 		float h = 0;
 		if(keyboardMode) {
 			h = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -334,14 +332,12 @@ public class EvaluationController : MonoBehaviour {
 	/// <param name="incidentName">Incident name.</param>
 	private void ShowPreview(string incidentName) {
 		string key = CameraController.instance.CreateKeyForScreenshot(GetPlayerName(player), incidentName);
-		if(playerScreenshotList.ContainsKey(key)) {
-			if(playerStateList[GetPlayerName(player)].CheckList[checkTextList[selectBox]]) {
-				preview.GetComponent<RawImage>().texture = successTexture;
-			}
-			else {
-				List<Texture2D> screenshotList = playerScreenshotList[key];
-				StartCoroutine(LoopPreview(selectBox, key, screenshotList));
-			}
+		if(playerStateList[GetPlayerName(player)].CheckList[checkTextList[selectBox]]) {
+			preview.GetComponent<RawImage>().texture = successTexture;
+		}
+		else if(playerScreenshotList.ContainsKey(key)) {
+			List<Texture2D> screenshotList = playerScreenshotList[key];
+			StartCoroutine(LoopPreview(selectBox, key, screenshotList));
 		}
 		else {
 			preview.GetComponent<RawImage>().texture = noPreviewTexture;

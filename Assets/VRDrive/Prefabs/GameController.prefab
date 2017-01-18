@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 11403154}
   - component: {fileID: 8207552}
   - component: {fileID: 11486542}
-  - component: {fileID: 114939058965108996}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -167,7 +166,9 @@ MonoBehaviour:
   handleMode: 1
   pedalMode: 1
   pseudoPedalMode: 0
+  warningMode: 0
   evaluationMode: 0
+  timeAttackMode: 1
   afterScene: menu
   valueKeeper: {fileID: 198210, guid: 2d04266fe2bb54960b48b7bffbf9a4e0, type: 2}
 --- !u!114 &11482568
@@ -227,14 +228,3 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 115428}
   m_IsPrefabParent: 1
---- !u!114 &114939058965108996
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 115428}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0547a83f1941412d8c7f1416752d259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

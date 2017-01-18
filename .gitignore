@@ -2,9 +2,9 @@
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
-/Server/node_modules
-/Server/node_modules/*
 /Assets/*
+!/Assets/Resources
+!/Assets/Resources/*
 !/Assets/VRDrive
 !/Assets/VRDrive/*
 !/Assets/Plugins

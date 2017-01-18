@@ -1625,7 +1625,7 @@ MonoBehaviour:
   m_Maxspeed: 70
   m_SlipLimit: 1
   m_BrakeTorque: 20000
-  m_MaxHandleRotation: 720
+  m_MaxHandleRotation: 90
 --- !u!114 &11442562
 MonoBehaviour:
   m_ObjectHideFlags: 1

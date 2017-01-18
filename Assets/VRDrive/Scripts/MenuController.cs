@@ -63,11 +63,10 @@ public class MenuController : MonoBehaviour {
 			h = Input.GetAxis("Handle");
 		}
 		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
-        if (CrossPlatformInputManager.GetButton("Reset"))
-        {
-            InputTracking.Recenter();
-        }
-        StartCoroutine(ChangeSelectedScene(h, d, flag));
+		if(CrossPlatformInputManager.GetButton("Reset")) {
+			InputTracking.Recenter();
+		}
+		StartCoroutine(ChangeSelectedScene(h, d, flag));
 	}
 
 	/// <summary>

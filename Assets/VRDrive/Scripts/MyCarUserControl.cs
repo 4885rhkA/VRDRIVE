@@ -14,7 +14,6 @@ namespace UnityStandardAssets.Vehicles.Car {
 		private bool keyboardMode = false;
 		private bool handleMode = true;
 		private bool pedalMode = true;
-		private bool pseudoPedalMode = false;
 
 		private MyCarController m_Car;
 		private bool push = true;
@@ -35,7 +34,6 @@ namespace UnityStandardAssets.Vehicles.Car {
 			keyboardMode = GameController.instance.KeyboardMode;
 			handleMode = GameController.instance.HandleMode;
 			pedalMode = GameController.instance.PedalMode;
-			pseudoPedalMode = GameController.instance.PseudoPedalMode;
 		}
 
 		/// <summary>
@@ -54,13 +52,7 @@ namespace UnityStandardAssets.Vehicles.Car {
 			// Straight
 			float v = 0;
 			if(pedalMode) {
-                v = Input.GetAxis("Accel") * (-1f);
-                if (pseudoPedalMode) {
-                    if (v > 0.05)
-                    {
-                        v = v + 100;
-                    }
-                }
+				v = Input.GetAxis("Accel") * (-1f);
 			}
 			else if(keyboardMode) {
 				v = CrossPlatformInputManager.GetAxis("Vertical");
@@ -69,13 +61,8 @@ namespace UnityStandardAssets.Vehicles.Car {
 			// Brake
 			float s = 0;
 			if(pedalMode) {
-                s = Input.GetAxis("Brake") * (-1f);
-                s = (s + 1) * 0.5f;
-                if (pseudoPedalMode) {
-                    if (s > 0.05) {
-                        s = s + 1;
-                    }   
-				}
+				s = Input.GetAxis("Brake") * (-1f);
+				s = (s + 1) * 0.5f;
 			}
 			else if(keyboardMode) {
 				s = CrossPlatformInputManager.GetAxis("Space");
