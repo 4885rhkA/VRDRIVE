@@ -491,15 +491,45 @@ public class GameController : MonoBehaviour {
 
 		ViewerController.instance.ChangeImageContent(userObject.Image.GetComponent<RawImage>(), "Images/Game/Warnings/" + checkName);
 		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), true);
-		StartCoroutine(CloseWarning(playerName, 3f));
+
+		RawImage replayImage = userObject.Obj.transform.FindChild("Canvas/ReplayImage").gameObject.GetComponent<RawImage>();
+		ShowPreview(playerName, checkName, replayImage);
+		StartCoroutine(CloseWarning(playerName, replayImage, 3f));
 	}
 
-	public IEnumerator CloseWarning(string playerName, float delay) {  
+	private void ShowPreview(string playerName, string checkName, RawImage replayImage) {
+		UserSet userSet = userSetList[playerName];
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		string key = CameraController.instance.CreateKeyForScreenshot(playerName, checkName);
+		List<Texture2D> screenshotList = CameraController.instance.PlayerScreenshotList[key];
+		StartCoroutine(LoopPreview(replayImage, screenshotList));
+	}
+
+	private IEnumerator LoopPreview(RawImage replayImage, List<Texture2D> screenshotList) {
+		int count = 0;
+		int length = screenshotList.Count;
+		ViewerController.instance.ChangeRawImageState(replayImage, true);
+		while(true) {
+			replayImage.texture = screenshotList[count];
+			count++;
+			if(count > length - 1) {
+				count = 0;
+			}
+			yield return new WaitForSeconds(0.1f);
+		}
+	}
+
+	public IEnumerator CloseWarning(string playerName, RawImage replayImage, float delay) {  
 		yield return new WaitForSeconds(delay);
 		UserSet userSet = userSetList[playerName];
 		UserObject userObject = userSet.UserObject;
 		UserState userState = userSet.UserState;
+
+		ViewerController.instance.ChangeRawImageState(replayImage, false);
 		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), false);
 	}
+
 
 }
