@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField] private bool keyboardMode = false;
 	[SerializeField] private bool handleMode = true;
 	[SerializeField] private bool pedalMode = true;
+	[SerializeField] private bool pedalTwoMode = true;
 	[SerializeField] private bool evaluationMode = false;
 	[SerializeField] private bool timeAttackMode = true;
 	[SerializeField] private string afterScene = "menu";
@@ -35,6 +36,12 @@ public class GameController : MonoBehaviour {
 		{ "record", "#FFFFFFFF" },
 		{ "result", "#FFFFFFFF" }
 	};
+
+	public bool PedalTwoMode {
+		get {
+			return pedalTwoMode;
+		}
+	}
 
 	private Dictionary<string, string> messageList = new Dictionary<string, string>() {
 		{ "ready", "READY..." },

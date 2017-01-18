@@ -54,6 +54,14 @@ namespace UnityStandardAssets.Vehicles.Car {
 			if(pedalMode) {
 				v = Input.GetAxis("Accel") * (-1f);
 				v = (v + 1) * 0.5f;
+				if(GameController.instance.PedalTwoMode) {
+					if(v > 0.1) {
+						v = v + 100;
+					}
+					else {
+						v = 0;
+					}
+				}
 			}
 			else if(keyboardMode) {
 				v = CrossPlatformInputManager.GetAxis("Vertical");
@@ -64,6 +72,14 @@ namespace UnityStandardAssets.Vehicles.Car {
 			if(pedalMode) {
 				s = Input.GetAxis("Brake") * (-1f);
 				s = (s + 1) * 0.5f;
+				if(GameController.instance.PedalTwoMode) {
+					if(s > 0.1) {
+						s = s + 100;
+					}
+					else {
+						s = 0;
+					}
+				}
 			}
 			else if(keyboardMode) {
 				s = CrossPlatformInputManager.GetAxis("Space");
