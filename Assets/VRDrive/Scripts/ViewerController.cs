@@ -32,10 +32,10 @@ public class ViewerController : MonoBehaviour {
 	/// Changes the state of the text.
 	/// </summary>
 	/// <returns>The text state.</returns>
-	/// <param name="delay">Delay.</param>
 	/// <param name="text">Text.</param>
 	/// <param name="state">If set to <c>true</c> state.</param>
-	public IEnumerator ChangeTextState(float delay, Text text, bool state) {
+	/// <param name="delay">Delay.</param>
+	public IEnumerator ChangeTextState(Text text, bool state, float delay = 0) {
 		yield return new WaitForSeconds(delay);
 		text.enabled = state;
 	}
@@ -47,6 +47,18 @@ public class ViewerController : MonoBehaviour {
 	/// <param name="state">If set to <c>true</c> state.</param>
 	public void ChangeRawImageState(RawImage image, bool state) {
 		image.enabled = state;
+	}
+
+	/// <summary>
+	/// Changes the content of the image.
+	/// </summary>
+	/// <param name="image">Image.</param>
+	/// <param name="content">Content.</param>
+	public void ChangeImageContent(RawImage image, string content) {
+		if(content != null) {
+			Debug.Log("ss");
+			image.texture = Resources.Load(content) as Texture2D;
+		}
 	}
 
 	/// <summary>

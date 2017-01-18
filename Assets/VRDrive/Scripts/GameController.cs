@@ -19,11 +19,11 @@ public class GameController : MonoBehaviour {
 	[SerializeField] private bool handleMode = true;
 	[SerializeField] private bool pedalMode = true;
 	[SerializeField, TooltipAttribute("If enabled, you need to read README")] private bool pseudoPedalMode = false;
+	[SerializeField] private bool warningMode = false;
 	[SerializeField] private bool evaluationMode = false;
 	[SerializeField] private bool timeAttackMode = true;
 	[SerializeField] private string afterScene = "menu";
 	[SerializeField] private GameObject valueKeeper = null;
-
 	private Dictionary<string, UserSet> userSetList = new Dictionary<string, UserSet>();
 
 	private Color fontColor = new Color();
@@ -144,7 +144,9 @@ public class GameController : MonoBehaviour {
 
 				// Set standby position
 				if(IsPlayer(eachUserSet.Key)) {
-					ViewerController.instance.ChangeRawImageState(userObject.HowTo.GetComponent<RawImage>(), true);
+					RawImage image = userObject.Image.GetComponent<RawImage>();
+					ViewerController.instance.ChangeImageContent(image, "Images/Game/Attentions/howto");
+					ViewerController.instance.ChangeRawImageState(image, true);
 				}
 				UserController.instance.RemoveDefaultGravity(userObject.Obj.GetComponent<Rigidbody>());
 				UpdateUserStatus(userObject.Obj.name, -1);
@@ -203,9 +205,9 @@ public class GameController : MonoBehaviour {
 			if(IsPlayer(eachUserSet.Key)) {
 				// Standby for starting
 				messageText = userObject.Message.transform.FindChild("MessageText").gameObject;
-				ViewerController.instance.ChangeRawImageState(userObject.HowTo.GetComponent<RawImage>(), false);
+				ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), false);
 				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
-				StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText.GetComponent<Text>(), true));
+				StartCoroutine(ViewerController.instance.ChangeTextState(messageText.GetComponent<Text>(), true));
 				if(ColorUtility.TryParseHtmlString(colorList["ready"], out fontColor)) {
 					ViewerController.instance.ChangeTextContent(messageText.GetComponent<Text>(), messageList["ready"], fontColor);
 				}
@@ -237,14 +239,14 @@ public class GameController : MonoBehaviour {
 				if(timeAttackMode) {
 					timerText = userObject.Timer.transform.FindChild("TimerText").GetComponent<Text>();
 					ViewerController.instance.ChangeRawImageState(userObject.Timer.GetComponent<RawImage>(), true);
-					StartCoroutine(ViewerController.instance.ChangeTextState(0, timerText, true));
+					StartCoroutine(ViewerController.instance.ChangeTextState(timerText, true));
 				}
 				messageText = userObject.Message.transform.FindChild("MessageText").GetComponent<Text>();
 				ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), false);
 				if(ColorUtility.TryParseHtmlString(colorList["go"], out fontColor)) {
 					ViewerController.instance.ChangeTextContent(messageText, messageList["go"], fontColor);
 				}
-				StartCoroutine(ViewerController.instance.ChangeTextState(SoundController.instance.GetClipLength("go"), messageText, false));
+				StartCoroutine(ViewerController.instance.ChangeTextState(messageText, false, SoundController.instance.GetClipLength("go")));
 			}
 		}
 		TimerController.instance.ResetStartTime();
@@ -269,7 +271,7 @@ public class GameController : MonoBehaviour {
 				ViewerController.instance.ChangeTextContent(messageText, messageList["goal"], fontColor);
 			}
 			ViewerController.instance.ChangeRawImageState(userObject.Message.GetComponent<RawImage>(), true);
-			StartCoroutine(ViewerController.instance.ChangeTextState(0, messageText, true));
+			StartCoroutine(ViewerController.instance.ChangeTextState(messageText, true));
 			SoundController.instance.ShotClipSound("goal");
 		}
 	}
@@ -293,7 +295,7 @@ public class GameController : MonoBehaviour {
 				ViewerController.instance.ChangeTextContent(resultText, messageList["miss"], fontColor);
 			}
 			ViewerController.instance.ChangeRawImageState(userObject.Result.GetComponent<RawImage>(), true);
-			StartCoroutine(ViewerController.instance.ChangeTextState(0, resultText, true));
+			StartCoroutine(ViewerController.instance.ChangeTextState(resultText, true));
 			SoundController.instance.ShotClipSound("miss");
 		}
 	}
@@ -424,6 +426,23 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Gets the check.
+	/// </summary>
+	/// <returns><c>true</c>, if check was gotten, <c>false</c> otherwise.</returns>
+	/// <param name="userName">User name.</param>
+	/// <param name="checkName">Check name.</param>
+	public bool GetCheck(string userName, string checkName) {
+		UserState userState = userSetList[userName].UserState;
+		if(userState.CheckList.ContainsKey(checkName)) {
+			return userState.CheckList[checkName];
+		}
+		else {
+			Debug.LogWarning(checkName + " is not contained in " + userName);
+			return false;
+		}
+	}
+
+	/// <summary>
 	/// Determines whether this instance has user set the specified name.
 	/// </summary>
 	/// <returns><c>true</c> if this instance has user set the specified name; otherwise, <c>false</c>.</returns>
@@ -457,6 +476,37 @@ public class GameController : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+
+	/// <summary>
+	/// Shows the warning suddenly.
+	/// </summary>
+	/// <param name="playerName">Player name.</param>
+	/// <param name="checkName">Check name.</param>
+	public void ShowWarningSuddenly(string playerName, string checkName) {
+		UserSet userSet = userSetList[playerName];
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		if(warningMode && userState.CheckList.ContainsKey(checkName)) {
+
+			// Stop to move
+
+			// Change the image
+			RawImage image = userObject.Image.GetComponent<RawImage>();
+			ViewerController.instance.ChangeImageContent(image, "Images/Game/Warnings/" + checkName);
+			ViewerController.instance.ChangeRawImageState(image, true);
+			StartCoroutine(CloseWarning(playerName, 3f));
+		}
+	}
+
+	private IEnumerator CloseWarning(string playerName, float delay) {
+		yield return new WaitForSeconds(delay);
+		UserObject userObject = userSetList[playerName].UserObject;
+		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), false);
+
+		// enable to move
+
 	}
 
 }

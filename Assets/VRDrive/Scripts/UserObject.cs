@@ -29,8 +29,8 @@ public class UserObject {
 	/// 	</item>
 	/// 	<item>
 	/// 	<item>
-	/// 		<term>howTo</term>
-	/// 		<description>The <c>GameObject</c> for user's canvas of howto</description>
+	/// 		<term>image</term>
+	/// 		<description>The <c>GameObject</c> for user's canvas of image</description>
 	/// 	</item>
 	/// 	<item>
 	/// 		<term>speedMetor</term>
@@ -43,7 +43,7 @@ public class UserObject {
 	private GameObject timer = null;
 	private GameObject message = null;
 	private GameObject result = null;
-	private GameObject howTo = null;
+	private GameObject image = null;
 	private GameObject speedMeter = null;
 
 	public UserObject() {
@@ -57,7 +57,7 @@ public class UserObject {
 			timer = obj.transform.FindChild("Canvas/Timer").gameObject;
 			message = obj.transform.FindChild("Canvas/Message").gameObject;
 			result = obj.transform.FindChild("Canvas/Result").gameObject;
-			howTo = obj.transform.FindChild("Canvas/HowTo").gameObject;
+			image = obj.transform.FindChild("Canvas/Image").gameObject;
 			if(obj.transform.FindChild("Meter/Speed") != null) {
 				speedMeter = obj.transform.FindChild("Meter/Speed").gameObject;
 			}
@@ -94,9 +94,9 @@ public class UserObject {
 		}
 	}
 
-	public GameObject HowTo {
+	public GameObject Image {
 		get {
-			return howTo;
+			return image;
 		}
 	}
 

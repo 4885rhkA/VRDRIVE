@@ -20,8 +20,8 @@ public class EvaluationController : MonoBehaviour {
 
 	[SerializeField] private bool japaneseMode = true;
 
-	[SerializeField] private Texture2D successTexture = null;
-	[SerializeField] private Texture2D noPreviewTexture = null;
+	private Texture2D successTexture = null;
+	private Texture2D noPreviewTexture = null;
 
 	private Dictionary<string, UserState> playerStateList = new Dictionary<string, UserState>();
 	private Dictionary<string, List<Texture2D>> playerScreenshotList;
@@ -112,6 +112,10 @@ public class EvaluationController : MonoBehaviour {
 			MoveCheckBoxes(-1);
 		}
 
+
+		successTexture = Resources.Load("Images/Evaluation/success") as Texture2D;
+		noPreviewTexture = Resources.Load("Images/Evaluation/nopreview") as Texture2D;
+
 		SoundController.instance.StartEvaluationSound();
 	}
 
@@ -127,11 +131,10 @@ public class EvaluationController : MonoBehaviour {
 			h = Input.GetAxis("Handle");
 		}
 		bool d = CrossPlatformInputManager.GetButtonUp("Decide");
-        if (CrossPlatformInputManager.GetButton("Reset"))
-        {
-            InputTracking.Recenter();
-        }
-        StartCoroutine(ChangeSelectedCheck(h, d, change));
+		if(CrossPlatformInputManager.GetButton("Reset")) {
+			InputTracking.Recenter();
+		}
+		StartCoroutine(ChangeSelectedCheck(h, d, change));
 	}
 
 	/// <summary>
@@ -280,12 +283,10 @@ public class EvaluationController : MonoBehaviour {
 	private void ChangeContentsOfCheckBoxes() {
 		int count = 0;
 		int value;
-		RawImage ImageOk;
-		RawImage ImageNg;
+		RawImage image;
 		foreach(GameObject checkListBox in checkListBoxes) {
 			value = page * checkListBoxes.Length + count;
-			ImageOk = checkListBox.transform.FindChild("Ok").gameObject.GetComponent<RawImage>();
-			ImageNg = checkListBox.transform.FindChild("Ng").gameObject.GetComponent<RawImage>();
+			image = checkListBox.transform.FindChild("Image").gameObject.GetComponent<RawImage>();
 			if(value < checkTextList.Count) {
 				if(japaneseMode) {
 					checkListBox.GetComponent<Text>().text = checkTextJPWordList[ConvertWord(checkTextList[value])];
@@ -295,18 +296,17 @@ public class EvaluationController : MonoBehaviour {
 				}
 
 				if(playerStateList[GetPlayerName(player)].CheckList[checkTextList[value]]) {
-					ViewerController.instance.ChangeRawImageState(ImageOk, true);
-					ViewerController.instance.ChangeRawImageState(ImageNg, false);
+					ViewerController.instance.ChangeImageContent(image, "Images/Evaluation/ok");
+					ViewerController.instance.ChangeRawImageState(image, true);
 				}
 				else {
-					ViewerController.instance.ChangeRawImageState(ImageOk, false);
-					ViewerController.instance.ChangeRawImageState(ImageNg, true);
+					ViewerController.instance.ChangeImageContent(image, "Images/Evaluation/ng");
+					ViewerController.instance.ChangeRawImageState(image, true);
 				}
 			}
 			else {
 				checkListBox.GetComponent<Text>().text = "";
-				ViewerController.instance.ChangeRawImageState(ImageOk, false);
-				ViewerController.instance.ChangeRawImageState(ImageNg, false);
+				ViewerController.instance.ChangeRawImageState(image, false);
 			}
 			count++;
 		}

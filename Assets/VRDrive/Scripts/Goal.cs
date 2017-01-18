@@ -75,7 +75,7 @@ public class Goal : Incident {
 				ViewerController.instance.ChangeTextContent(resultText, messageList["time"], fontColor);
 			}
 			ViewerController.instance.ChangeRawImageState(result.GetComponent<RawImage>(), true);
-			StartCoroutine(ViewerController.instance.ChangeTextState(0, resultText, true));
+			StartCoroutine(ViewerController.instance.ChangeTextState(resultText, true));
 			SoundController.instance.ShotClipSound("record");
 			StartCoroutine(AddCharacterContinuouslyForResult(resultText, resultTimeText.ToCharArray()));
 		}
