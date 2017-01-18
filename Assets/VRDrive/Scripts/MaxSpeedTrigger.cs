@@ -18,7 +18,7 @@ public class MaxSpeedTrigger: Incident {
 			{ false, false }, 	// OnCollisionEnter
 			{ false, true }, 	// OnTriggerStay
 			{ false, false },	// OnCollisionStay
-			{ false, false }, 	// OnTriggerExit
+			{ false, true }, 	// OnTriggerExit
 			{ false, false }	// OnCollisionExit
 		};
 	}
@@ -55,6 +55,11 @@ public class MaxSpeedTrigger: Incident {
 				}
 				if(userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed() > maxSpeed && userState.CheckList[parentName]) {
 					GameController.instance.UpdateCheckList(userObject.Obj.name, parentName, false);
+				}
+			}
+			if(kindOfCollision == 4 && GameController.instance.WarningMode) {
+				if(!GameController.instance.GetCheck(userObject.Obj.name, parentName)) {
+					GameController.instance.ShowWarning(userObject.Obj.name, parentName);
 				}
 			}
 		}

@@ -71,6 +71,11 @@ public class SignalTrigger : Incident {
 				if(signal.Status == 2 && userState.CheckList[parentName]) {
 					GameController.instance.UpdateCheckList(userObject.Obj.name, parentName, false);
 				}
+				if(GameController.instance.WarningMode) {
+					if(!GameController.instance.GetCheck(userObject.Obj.name, parentName)) {
+						GameController.instance.ShowWarning(userObject.Obj.name, parentName);
+					}
+				}
 			}
 		}
 

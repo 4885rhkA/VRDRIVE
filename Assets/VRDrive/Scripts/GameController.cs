@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField] private bool handleMode = true;
 	[SerializeField] private bool pedalMode = true;
 	[SerializeField] private bool pedalTwoMode = true;
+	[SerializeField] private bool warningMode = false;
 	[SerializeField] private bool evaluationMode = false;
 	[SerializeField] private bool timeAttackMode = true;
 	[SerializeField] private string afterScene = "menu";
@@ -40,6 +41,12 @@ public class GameController : MonoBehaviour {
 	public bool PedalTwoMode {
 		get {
 			return pedalTwoMode;
+		}
+	}
+
+	public bool WarningMode {
+		get {
+			return warningMode;
 		}
 	}
 
@@ -475,6 +482,24 @@ public class GameController : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+
+	public void ShowWarning(string playerName, string checkName) {
+		UserSet userSet = userSetList[playerName];
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+
+		ViewerController.instance.ChangeImageContent(userObject.Image.GetComponent<RawImage>(), "Images/Game/Warnings/" + checkName);
+		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), true);
+		StartCoroutine(CloseWarning(playerName, 3f));
+	}
+
+	public IEnumerator CloseWarning(string playerName, float delay) {  
+		yield return new WaitForSeconds(delay);
+		UserSet userSet = userSetList[playerName];
+		UserObject userObject = userSet.UserObject;
+		UserState userState = userSet.UserState;
+		ViewerController.instance.ChangeRawImageState(userObject.Image.GetComponent<RawImage>(), false);
 	}
 
 }

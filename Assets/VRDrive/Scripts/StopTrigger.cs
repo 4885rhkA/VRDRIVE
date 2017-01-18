@@ -13,7 +13,7 @@ public class StopTrigger : Incident {
 			{ false, false }, 	// OnCollisionEnter
 			{ false, true }, 	// OnTriggerStay
 			{ false, false },	// OnCollisionStay
-			{ false, false }, 	// OnTriggerExit
+			{ false, true }, 	// OnTriggerExit
 			{ false, false }	// OnCollisionExit
 		};
 	}
@@ -46,6 +46,11 @@ public class StopTrigger : Incident {
 				}
 				if(userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed() < 5 && userState.CheckList[parentName] == false) {
 					GameController.instance.UpdateCheckList(userObject.Obj.name, parentName, true);
+				}
+			}
+			if(kindOfCollision == 4 && GameController.instance.WarningMode) {
+				if(!GameController.instance.GetCheck(userObject.Obj.name, parentName)) {
+					GameController.instance.ShowWarning(userObject.Obj.name, parentName);
 				}
 			}
 		}
