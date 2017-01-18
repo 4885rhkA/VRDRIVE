@@ -56,7 +56,6 @@ public class ViewerController : MonoBehaviour {
 	/// <param name="content">Content.</param>
 	public void ChangeImageContent(RawImage image, string content) {
 		if(content != null) {
-			Debug.Log("ss");
 			image.texture = Resources.Load(content) as Texture2D;
 		}
 	}

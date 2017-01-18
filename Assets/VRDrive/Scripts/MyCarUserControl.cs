@@ -39,9 +39,9 @@ namespace UnityStandardAssets.Vehicles.Car {
 		}
 
 		/// <summary>
-		/// Fixeds the update.
+		/// Update.
 		/// </summary>
-		void FixedUpdate() {
+		void Update() {
 			// LR
 			float h = 0;
 			if(handleMode) {
@@ -54,34 +54,32 @@ namespace UnityStandardAssets.Vehicles.Car {
 			// Straight
 			float v = 0;
 			if(pedalMode) {
-				if(pseudoPedalMode && Input.GetAxis("Accel") != 0) {
-					v = 1f;
-				}
-				else {
-					v = Input.GetAxis("Accel") * (-1f);
-					v = (v + 1f) * 0.5f;
-				}
+                v = Input.GetAxis("Accel") * (-1f);
+                if (pseudoPedalMode) {
+                    if (v > 0.05)
+                    {
+                        v = v + 100;
+                    }
+                }
 			}
 			else if(keyboardMode) {
 				v = CrossPlatformInputManager.GetAxis("Vertical");
 			}
 
-
 			// Brake
 			float s = 0;
 			if(pedalMode) {
-				if(pseudoPedalMode && Input.GetAxis("Brake") != 0) {
-					s = 1f;
-				}
-				else {
-					s = Input.GetAxis("Brake") * (-1f);
-					s = (s + 1f) * 0.5f;
+                s = Input.GetAxis("Brake") * (-1f);
+                s = (s + 1) * 0.5f;
+                if (pseudoPedalMode) {
+                    if (s > 0.05) {
+                        s = s + 1;
+                    }   
 				}
 			}
 			else if(keyboardMode) {
 				s = CrossPlatformInputManager.GetAxis("Space");
 			}
-
 
 			// Back = backtrigger + straight
 			bool b = CrossPlatformInputManager.GetButton("BackTrigger");

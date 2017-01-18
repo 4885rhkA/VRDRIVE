@@ -132,7 +132,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 2
-    joyNum: 1
+    joyNum: 0
   - serializedVersion: 3
     m_Name: Brake
     descriptiveName: 
@@ -148,4 +148,4 @@ InputManager:
     invert: 0
     type: 2
     axis: 3
-    joyNum: 1
+    joyNum: 0
