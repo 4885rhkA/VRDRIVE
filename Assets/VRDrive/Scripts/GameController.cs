@@ -496,7 +496,7 @@ public class GameController : MonoBehaviour {
 
 		RawImage replayImage = userObject.Obj.transform.FindChild("Canvas/ReplayImage").gameObject.GetComponent<RawImage>();
 		ShowPreview(playerName, checkName, replayImage);
-		StartCoroutine(CloseWarning(playerName, replayImage, 100f));
+		StartCoroutine(CloseWarning(playerName, replayImage, 5f));
 	}
 
 	private void ShowPreview(string playerName, string checkName, RawImage replayImage) {
