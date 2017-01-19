@@ -692,21 +692,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 402538, guid: 55279aae5acb94f8588c82891118ba03, type: 2}
   m_PrefabInternal: {fileID: 113738848}
---- !u!1 &121386821 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 115428, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-  m_PrefabInternal: {fileID: 2121102071}
---- !u!114 &121386822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 121386821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ae22ec7db78b4e17864f6d7bd6e76c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &122433142
 GameObject:
   m_ObjectHideFlags: 0
@@ -10372,10 +10357,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 11482568, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: clips.Array.size
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 422360, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10407,62 +10388,6 @@ Prefab:
     - target: {fileID: 422360, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: m_RootOrder
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 11403154, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: directoryForScreenshot
-      value: Resources/Screenshots
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: valueKeeper
-      value: 
-      objectReference: {fileID: 198210, guid: 2d04266fe2bb54960b48b7bffbf9a4e0, type: 2}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: keyboardMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: evaluationMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11486542, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: meteorites
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11486542, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: sppedUpBoards
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: sceneAfterEvaluation
-      value: menu
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: handleMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: timeAttackMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: pedalMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: pseudoPedalMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11482568, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: clips.Array.data[7]
-      value: 
-      objectReference: {fileID: 8300000, guid: b058fc4ab21d4438490f91e9c94a9958, type: 3}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: warningMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
-      propertyPath: warningWithPreviewMode
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
