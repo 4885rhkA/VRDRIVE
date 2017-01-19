@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 11403154}
   - component: {fileID: 8207552}
   - component: {fileID: 11486542}
+  - component: {fileID: 114598749666802432}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -162,14 +163,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oneKillMode: 0
-  keyboardMode: 0
-  handleMode: 1
-  pedalMode: 1
-  pedalTwoMode: 1
-  warningMode: 0
-  warningWithPreviewMode: 0
+  keyboardMode: 1
+  handleMode: 0
+  pedalMode: 0
+  pedalTwoMode: 0
+  warningMode: 1
+  warningWithPreviewMode: 1
   evaluationMode: 0
-  timeAttackMode: 1
+  timeAttackMode: 0
   afterScene: menu
   valueKeeper: {fileID: 198210, guid: 2d04266fe2bb54960b48b7bffbf9a4e0, type: 2}
 --- !u!114 &11482568
@@ -203,8 +204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72486396221cf42a3bd88bfa83f0bf67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meteorites: 1
-  sppedUpBoards: 1
+  meteorites: 0
+  sppedUpBoards: 0
   checkList: 1
   tunnnels: 1
 --- !u!114 &11497208
@@ -230,3 +231,14 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 115428}
   m_IsPrefabParent: 1
+--- !u!114 &114598749666802432
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae22ec7db78b4e17864f6d7bd6e76c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

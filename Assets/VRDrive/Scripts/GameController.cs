@@ -104,6 +104,12 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	public bool FinishGameFlag {
+		get {
+			return finishGameFlag;
+		}
+	}
+
 	/// <summary>
 	/// Awake this instance.
 	/// </summary>
@@ -193,6 +199,7 @@ public class GameController : MonoBehaviour {
 						ViewerController.instance.ChangeTextMeshContent(userObject.SpeedMeter.GetComponent<TextMesh>(), speed.ToString("f0"), fontColor);
 					}
 				}
+
 			}
 
 			// Keep adding gravity
@@ -255,6 +262,11 @@ public class GameController : MonoBehaviour {
 					ViewerController.instance.ChangeTextContent(messageText, messageList["go"], fontColor);
 				}
 				StartCoroutine(ViewerController.instance.ChangeTextState(messageText, false, SoundController.instance.GetClipLength("go")));
+
+				// send message
+				float nowSpeed = userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed();
+				Vector3 position = userObject.Obj.transform.position;
+				StartCoroutine(gameObject.GetComponent<MySocketIO>().SendMessage(userObject.Obj.name, nowSpeed, position));
 			}
 		}
 		TimerController.instance.ResetStartTime();
