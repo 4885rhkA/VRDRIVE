@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0006983695, g: 0.0010767119, b: 0.42018437, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -8487,7 +8487,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: keyboardMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: takeScreenshotsForChecklist
@@ -8503,11 +8503,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: handleMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: pedalMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11486542, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: meteorites
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11486542, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: sppedUpBoards
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
+      propertyPath: oneKillMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
