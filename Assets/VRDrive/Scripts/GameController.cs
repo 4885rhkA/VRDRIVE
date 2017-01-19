@@ -262,11 +262,8 @@ public class GameController : MonoBehaviour {
 					ViewerController.instance.ChangeTextContent(messageText, messageList["go"], fontColor);
 				}
 				StartCoroutine(ViewerController.instance.ChangeTextState(messageText, false, SoundController.instance.GetClipLength("go")));
-
-				// send message
-				float nowSpeed = userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed();
-				Vector3 position = userObject.Obj.transform.position;
-				StartCoroutine(gameObject.GetComponent<MySocketIO>().SendMessage(userObject.Obj.name, nowSpeed, position));
+	
+				StartCoroutine(gameObject.GetComponent<MySocketIO>().SendMessage(userObject.Obj.name));
 			}
 		}
 		TimerController.instance.ResetStartTime();
