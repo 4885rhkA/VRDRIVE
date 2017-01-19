@@ -19,6 +19,7 @@ public class EvaluationController : MonoBehaviour {
 	[SerializeField] private bool handleMode = true;
 
 	[SerializeField] private bool japaneseMode = true;
+	[SerializeField] private bool previewMode = true;
 
 	private Texture2D successTexture = null;
 	private Texture2D noPreviewTexture = null;

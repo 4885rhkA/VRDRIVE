@@ -526,8 +526,10 @@ public class GameController : MonoBehaviour {
 	private IEnumerator LoopAction(RawImage replayImage, List<Texture2D> screenshotList, Rigidbody rigid) {
 		int count = 0;
 		int length = screenshotList.Count;
-		ViewerController.instance.ChangeRawImageState(replayImage, true);
 		SoundController.instance.ShotClipSound("pinpon");
+		if(warningWithPreviewMode) {
+			ViewerController.instance.ChangeRawImageState(replayImage, true);
+		}
 		while(replayFlag) {
 			// show preview
 			if(warningWithPreviewMode) {

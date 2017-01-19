@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.00066218036, g: 0.0010761757, b: 0.42007482, a: 1}
+  m_IndirectSpecularColor: {r: 0.0006983695, g: 0.0010767119, b: 0.42018437, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -699,6 +699,7 @@ MonoBehaviour:
   keyboardMode: 1
   handleMode: 1
   japaneseMode: 1
+  previewMode: 1
 --- !u!114 &644766878
 MonoBehaviour:
   m_ObjectHideFlags: 0

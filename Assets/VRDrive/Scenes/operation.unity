@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 567462897}
-  m_IndirectSpecularColor: {r: 0.8104361, g: 0.85152054, b: 0.9843851, a: 1}
+  m_IndirectSpecularColor: {r: 0.8107935, g: 0.85152173, b: 0.9839403, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -10438,7 +10438,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: handleMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: timeAttackMode
@@ -10446,7 +10446,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: pedalMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: pseudoPedalMode
@@ -10462,7 +10462,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11444868, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
       propertyPath: warningWithPreviewMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a7a78ebfbdc0453ebea9793a927c4e2, type: 2}
