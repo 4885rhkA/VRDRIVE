@@ -333,7 +333,6 @@ public class GameController : MonoBehaviour {
 		if(!exitGameFlag) {
 			if(finishGameFlag) {
 				exitGameFlag = true;
-				gameObject.GetComponent<MySocketIO>().SendStop();
 
 				if(evaluationMode) {
 					KeepValuesToNextScene();
@@ -388,6 +387,7 @@ public class GameController : MonoBehaviour {
 			remainingInGame--;
 			if(remainingInGame == 0) {
 				finishGameFlag = true;
+				gameObject.GetComponent<MySocketIO>().SendStop();
 			}
 		}
 		switch(userState.Status) {
