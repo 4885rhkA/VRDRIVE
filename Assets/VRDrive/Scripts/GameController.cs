@@ -7,6 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.UI;
 using UnityStandardAssets.Vehicles.Car;
 
+
 /// <summary>
 /// Game controller.
 /// </summary>
@@ -332,6 +333,8 @@ public class GameController : MonoBehaviour {
 		if(!exitGameFlag) {
 			if(finishGameFlag) {
 				exitGameFlag = true;
+				gameObject.GetComponent<MySocketIO>().SendStop();
+
 				if(evaluationMode) {
 					KeepValuesToNextScene();
 					SceneManager.LoadScene("evaluation");
