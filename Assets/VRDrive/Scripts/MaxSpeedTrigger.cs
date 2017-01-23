@@ -53,15 +53,17 @@ public class MaxSpeedTrigger: Incident {
 				if(GameController.instance.IsPlayer(userObject.Obj.name)) {
 					StartCoroutine(SetScreenshots(userObject.Obj.name));
 				}
-				if(userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed() > maxSpeed && userState.CheckList[parentName]) {
-					GameController.instance.UpdateCheckList(userObject.Obj.name, parentName, false);
-				}
-			}
-			if(kindOfCollision == 4 && GameController.instance.WarningMode) {
-				if(!GameController.instance.GetCheck(userObject.Obj.name, parentName)) {
-					GameController.instance.ShowWarning(userObject.Obj.name, parentName);
-				}
-			}
+                if (userObject.Obj.GetComponent<MyCarController>().GetCurrentSpeed() > maxSpeed) {
+                    if (userState.CheckList[parentName])
+                    {
+                        if (GameController.instance.WarningMode) {
+                            GameController.instance.ShowWarning(userObject.Obj.name, parentName);
+                        }
+                        GameController.instance.UpdateCheckList(userObject.Obj.name, parentName, false);
+                    }
+
+                }
+            }
 		}
 	}
 

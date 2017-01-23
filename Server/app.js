@@ -82,10 +82,14 @@ io.on('connection', function(socket){
     console.log("ENDED");
     obj["labels"] = labels;
     obj["datasets"] = datasets;
-    fs.writeFileSync(filename, JSON.stringify(obj));
-    json = {};
-    labels = [];
-    datasets = [];
+    if(filename != "") {
+      fs.writeFile(filename, JSON.stringify(obj), function(err) {
+        labels = [];
+        datasets = [];
+        filename = "";
+        console.log("wrote files");
+      });
+    }
   });
 
 });
